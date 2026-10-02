@@ -37,7 +37,7 @@
   padding: 60px 80px;
 }
 .ps-card--landscape .ps-card__layout { padding-right: 48px; }
-.ps-card--search .ps-card__layout { padding-right: 64px; } /* window sits at x 872 in the 1376 card */
+.ps-card--search .ps-card__layout { padding-right: 48px; }
 
 /* Intro copy */
 .ps-intro { align-self: stretch; width: 445px; flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 28px; }

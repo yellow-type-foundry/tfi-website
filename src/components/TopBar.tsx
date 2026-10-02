@@ -8,7 +8,7 @@ export function TopBar({ className = "", label = "Primary" }: { className?: stri
   return (
     <header className={`topbar ${className}`.trim()}>
       <a href="#" className="topbar__logo" aria-label="TinyFish home">
-        <img src="/assets/hero/brand-logo.svg" width={70} height={16} alt="TinyFish" />
+        <span className="topbar__brand" aria-hidden />
       </a>
       <nav className="topbar__nav t-body-m" aria-label={label}>
         {NAV_LINKS.map((l) => (

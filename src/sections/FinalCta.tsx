@@ -1,4 +1,5 @@
 import { Button } from "../components/Button";
+import { VectorLoop } from "../components/VectorLoop";
 import "./FinalCta.css";
 
 const aiLogos = ["ai-logo-1", "ai-logo-2", "ai-logo-3"];
@@ -17,7 +18,9 @@ export function FinalCta() {
   return (
     <section className="final-cta">
       <div className="final-cta__card">
-        <img className="final-cta__bg" src="/assets/final-cta/bg.png" alt="" />
+        <div className="final-cta__background">
+          <VectorLoop className="final-cta__bg" src="/assets/final-cta/background-v13.tfv" width={3880} height={3166} />
+        </div>
 
         <div className="final-cta__content">
           <div className="final-cta__pill">

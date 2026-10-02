@@ -23,19 +23,19 @@ const classpassLogo = { src: "/assets/customer-stories/logo-classpass.svg", widt
 const stories: Story[] = [
   {
     id: "classpass",
-    art: "/assets/customer-stories/card-classpass-bg.png",
+    art: "/assets/customer-stories/classpass-bg-new.png",
     quote: "“TinyFish builds AI agent solutions that deliver real results.”",
     name: "Jonathan Lam",
     role: "Senior Program Manager",
     mutedRole: false,
     bg: "#3196e9",
-    frame: { width: 910, height: 561, offsetX: -7 },
-    img: { left: "13.25%", top: "0.18%", width: "92.33%", height: "99.82%" },
+    frame: { width: 780, height: 561, offsetX: 110 },
+    img: { inset: 0, width: "100%", height: "100%", objectFit: "cover" },
     logo: classpassLogo,
   },
   {
     id: "doordash",
-    art: "/assets/customer-stories/card-doordash-bg.png",
+    art: "/assets/customer-stories/doordash-bg-new.png",
     quote: "“TinyFish's platform manages web interaction complexity at scale.”",
     name: "Abhi Shah",
     role: "Director of Data Science",
