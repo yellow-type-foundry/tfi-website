@@ -1,5 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type CSSProperties } from "react";
 import "../vendor/tinyfish-vector-player.js";
+import { isTfz, unpackTfz } from "../lib/tfz";
 
 type VectorLoopProps = {
   src: string;
@@ -7,6 +8,7 @@ type VectorLoopProps = {
   width: number;
   height: number;
   className?: string;
+  style?: CSSProperties;
   /** Replace colours in the loop's palettes at load time (the .tfv file itself is untouched). */
   recolor?: Record<string, string>;
 };
@@ -26,11 +28,11 @@ function recolorTfv(bytes: Uint8Array, map: Record<string, string>) {
 }
 
 /**
- * TinyFish vector shader loop (.tfv) drawn live on a canvas at the screen's real resolution.
+ * TinyFish vector shader loop (.tfv, or a .tfz packed by scripts/pack-tfv.mjs) drawn live on a canvas at the screen's real resolution.
  * The player pauses off screen, shows the first frame for reduced motion, and handles any
  * hover-reveal layers in the file (pointer brush; touch follows a held finger).
  */
-export function VectorLoop({ src, width, height, className, recolor }: VectorLoopProps) {
+export function VectorLoop({ src, width, height, className, style, recolor }: VectorLoopProps) {
   const ref = useRef<HTMLCanvasElement>(null);
   const recolorKey = JSON.stringify(recolor ?? {});
 
@@ -41,7 +43,8 @@ export function VectorLoop({ src, width, height, className, recolor }: VectorLoo
     let cancelled = false;
     fetch(src)
       .then((r) => r.arrayBuffer())
-      .then((buf) => window.TFVector.inflate(new Uint8Array(buf)))
+      .then((buf) => new Uint8Array(buf))
+      .then((bytes) => (isTfz(bytes) ? unpackTfz(bytes) : window.TFVector.inflate(bytes)))
       .then((bytes) => (recolor ? recolorTfv(bytes, recolor) : bytes))
       .then((bytes) => (cancelled ? undefined : window.TFVector.play(canvas, bytes)))
       .then((p) => { player = p; if (cancelled) p?.pause(); })
@@ -50,5 +53,5 @@ export function VectorLoop({ src, width, height, className, recolor }: VectorLoo
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [src, recolorKey]);
 
-  return <canvas ref={ref} className={className} width={width} height={height} aria-hidden />;
+  return <canvas ref={ref} className={className} style={style} width={width} height={height} aria-hidden />;
 }

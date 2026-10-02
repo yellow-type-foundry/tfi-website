@@ -29,7 +29,6 @@
     mask-image: linear-gradient(to right, transparent, #000 160px, #000 calc(100% - 160px), transparent);
   }
 }
-.ps-card__bg--video { image-rendering: pixelated; } /* crisp shader pixels when scaled, per the export notes */
 
 /* Figma: landscape layouts are 1408px wide inside a 1376px card, so the window sits 48px from the right edge. */
 .ps-card__layout {

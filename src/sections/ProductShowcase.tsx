@@ -1,7 +1,7 @@
 import type { CSSProperties, ReactElement, ReactNode } from "react";
 import { useEffect, useRef } from "react";
 import { BrowserWindow } from "../components/BrowserWindow";
-import { ShaderVideo } from "../components/ShaderVideo";
+import { VectorLoop } from "../components/VectorLoop";
 import { Icon } from "../components/Icon";
 import "./ProductShowcase.css";
 
@@ -151,14 +151,14 @@ type ProductCardProps = {
   /** Shader image box, relative to the card (Figma frame offsets). */
   bg: { left: number; top: number; width: number; height: number; position?: string };
   largeDots?: boolean;
-  /** Looping shader video replacing the still background (files in /assets/product-showcase/video). */
-  video?: string;
+  /** Vector shader loop (.tfv/.tfz in /assets/product-showcase/vector) replacing the still background. */
+  vector?: { src: string; width: number; height: number };
   children: ReactNode;
 };
 
 const FIGMA_CARD_WIDTH = 1376;
 
-function ProductCard({ id, title, description, cta, tone, bg, largeDots = true, video, children }: ProductCardProps) {
+function ProductCard({ id, title, description, cta, tone, bg, largeDots = true, vector, children }: ProductCardProps) {
   // Offsets are from the 1376px-wide Figma card. The laptop art (search) keeps its size, centred
   // with the content, so it never grows into the copy; the landscapes stretch with the card.
   const bgStyle: CSSProperties =
@@ -168,8 +168,8 @@ function ProductCard({ id, title, description, cta, tone, bg, largeDots = true, 
   return (
     <article className="ps-panel depth-strong" id={id} aria-labelledby={`${id}-title`}>
       <div className={`ps-card ps-card--${tone}`}>
-        {video ? (
-          <ShaderVideo className="ps-card__bg ps-card__bg--video" src={`/assets/product-showcase/video/${video}`} poster={`/assets/product-showcase/shader-${tone}.png`} width={bg.width} height={bg.height} style={bgStyle} />
+        {vector ? (
+          <VectorLoop className="ps-card__bg" src={`/assets/product-showcase/vector/${vector.src}`} width={vector.width} height={vector.height} style={bgStyle} />
         ) : (
           <img
             className="ps-card__bg"
@@ -246,7 +246,7 @@ export function ProductShowcase() {
         cta="Try Search for Free"
         tone="search"
         bg={{ left: -165, top: 92, width: 1541, height: 703, position: "center bottom" }}
-        video="search-loop"
+        vector={{ src: "search.tfz", width: 5833, height: 2755 }}
       >
         <AgentChat
           compact
