@@ -1,6 +1,8 @@
 .hero { padding: 16px; }
 .hero__card {
-  position: relative; height: 906px; border-radius: 32px; overflow: hidden;
+  position: relative; border-radius: 32px; overflow: hidden;
+  /* Fills the screen (minus the 16px inset); 906px is the Figma frame, the floor keeps the content clear. */
+  height: calc(100vh - 32px); height: calc(100svh - 32px); min-height: 720px;
   display: flex; flex-direction: column; align-items: center;
   background: #f3f095;
 }
@@ -24,9 +26,14 @@
 .topbar a:not(.btn):hover { opacity: 0.65; }
 
 /* Main content */
+/* The copy block is centred in the yellow sky: the band between the nav and the horizon, which the
+   art keeps at ~58% of the card height. The promo pill stays at the bottom. */
 .hero__main {
-  position: relative; flex: 1 0 0; width: 100%;
-  display: flex; flex-direction: column; align-items: center; gap: 28px; padding-top: 40px;
+  --hero-horizon: 58%;
+  position: relative; width: 100%; flex: none;
+  height: calc(var(--hero-horizon) - 62px); /* 62px = nav row */
+  min-height: 434px; /* the block itself plus the Figma 40px top gap */
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px;
 }
 .hero__tagline { display: flex; align-items: center; gap: 13.333px; height: 21px; font-size: 14px; line-height: 1.5; color: #000; }
 .hero__ai-logos { display: flex; align-items: center; gap: 5px; }
@@ -38,7 +45,7 @@
 }
 
 /* Promo pill */
-.hero__footer { position: relative; width: 100%; display: flex; justify-content: center; padding: 40px 0; }
+.hero__footer { position: relative; width: 100%; display: flex; justify-content: center; padding: 40px 0; margin-top: auto; }
 .hero__promo {
   display: flex; align-items: center; justify-content: space-between;
   width: 460px; padding: 8px 8px 8px 20px; border-radius: 100px; background: var(--surface-primary);

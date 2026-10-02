@@ -69,6 +69,7 @@ function MonitorPreview({ live }: { live: boolean }) {
         </div>
       </BrowserWindow>
       <div className="sol-toast-anchor">
+        <div className="sol-toast-pos">
         <div className={`sol-toast t-toast${alertOpen ? " is-open" : ""}`} role="status">
           <p className="sol-toast__from t-body-xs">
             <Icon name="fish" size={16} className="sol-fish" />
@@ -78,6 +79,7 @@ function MonitorPreview({ live }: { live: boolean }) {
             <p className="t-label-m">Acme raised the Pro plan</p>
             <p className="t-body-xs"><s>$49</s> → $59 a month</p>
           </div>
+        </div>
         </div>
       </div>
     </>
