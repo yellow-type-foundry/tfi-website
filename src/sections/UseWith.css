@@ -1,16 +1,9 @@
 .use-with { background: var(--surface-primary); display: flex; flex-direction: column; align-items: center; padding: 200px var(--gutter); }
-.use-with__content { display: flex; flex-direction: column; align-items: center; gap: 28px; }
-.use-with__heading { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-.use-with__line { display: flex; align-items: flex-end; gap: 12px; }
-.use-with__line--center { align-items: center; }
-.use-with__brand { display: flex; align-items: center; gap: 12px; }
-.use-with__shader {
-  width: 66px; height: 72px; flex-shrink: 0; mix-blend-mode: multiply;
-  background-repeat: no-repeat; background-size: auto 100%;
-}
-/* Each slot crops one half of the same two-logo shader render. */
-.use-with__shader--chatgpt { background-size: 225% auto; background-position: 4% 52%; }
-.use-with__shader--claude { background-size: 225% auto; background-position: 92% 52%; }
-.use-with__hermes { position: relative; width: 64px; height: 64px; overflow: hidden; flex-shrink: 0; }
-.use-with__hermes img { position: absolute; left: 4.99%; top: 5.01%; width: 89.77%; height: 90.11%; }
+.use-with__content { display: flex; flex-direction: column; align-items: center; gap: 28px; width: 100%; min-width: 0; }
+.use-with__intro { display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center; width: 100%; }
+.use-with__heading { width: 100%; text-align: center; text-wrap: balance; word-spacing: -0.04em; }
+.use-with__phrase { white-space: nowrap; }
+.use-with__brand { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; vertical-align: middle; }
+.use-with__chatgpt, .use-with__claude, .use-with__hermes { position: relative; width: 96px; height: 96px; flex-shrink: 0; overflow: hidden; border-radius: 50%; }
+.use-with__chatgpt-animation, .use-with__claude-animation, .use-with__hermes-animation { position: absolute; width: 125%; height: 125%; left: -12.5%; top: -12.5%; }
 .use-with__actions { display: flex; gap: 12px; }

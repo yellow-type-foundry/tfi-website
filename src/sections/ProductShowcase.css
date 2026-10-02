@@ -11,7 +11,7 @@
    12px lower than the last so the earlier cards' top edges peek out. On short screens the stick
    point rises (min with 100svh - card height) so the whole card is seen before it's covered.
    Card heights: 752px (Search, 720 + 2×16 padding) and 672px (the rest). */
-.ps-panel { position: sticky; --stack-gap: 12px; transform: scale(var(--stack-scale, 1)); transform-origin: 50% 0; } /* scale set on scroll for depth */
+.ps-panel { position: sticky; --stack-gap: 12px; transform: scale(var(--stack-scale, 1)); opacity: var(--stack-opacity, 1); transform-origin: 50% 0; } /* scale and fade set on scroll for depth */
 .ps-panel:nth-child(1) { --stack-i: 0; --stack-h: 752px; }
 .ps-panel:nth-child(2) { --stack-i: 1; --stack-h: 672px; }
 .ps-panel:nth-child(3) { --stack-i: 2; --stack-h: 672px; }

@@ -33,10 +33,9 @@
   padding: 40px 160px; border-radius: 16px; overflow: clip;
   background: var(--surface-accent-teal-subtle);
 }
-/* The landscape loop is pre-cropped to the Figma framing (the visible part of the still at
-   left 1 / top -150 / 1367×1115) and encoded at the stage size, so it simply fills the stage. */
-.idemo-stage__bg { position: absolute; inset: 0; pointer-events: none; }
-.idemo-stage__bg video { width: 100%; height: 100%; object-fit: cover; image-rendering: pixelated; } /* identity shader loop, same crop as the Figma still */
+/* Fill the stage with the vector animation, preserving its export proportions. */
+.idemo-stage__bg { position: absolute; inset: 0; pointer-events: none; container-type: size; }
+.idemo-stage__bg canvas { position: absolute; left: 50%; top: 58%; width: max(100cqw, calc(100cqh * 3072 / 1875)); height: max(100cqh, calc(100cqw * 1875 / 3072)); transform: translate(-50%, -50%) scale(1.2); max-width: none; }
 
 .idemo-window {
   position: relative; flex: 1 0 0; min-width: 0;

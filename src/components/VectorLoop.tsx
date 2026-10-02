@@ -11,6 +11,9 @@ type VectorLoopProps = {
   style?: CSSProperties;
   /** Replace colours in the loop's palettes at load time (the .tfv file itself is untouched). */
   recolor?: Record<string, string>;
+  /** Skip exported fallback frames where this layer is visible. */
+  excludeFramesWithLayer?: number;
+  noShadows?: boolean;
 };
 
 /** Rewrites palette colours in a TFV1 file's JSON header and returns new (uncompressed) bytes. */
@@ -32,7 +35,7 @@ function recolorTfv(bytes: Uint8Array, map: Record<string, string>) {
  * The player pauses off screen, shows the first frame for reduced motion, and handles any
  * hover-reveal layers in the file (pointer brush; touch follows a held finger).
  */
-export function VectorLoop({ src, width, height, className, style, recolor }: VectorLoopProps) {
+export function VectorLoop({ src, width, height, className, style, recolor, excludeFramesWithLayer, noShadows }: VectorLoopProps) {
   const ref = useRef<HTMLCanvasElement>(null);
   const recolorKey = JSON.stringify(recolor ?? {});
 
@@ -51,7 +54,7 @@ export function VectorLoop({ src, width, height, className, style, recolor }: Ve
       .catch((e) => console.error(e));
     return () => { cancelled = true; player?.pause(); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [src, recolorKey]);
+  }, [src, recolorKey, excludeFramesWithLayer, noShadows]);
 
-  return <canvas ref={ref} className={className} style={style} width={width} height={height} aria-hidden />;
+  return <canvas ref={ref} className={className} style={style} width={width} height={height} data-tfv-exclude-layer={excludeFramesWithLayer} data-tfv-no-shadows={noShadows ? "" : undefined} aria-hidden />;
 }

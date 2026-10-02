@@ -29,7 +29,7 @@ const Divider = ({ src = "/assets/solutions/divider.svg", w = 344 }: { src?: str
 
 function MonitorPreview({ live }: { live: boolean }) {
   // 1.8s: the price changes (number pop-in) · 2.6s: the alert rises in (toast) · 6s: it closes.
-  const { playing, phase } = useLoop(live, 7000, [1800, 2600, 6000]);
+  const { playing, phase } = useLoop(live, 7000, [1800, 2600]);
   const changed = !playing || phase >= 1;
   const alertOpen = !playing || (phase >= 2 && phase < 3);
   const plans = [
@@ -89,7 +89,7 @@ function MonitorPreview({ live }: { live: boolean }) {
 function EnrichPreview({ live }: { live: boolean }) {
   // Cells pulse as skeletons, then reveal one by one (skeleton loader and reveal) while the
   // counter pops (number pop-in); at 6.6s they snap back to loading for the next loop.
-  const { playing, phase } = useLoop(live, 7200, [1500, 2700, 3900, 6600]);
+  const { playing, phase } = useLoop(live, 7200, [1500, 2700, 3900]);
   const resetting = playing && phase === 4;
   const revealed = (i: number) => playing && phase > i && phase < 4;
   const count = playing ? 2 + Math.min(phase, 3) * (phase < 4 ? 1 : 0) : 2;
@@ -144,7 +144,7 @@ function EnrichPreview({ live }: { live: boolean }) {
 function ResearchPreview({ live }: { live: boolean }) {
   // 0s: the question types out · 1.9s: "read 214 pages" (spinning counter) · 3.6s: answer and
   // sources rise in (texts reveal) · 7.2s: they fade out before the next loop.
-  const { playing, phase, cycle } = useLoop(live, 8000, [1900, 3600, 7200]);
+  const { playing, phase, cycle } = useLoop(live, 8000, [1900, 3600]);
   const byShown = !playing || (phase >= 1 && phase < 3);
   const answerShown = !playing || phase === 2;
   const answerHiding = playing && phase === 3;

@@ -16,7 +16,7 @@
    above the card's bottom edge (--hero-land). */
 .hero__card {
   container-type: inline-size;
-  --hero-art-scale: 1.4;
+  --hero-art-scale: 1;
   --hero-land: calc(12.55cqw * var(--hero-art-scale));
 }
 .hero__bg {
@@ -45,7 +45,7 @@
   -webkit-mask-image: url("/assets/hero/logos-mask.svg"); mask-image: url("/assets/hero/logos-mask.svg");
   mask-size: 945px 56.667px; mask-repeat: no-repeat; mask-mode: alpha;
 }
-.hero__logos-track { display: flex; width: max-content; height: 100%; animation: hero-logos 30s linear infinite; }
+.hero__logos-track { display: flex; width: max-content; height: 100%; animation: hero-logos 30s linear infinite alternate; }
 .hero__logos:hover .hero__logos-track { animation-play-state: paused; }
 .hero__logos-set { display: flex; align-items: center; gap: 40px; padding: 16px 40px 16px 0; flex-shrink: 0; }
 .hero__logos-set img { flex-shrink: 0; }

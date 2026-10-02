@@ -240,7 +240,7 @@
   background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
-  animation: t-shimmer var(--shimmer-dur) var(--shimmer-ease) infinite;
+  animation: t-shimmer var(--shimmer-dur) var(--shimmer-ease) infinite alternate;
 }
 @keyframes t-shimmer {
   0%   { background-position: 100% 0; }

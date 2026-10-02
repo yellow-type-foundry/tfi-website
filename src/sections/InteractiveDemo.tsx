@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 import { Eyebrow } from "../components/Eyebrow";
 import { Icon } from "../components/Icon";
-import { ShaderVideo } from "../components/ShaderVideo";
+import { VectorLoop } from "../components/VectorLoop";
 import "./InteractiveDemo.css";
 
 /* Local stand-ins for SF Symbols lock.fill, person.fill and arrow.clockwise. */
@@ -39,7 +39,7 @@ function Demo() {
     <div className="idemo-frame depth-strong">
       <div className="idemo-stage">
         <div className="idemo-stage__bg" aria-hidden>
-          <ShaderVideo src="/assets/interactive-demo/video/identity-loop" poster="/assets/interactive-demo/identity-poster.jpg" />
+          <VectorLoop src="/assets/interactive-demo/identity.tfv" width={3072} height={1875} />
         </div>
         <div className="idemo-window" aria-hidden>
           <div className="idemo-window__head">

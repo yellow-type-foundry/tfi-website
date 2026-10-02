@@ -1,4 +1,4 @@
-// Types for the vendored TinyFish vector loop player (tinyfish-vector-player.js, unmodified; the
+// Types for the vendored TinyFish vector loop player (tinyfish-vector-player.js, patched for ping-pong playback; the
 // "Push on Hover" build, which also plays plain loops).
 export {};
 

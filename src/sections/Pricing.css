@@ -22,11 +22,11 @@
 .pricing__actions { display: flex; align-items: flex-start; gap: 16px; }
 .btn.pricing__cta-free { width: 160px; background: var(--surface-accent-green-default); color: var(--content-inverse); }
 
-/* API list: 2 x 2 pills */
-.pricing-api-list { width: 800px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+/* API list: one vertical stack */
+.pricing-api-list { width: 480px; max-width: 100%; display: grid; grid-template-columns: 1fr; gap: 8px; }
 .pricing-api {
   display: flex; align-items: center; justify-content: space-between; min-width: 0;
-  padding: 16px; border-radius: 9999px; background: var(--surface-accent-neutral-subtle);
+  padding: 16px 24px 16px 16px; border-radius: 9999px; background: var(--surface-accent-neutral-subtle);
 }
 .pricing-api__lead { flex: 1 0 0; min-width: 0; display: flex; align-items: center; gap: 12px; color: var(--content-primary); }
 .pricing-api__icon {

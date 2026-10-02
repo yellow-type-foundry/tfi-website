@@ -201,7 +201,7 @@ function ProductCard({ id, title, description, cta, tone, bg, largeDots = true, 
  * towards STACK_MIN_SCALE (from its top edge, so the peeking strips stay put). Scroll-linked, so it
  * reverses on the way back up; skipped for reduced motion.
  */
-const STACK_MIN_SCALE = 0.95;
+const STACK_MIN_SCALE = 0.9;
 
 function useStackDepth() {
   const ref = useRef<HTMLElement>(null);
@@ -216,15 +216,26 @@ function useStackDepth() {
         const next = panels[i + 1];
         if (!next) return;
         const a = panel.getBoundingClientRect();
-        const covered = Math.min(Math.max((a.bottom - next.getBoundingClientRect().top) / a.height, 0), 1);
+        const height = panel.offsetHeight;
+        const stackGap = parseFloat(getComputedStyle(panel).getPropertyValue("--stack-gap")) || 0;
+        const covered = Math.min(Math.max((a.top + height - next.getBoundingClientRect().top) / (height - stackGap), 0), 1);
         panel.style.setProperty("--stack-scale", String(1 - (1 - STACK_MIN_SCALE) * covered));
+        panel.style.setProperty("--stack-opacity", String(1 - covered));
       });
     };
     const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
     update();
     addEventListener("scroll", onScroll, { passive: true });
     addEventListener("resize", onScroll);
-    return () => { removeEventListener("scroll", onScroll); removeEventListener("resize", onScroll); cancelAnimationFrame(raf); };
+    return () => {
+      removeEventListener("scroll", onScroll);
+      removeEventListener("resize", onScroll);
+      cancelAnimationFrame(raf);
+      panels.forEach((panel) => {
+        panel.style.removeProperty("--stack-scale");
+        panel.style.removeProperty("--stack-opacity");
+      });
+    };
   }, []);
   return ref;
 }
