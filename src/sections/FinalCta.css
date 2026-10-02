@@ -1,0 +1,32 @@
+.final-cta { background: var(--surface-primary); padding: 16px; }
+.final-cta__card {
+  position: relative; height: 631px; border-radius: 32px; overflow: hidden;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  box-shadow: var(--depth-default-outer);
+}
+/* "Guide - Hero 2": 1440×863 image box at (0, -179), image fill covers it. */
+.final-cta__bg {
+  position: absolute; left: 0; top: -179px; width: calc(100% + 32px); height: 863px; max-width: none;
+  object-fit: cover; object-position: center 70%; /* anchored on the sea line */ pointer-events: none; user-select: none;
+}
+
+.final-cta__content { position: relative; width: 945px; display: flex; flex-direction: column; align-items: center; gap: 28px; }
+
+/* Raised heading block: Surface/Strong outer shadow traced around the combined shape. */
+.final-cta__pill { width: 100%; display: flex; flex-direction: column; align-items: center; filter: var(--depth-strong-filter); }
+.final-cta__surface { position: relative; background: var(--surface-accent-neutral-subtle); color: var(--content-primary); text-align: center; white-space: nowrap; }
+.final-cta__surface::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  box-shadow: var(--depth-strong-inner), var(--depth-default-inner);
+}
+.final-cta__surface.depth-join::after { box-shadow: var(--depth-strong-inner-bottom), var(--depth-default-inner-bottom); }
+.final-cta__head { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 32px 64px 4px; border-radius: 24px; }
+.final-cta__row { width: 100%; display: flex; align-items: flex-start; justify-content: center; padding: 0 80px; }
+.final-cta__tab { display: flex; flex-direction: column; justify-content: center; gap: 4px; }
+.final-cta__tab--title { padding: 4px 32px 32px; border-radius: 0 0 24px 24px; }
+.final-cta__tab--body { padding: 0 28px 12px; border-radius: 0 0 16px 16px; }
+.final-cta__cutout { flex-shrink: 0; }
+.final-cta__cutout--left { transform: scaleX(-1); }
+
+.final-cta__note { display: flex; align-items: center; justify-content: center; gap: 13.333px; height: 21px; font-size: 14px; line-height: 1.5; color: #000; white-space: nowrap; }
+.final-cta__logos { display: flex; align-items: center; gap: 5px; }

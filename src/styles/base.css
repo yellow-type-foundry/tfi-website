@@ -1,0 +1,62 @@
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--surface-page);
+  color: var(--content-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+img, svg { display: block; }
+p, h1, h2, h3, h4, h5, h6 { margin: 0; }
+button { font: inherit; color: inherit; border: 0; background: none; padding: 0; cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+
+.page { overflow-x: clip; }
+
+/* Text styles (Figma text styles) */
+.t-h1 { font-family: var(--font-display); font-weight: 600; font-size: 72px; line-height: 1; }
+.t-h2 { font-family: var(--font-display); font-weight: 600; font-size: 60px; line-height: 1.05; }
+.t-h5 { font-family: var(--font-display); font-weight: 600; font-size: 28px; line-height: 1.2; }
+.t-h6 { font-family: var(--font-display); font-weight: 600; font-size: 20px; line-height: 1.2; }
+.t-body-xl { font-size: 20px; line-height: 28px; font-weight: 400; }
+.t-body-m { font-size: 16px; line-height: 24px; font-weight: 400; }
+.t-body-s { font-size: 14px; line-height: 20px; font-weight: 400; }
+.t-body-xs { font-size: 12px; line-height: 16px; font-weight: 400; }
+.t-label-xl { font-size: 20px; line-height: 28px; font-weight: 600; }
+.t-label-l { font-size: 16px; line-height: 24px; font-weight: 600; }
+.t-label-m { font-size: 14px; line-height: 20px; font-weight: 600; }
+.t-label-s { font-size: 12px; line-height: 16px; font-weight: 600; }
+.t-label-xs { font-size: 10px; line-height: 13.5px; font-weight: 600; }
+.t-mono-s { font-family: var(--font-mono); font-size: 12px; line-height: 20px; font-weight: 400; }
+
+/* Depth surfaces: outer drop shadows on the box, inner shadows on an overlay above children. */
+.depth-strong, .depth-default, .depth-subtle { position: relative; }
+.depth-strong { box-shadow: var(--depth-strong-outer); }
+.depth-default { box-shadow: var(--depth-default-outer); }
+.depth-subtle { box-shadow: var(--depth-subtle-outer); }
+.depth-strong::after, .depth-default::after, .depth-subtle::after,
+.depth-inner-strong::after, .depth-inner-default::after, .depth-inner-subtle::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+}
+.depth-strong::after, .depth-inner-strong::after { box-shadow: var(--depth-strong-inner); }
+.depth-default::after, .depth-inner-default::after { box-shadow: var(--depth-default-inner); }
+.depth-subtle::after, .depth-inner-subtle::after { box-shadow: var(--depth-subtle-inner); }
+.depth-inner-strong, .depth-inner-default, .depth-inner-subtle { position: relative; }
+
+/* Tab attached under a raised block (heading pills, quote bylines): drop the tab's top-edge inner
+   shadow and paint over the block's bottom highlight where they meet, so the two read as one shape.
+   --join-left / --join-right: how far the patch reaches past the tab (over the concave cutouts). */
+.depth-join::after { box-shadow: var(--depth-strong-inner-bottom); }
+.depth-join::before {
+  content: ""; position: absolute; bottom: 100%; height: 8px; pointer-events: none;
+  left: calc(-1 * var(--join-left, 16px)); right: calc(-1 * var(--join-right, 16px));
+  background: inherit;
+  /* Fade across the cutouts so the block's highlight tapers into the curve instead of stopping dead. */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--join-left, 16px), #000 calc(100% - var(--join-right, 16px)), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 var(--join-left, 16px), #000 calc(100% - var(--join-right, 16px)), transparent);
+}
+
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }

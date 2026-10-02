@@ -1,0 +1,9 @@
+/* ABC Solar / Diatype trial fonts, copied from the local font library for development. */
+@font-face { font-family: "ABC Solar"; src: url("/fonts/ABCSolarTrial-Regular.otf") format("opentype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "ABC Solar"; src: url("/fonts/ABCSolarTrial-Medium.otf") format("opentype"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "ABC Solar"; src: url("/fonts/ABCSolarTrial-Semibold.otf") format("opentype"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "ABC Solar"; src: url("/fonts/ABCSolarTrial-Bold.otf") format("opentype"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "ABC Solar Display"; src: url("/fonts/ABCSolarDisplayTrial-Medium.otf") format("opentype"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "ABC Solar Display"; src: url("/fonts/ABCSolarDisplayTrial-Semibold.otf") format("opentype"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "ABC Solar Display"; src: url("/fonts/ABCSolarDisplayTrial-Bold.otf") format("opentype"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "ABC Diatype Mono"; src: url("/fonts/ABCDiatypeMonoTrial-Regular.otf") format("opentype"); font-weight: 400; font-display: swap; }

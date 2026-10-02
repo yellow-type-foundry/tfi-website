@@ -1,0 +1,16 @@
+.use-with { background: #ffffff; display: flex; flex-direction: column; align-items: center; padding: 200px var(--gutter); }
+.use-with__content { display: flex; flex-direction: column; align-items: center; gap: 28px; }
+.use-with__heading { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.use-with__line { display: flex; align-items: flex-end; gap: 12px; }
+.use-with__line--center { align-items: center; }
+.use-with__brand { display: flex; align-items: center; gap: 12px; }
+.use-with__shader {
+  width: 66px; height: 72px; flex-shrink: 0; mix-blend-mode: multiply;
+  background-repeat: no-repeat; background-size: auto 100%;
+}
+/* Each slot crops one half of the same two-logo shader render. */
+.use-with__shader--chatgpt { background-size: 225% auto; background-position: 4% 52%; }
+.use-with__shader--claude { background-size: 225% auto; background-position: 92% 52%; }
+.use-with__hermes { position: relative; width: 64px; height: 64px; overflow: hidden; flex-shrink: 0; }
+.use-with__hermes img { position: absolute; left: 4.99%; top: 5.01%; width: 89.77%; height: 90.11%; }
+.use-with__actions { display: flex; gap: 12px; }

@@ -1,0 +1,46 @@
+.pricing {
+  --pricing-green: #3f9a18;        /* Surface/Accent/Green/Default */
+  --pricing-green-content: #078820; /* Content/Accent/Green/Default */
+  --pricing-icon-bg: #ebf9dc;       /* Surface/Accent/Green/Subtle */
+  background: var(--surface-primary);
+  display: flex; flex-direction: column; align-items: center;
+  padding: 80px var(--gutter);
+}
+.pricing__content { display: flex; flex-direction: column; align-items: center; gap: 40px; }
+.pricing__header { display: flex; flex-direction: column; align-items: center; gap: 28px; }
+
+/* Two-part heading: "Simple pricing for" block + attached "real web work." tab (Surface/Strong) */
+.pricing-pill { width: 100%; display: flex; flex-direction: column; align-items: center; filter: var(--depth-strong-filter); }
+.pricing-pill__head, .pricing-pill__tab {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  background: var(--surface-accent-neutral-subtle); color: var(--content-primary);
+  text-align: center; white-space: nowrap;
+}
+.pricing-pill__head { padding: 32px 64px 4px; border-radius: 24px; }
+.pricing-pill__tab-row { width: 100%; display: flex; align-items: flex-start; justify-content: center; padding: 0 80px; }
+.pricing-pill__tab { padding: 4px 32px 32px; border-radius: 0 0 24px 24px; }
+.pricing-pill__cutout { flex-shrink: 0; }
+.pricing-pill__cutout--left { transform: scaleX(-1); }
+
+.pricing__actions { display: flex; align-items: flex-start; gap: 16px; }
+.btn.pricing__cta-free { width: 160px; background: var(--pricing-green); color: var(--content-inverse); }
+
+/* API list: 2 x 2 pills */
+.pricing-api-list { width: 800px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.pricing-api {
+  display: flex; align-items: center; justify-content: space-between; min-width: 0;
+  padding: 16px; border-radius: 9999px; background: var(--surface-accent-neutral-subtle);
+}
+.pricing-api__lead { flex: 1 0 0; min-width: 0; display: flex; align-items: center; gap: 12px; color: var(--content-primary); }
+.pricing-api__icon {
+  flex-shrink: 0; width: 40px; height: 40px; border-radius: 22px; overflow: clip;
+  display: flex; align-items: center; justify-content: center;
+  border: 0.267px solid var(--outline-accent-neutral); background: var(--pricing-icon-bg); color: var(--pricing-green-content);
+}
+/* The icon container stacks Surface/Default's inner shadows twice in Figma. */
+.pricing-api__icon::after { box-shadow: var(--depth-default-inner), var(--depth-default-inner); }
+.pricing-api__price { flex: 1 0 0; min-width: 0; text-align: right; white-space: nowrap; }
+.pricing-api__free { color: var(--pricing-green-content); }
+.pricing-api__rate { color: var(--content-primary); }
+.pricing-api__rate span { color: var(--content-tertiary); }
+.pricing-api__lead > .t-h6, .pricing-api__price > span { display: block; }

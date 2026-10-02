@@ -1,0 +1,48 @@
+.hero { padding: 16px; }
+.hero__card {
+  position: relative; height: 906px; border-radius: 32px; overflow: hidden;
+  display: flex; flex-direction: column; align-items: center;
+  background: #f3f095;
+}
+.hero__card::after { z-index: 2; }
+.hero__bg {
+  position: absolute; left: -9.1%; top: 12.91%; width: 118.27%; height: 109.11%;
+  max-width: none; pointer-events: none; user-select: none;
+  object-fit: cover; object-position: center 27%; /* keeps the horizon at the same height as the card widens */
+}
+
+/* Navigation / Top Bar */
+.topbar {
+  position: relative; width: 100%; display: flex; align-items: center;
+  padding: 12px max(104px, calc((100% - 1200px) / 2)); /* 120px on the 1440 frame, minus the 16px card inset */
+}
+.topbar__logo { width: 211px; flex-shrink: 0; }
+.topbar__nav { flex: 1 0 0; display: flex; align-items: center; justify-content: center; gap: 16px; height: 20px; white-space: nowrap; }
+.topbar__actions { display: flex; align-items: center; justify-content: flex-end; gap: 16px; height: 38px; white-space: nowrap; }
+.topbar__actions .btn { width: 79px; }
+.topbar__separator { transform: rotate(90deg); width: 20px; height: 1px; }
+.topbar a:not(.btn):hover { opacity: 0.65; }
+
+/* Main content */
+.hero__main {
+  position: relative; flex: 1 0 0; width: 100%;
+  display: flex; flex-direction: column; align-items: center; gap: 28px; padding-top: 40px;
+}
+.hero__tagline { display: flex; align-items: center; gap: 13.333px; height: 21px; font-size: 14px; line-height: 1.5; color: #000; }
+.hero__ai-logos { display: flex; align-items: center; gap: 5px; }
+.hero__logos {
+  display: flex; align-items: center; justify-content: center; gap: 40px; padding: 16px;
+  width: 945px; height: 56.667px;
+  -webkit-mask-image: url("/assets/hero/logos-mask.svg"); mask-image: url("/assets/hero/logos-mask.svg");
+  mask-size: 945px 56.667px; mask-repeat: no-repeat; mask-mode: alpha;
+}
+
+/* Promo pill */
+.hero__footer { position: relative; width: 100%; display: flex; justify-content: center; padding: 40px 0; }
+.hero__promo {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 460px; padding: 8px 8px 8px 20px; border-radius: 100px; background: var(--surface-primary);
+  white-space: nowrap;
+}
+.hero__promo-btn { padding: 6px 12px; }
+.hero__promo-btn .btn__label { width: 82px; text-align: center; }

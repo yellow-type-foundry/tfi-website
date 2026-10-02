@@ -1,0 +1,131 @@
+.solutions {
+  position: relative; background: var(--surface-page);
+  display: flex; flex-direction: column; align-items: center; gap: 80px;
+  padding: 80px var(--gutter);
+  height: 1537px; overflow: hidden; /* fixed frame height in Figma; clips the wave background */
+}
+.solutions__bg {
+  position: absolute; left: calc(50% - 0.5px); top: 140px; transform: translateX(-50%);
+  width: calc(100% + 191px); height: 1414px; background: #f8f7c3; overflow: hidden; pointer-events: none;
+}
+.solutions__bg img { position: absolute; left: 0; top: -2.93%; width: 100%; height: 102.93%; max-width: none; object-fit: cover; object-position: center bottom; }
+
+.solutions__header { position: relative; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; white-space: nowrap; }
+.solutions__grid { position: relative; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+.feature-card { display: flex; flex-direction: column; border-radius: 32px; background: var(--surface-primary); min-width: 0; }
+.feature-card__content {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  padding: 40px 80px 24px; text-align: center;
+}
+.feature-card__content h3 { width: 100%; }
+.feature-card__preview { position: relative; height: 400px; overflow: hidden; }
+
+/* Windows are centred in the preview and faded out at the bottom by the Figma mask gradient. */
+.sol-window {
+  position: absolute; left: 50%; top: 50%;
+  -webkit-mask-image: url("/assets/solutions/window-mask.svg"); mask-image: url("/assets/solutions/window-mask.svg");
+  mask-repeat: no-repeat; mask-mode: alpha;
+}
+.sol-window--monitor { left: calc(50% + 1px); transform: translate(-50%, calc(-50% + 20.5px)); mask-position: -79px -11px; mask-size: 556px 383px; }
+.sol-window--enrich { transform: translate(-50%, calc(-50% + 20.5px)); mask-position: -78px -11px; mask-size: 556px 383px; }
+.sol-window--research, .sol-window--portal {
+  -webkit-mask-image: url("/assets/solutions/window-mask-2.svg"); mask-image: url("/assets/solutions/window-mask-2.svg");
+  mask-position: -77px 0; mask-size: 554px 380px;
+}
+.sol-window--research { transform: translate(-50%, calc(-50% + 12.5px)); }
+.sol-window--portal { transform: translate(-50%, calc(-50% + 14.5px)); }
+
+.sol-panel { position: relative; border-radius: 16px; background: var(--surface-primary); }
+.sol-badge {
+  display: inline-flex; align-items: center; height: 20px; padding: 2px 8px; border-radius: 4px;
+  border: 1px solid var(--outline-accent-orange); color: var(--content-accent-orange); white-space: nowrap;
+}
+.sol-divider { width: 100%; height: 1px; }
+.sol-fish { color: var(--content-accent-orange); flex-shrink: 0; }
+
+/* Monitor card */
+.sol-window--monitor .sol-panel { height: 332px; }
+.sol-plans { display: flex; align-items: center; gap: 6px; padding: 20px; }
+.sol-plan {
+  flex: 1 0 0; min-width: 0; display: flex; flex-direction: column; gap: 6px; padding: 16px;
+  border-radius: 12px; background: var(--surface-primary); color: var(--content-tertiary); overflow: hidden;
+}
+.sol-plan__details { display: flex; flex-direction: column; gap: 8px; }
+.sol-bar { height: 8px; border-radius: 9999px; background: linear-gradient(to right, var(--surface-tertiary), var(--surface-accent-neutral-subtle)); }
+.sol-bar--full { width: 100%; }
+.sol-bar--short { width: 52px; }
+.sol-plan--active { background: var(--surface-accent-orange-subtle); color: var(--content-accent-orange-strong); }
+.sol-plan--active .sol-bar { background: linear-gradient(to right, var(--content-accent-orange-subtle), var(--surface-accent-orange-subtle)); }
+.sol-skeleton { display: flex; flex-direction: column; gap: 12px; padding: 0 20px 20px; }
+.sol-skeleton__item { display: contents; }
+.sol-skel-bar { height: 8px; border-radius: 9999px; background: linear-gradient(to right, var(--surface-secondary), var(--surface-primary)); }
+
+.sol-toast {
+  position: absolute; bottom: 75px; left: calc(50% - 0.5px); transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 16px;
+  background: var(--surface-primary); border: 0.5px solid var(--outline-default); border-radius: 16px;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.01)) drop-shadow(0 4px 4px rgba(0, 0, 0, 0.03)) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.02));
+  -webkit-mask-image: url("/assets/solutions/window-mask.svg"); mask-image: url("/assets/solutions/window-mask.svg");
+  mask-repeat: no-repeat; mask-mode: alpha; mask-position: -183px -222px; mask-size: 556px 383px;
+  white-space: nowrap;
+}
+.sol-toast__from { display: flex; align-items: flex-start; gap: 4px; }
+.sol-toast__from strong { font-weight: 600; }
+.sol-toast__msg { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--content-secondary); text-align: center; }
+.sol-toast__msg s { color: var(--content-tertiary); }
+
+/* Enrich card */
+.sol-table { height: 332px; overflow: hidden; display: flex; flex-direction: column; }
+.sol-table__head, .sol-table__row { display: flex; align-items: center; padding: 0 20px; }
+.sol-table__head { padding-top: 12px; padding-bottom: 4px; color: var(--content-tertiary); }
+.sol-table__row { height: 40px; color: var(--content-secondary); }
+.sol-table .c1 { width: 120px; flex-shrink: 0; }
+.sol-table .c2 { width: 100px; flex-shrink: 0; }
+.sol-table .c3 { flex: 1 0 0; min-width: 0; }
+.sol-table .c2, .sol-table .c3 { display: flex; align-items: center; }
+.sol-table .primary { color: var(--content-primary); }
+.sol-table__row--active { background: var(--surface-accent-orange-subtle); color: var(--content-accent-orange-strong); }
+.sol-table__rule { width: 100%; height: 0; }
+.sol-table__end { width: 100%; height: 1px; }
+.sol-fade { display: block; border-radius: 9999px; }
+.sol-fade--subtle { background: linear-gradient(to right, var(--content-accent-orange-subtle), var(--surface-accent-orange-subtle)); }
+.sol-fade--white { background: linear-gradient(to right, var(--content-accent-orange-subtle), var(--surface-primary)); }
+.sol-status { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: var(--surface-primary); }
+.sol-status__lead { display: flex; align-items: center; gap: 8px; }
+.sol-status__lead p { width: 63px; min-width: 100%; white-space: nowrap; }
+.sol-status__icon {
+  display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 12px;
+  border: 0.2px solid var(--outline-accent-neutral); background: var(--surface-primary); color: var(--content-tertiary);
+}
+.sol-status__count { color: var(--content-tertiary); text-align: right; }
+
+/* Research card */
+.sol-research { height: 332px; overflow: hidden; display: flex; flex-direction: column; align-items: center; padding: 16px 20px; }
+.sol-research__field { width: 100%; display: flex; align-items: center; justify-content: center; gap: 4px; padding: 8px; border-radius: 9999px; white-space: nowrap; }
+.sol-research__search { color: var(--content-tertiary); margin: 4px; }
+.sol-research__answer { width: 100%; display: flex; flex-direction: column; align-items: center; padding: 20px 0; text-align: center; }
+.sol-research__by { display: flex; align-items: center; gap: 4px; padding: 2px 0; white-space: nowrap; }
+.sol-research__by strong { font-weight: 600; }
+.sol-research__answer .t-h6 { padding: 6px 0; }
+.sol-research__sources { width: 100%; color: var(--content-tertiary); }
+.sol-research__sources li { padding: 8px 0; border-top: 1px solid var(--outline-default); }
+
+/* Portal card */
+.sol-portal { display: flex; flex-direction: column; align-items: flex-end; gap: 16px; padding: 16px 20px; }
+.sol-portal__head { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 6px 0; }
+.sol-portal__step { color: var(--content-tertiary); white-space: nowrap; }
+.sol-portal__step span { color: var(--content-primary); }
+.sol-portal__row { width: 100%; display: flex; gap: 8px; }
+.sol-portal__row .sol-field { flex: 1 0 0; min-width: 0; }
+.sol-portal__stack { position: relative; width: 100%; display: flex; flex-direction: column; gap: 8px; }
+.sol-field { display: flex; flex-direction: column; gap: 8px; }
+.sol-field__input { display: flex; align-items: center; min-height: 36px; padding: 6px 8px; border-radius: 8px; background: var(--surface-primary); white-space: nowrap; }
+.sol-portal__cursor { position: absolute; left: 152px; top: 50px; width: 14px; height: 16px; overflow: visible; }
+.sol-portal__agent {
+  position: absolute; left: 159px; top: 62px; width: 32px; height: 32px; border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--surface-accent-orange-subtle); color: var(--content-accent-orange);
+}
+.sol-portal__next { width: 87px; cursor: default; }
+.sol-portal__next:hover { filter: none; }

@@ -1,0 +1,35 @@
+.faq {
+  background: var(--surface-primary);
+  display: flex; flex-direction: column; align-items: center; gap: 60px;
+  padding: 80px max(320px, calc((100% - 800px) / 2)) 160px;
+}
+.faq__title { color: var(--content-primary); text-align: center; white-space: nowrap; }
+.faq__list { width: 100%; display: flex; flex-direction: column; }
+
+/* The divider SVG sits 1px above its 0-height slot in Figma, so the rows keep their 56px rhythm. */
+.faq__divider { position: relative; width: 100%; height: 1px; margin-top: -1px; }
+
+.faq__heading { margin: 0; font: inherit; }
+.faq__trigger {
+  width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 12px 16px; text-align: left; color: var(--content-primary); border-radius: 8px;
+  transition: background-color 150ms ease;
+}
+.faq__trigger:hover { background: var(--surface-accent-neutral-subtle); }
+.faq__trigger:focus-visible { outline: 2px solid var(--surface-accent-orange); outline-offset: -2px; }
+.faq__question { flex: 1 1 auto; min-width: 0; }
+.faq__icon {
+  flex-shrink: 0; width: 32px; height: 32px; border-radius: 4px;
+  display: flex; align-items: center; justify-content: center; color: var(--content-primary);
+  transition: transform 250ms ease;
+}
+.faq__item.is-open .faq__icon { transform: rotate(45deg); }
+
+.faq__panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 300ms ease; }
+.faq__item.is-open .faq__panel { grid-template-rows: 1fr; }
+.faq__panel-inner { overflow: hidden; min-height: 0; }
+.faq__answer { padding: 0 64px 16px 16px; color: var(--content-secondary); }
+
+@media (prefers-reduced-motion: reduce) {
+  .faq__panel, .faq__icon, .faq__trigger { transition: none; }
+}
