@@ -24,8 +24,7 @@
 
 /* Demo frame */
 .idemo-frame {
-  display: flex; align-items: center; height: 692px; padding: 20px;
-  border-radius: 20px; background: var(--surface-accent-neutral-subtle);
+  display: flex; align-items: center; height: 692px;
 }
 .idemo-stage {
   position: relative; flex: 1 0 0; min-width: 0; align-self: stretch;

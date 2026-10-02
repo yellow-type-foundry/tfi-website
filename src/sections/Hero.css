@@ -1,4 +1,5 @@
 .hero { padding: 16px; }
+.btn.hero__promo-btn { background: var(--brand-green-800); color: var(--content-inverse); }
 .hero__card {
   position: relative; border-radius: 32px; overflow: hidden;
   /* 85% of the screen height (minus the 16px inset). The floor keeps the copy clear of the land strip:
@@ -45,7 +46,7 @@
   -webkit-mask-image: url("/assets/hero/logos-mask.svg"); mask-image: url("/assets/hero/logos-mask.svg");
   mask-size: 945px 56.667px; mask-repeat: no-repeat; mask-mode: alpha;
 }
-.hero__logos-track { display: flex; width: max-content; height: 100%; animation: hero-logos 30s linear infinite alternate; }
+.hero__logos-track { display: flex; width: max-content; height: 100%; animation: hero-logos 30s linear infinite; }
 .hero__logos:hover .hero__logos-track { animation-play-state: paused; }
 .hero__logos-set { display: flex; align-items: center; gap: 40px; padding: 16px 40px 16px 0; flex-shrink: 0; }
 .hero__logos-set img { flex-shrink: 0; }

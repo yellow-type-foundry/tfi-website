@@ -150,7 +150,6 @@ type ProductCardProps = {
   tone: "search" | "landscape";
   /** Shader image box, relative to the card (Figma frame offsets). */
   bg: { left: number; top: number; width: number; height: number; position?: string };
-  largeDots?: boolean;
   /** Vector shader loop (.tfv/.tfz in /assets/product-showcase/vector) replacing the still background. */
   vector?: { src: string; width: number; height: number };
   children: ReactNode;
@@ -158,7 +157,7 @@ type ProductCardProps = {
 
 const FIGMA_CARD_WIDTH = 1376;
 
-function ProductCard({ id, title, description, cta, tone, bg, largeDots = true, vector, children }: ProductCardProps) {
+function ProductCard({ id, title, description, cta, tone, bg, vector, children }: ProductCardProps) {
   // Offsets are from the 1376px-wide Figma card. The laptop art (search) keeps its size, centred
   // with the content, so it never grows into the copy; the landscapes stretch with the card.
   const bgStyle: CSSProperties =
@@ -189,7 +188,7 @@ function ProductCard({ id, title, description, cta, tone, bg, largeDots = true, 
             </div>
             <a className="ps-cta" href="#">{cta}</a>
           </div>
-          <BrowserWindow className={`ps-window${largeDots ? " ps-window--dots-lg" : ""}`}>{children}</BrowserWindow>
+          <BrowserWindow className="ps-window">{children}</BrowserWindow>
         </div>
       </div>
     </article>
@@ -277,7 +276,6 @@ export function ProductShowcase() {
         tone="landscape"
         bg={{ left: -83, top: 86, width: 1573, height: 674 }}
         vector={{ src: "fetch-v16.tfv", width: 3444, height: 1698 }}
-        largeDots={false}
       >
         <AgentChat
           prompt={<>Read <span className="ps-link">docs.acme.com/api/rate-limits</span> and tell me the enterprise limit.</>}
@@ -298,9 +296,10 @@ export function ProductShowcase() {
         id="browser-api"
         title="Browser API"
         description="Access the web that search can't reach. A real cloud browser you drive with Playwright, Puppeteer or CDP, with persistent state."
-        cta="Try Search for Free"
+        cta="Try Browser"
         tone="landscape"
         bg={{ left: -83, top: 52, width: 1573, height: 674 }}
+        vector={{ src: "browser-v22.tfv", width: 1916, height: 821 }}
       >
         <AgentChat
           compact
@@ -311,12 +310,13 @@ export function ProductShowcase() {
       </ProductCard>
 
       <ProductCard
-        id="search-api-2"
-        title="Search API"
-        description="Fresh results from the live web. Never cached. Real browser-rendered search that returns structured JSON."
-        cta="Try Search for Free"
+        id="agent-api"
+        title="Agent API"
+        description="Navigate, fill forms, authenticate, return structured results. Give it a goal in plain English. It works the live site and brings back the data."
+        cta="Try Agent"
         tone="landscape"
         bg={{ left: -83, top: -19, width: 1573, height: 674 }}
+        vector={{ src: "search-v23.tfv", width: 3880, height: 1663 }}
       >
         <AgentChat prompt={quotePrompt} steps={quoteList} answer={quoteAnswer} />
       </ProductCard>

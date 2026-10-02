@@ -36,7 +36,7 @@ const STEPS = ["Log in", "Navigate", "Complete"];
 
 function Demo() {
   return (
-    <div className="idemo-frame depth-strong">
+    <div className="idemo-frame">
       <div className="idemo-stage">
         <div className="idemo-stage__bg" aria-hidden>
           <VectorLoop src="/assets/interactive-demo/identity.tfv" width={3072} height={1875} />

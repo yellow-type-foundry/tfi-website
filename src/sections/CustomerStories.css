@@ -22,7 +22,14 @@
 .cs-pill__cutout--left { transform: scaleX(-1); }
 
 /* Carousel: active card centred, neighbours peek in, outer slots off-screen */
-.story-carousel { position: relative; width: 100%; height: 560px; touch-action: pan-y; user-select: none; }
+.story-carousel { position: relative; width: 100%; height: 632px; touch-action: pan-y; user-select: none; }
+.story-pagination { position: absolute; top: 584px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 999px; background: var(--surface-accent-orange-subtle); }
+.story-pagination__dot { display: flex; align-items: center; justify-content: center; width: 8px; height: 28px; border-radius: 999px; transition: width 180ms ease; }
+.story-pagination__dot::before { content: ""; width: 100%; height: 8px; border-radius: 999px; background: var(--surface-accent-orange-default); opacity: 0.35; transition: opacity 180ms ease; }
+.story-pagination__dot[aria-current="true"] { width: 24px; }
+.story-pagination__dot[aria-current="true"]::before { opacity: 1; }
+.story-pagination__dot:focus-visible { outline: 2px solid var(--content-primary); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .story-pagination__dot, .story-pagination__dot::before { transition: none; } }
 
 .story-carousel:focus-visible { outline: none; }
 .story-carousel:focus-visible .story-card--active { outline: 2px solid var(--surface-accent-orange-default); outline-offset: 4px; }
@@ -30,7 +37,10 @@
 .story-card {
   position: absolute; top: 0; left: calc(50% - 280px);
   width: 560px; height: 560px; border-radius: 20px; overflow: hidden;
-  transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1), translate 180ms ease-out;
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .story-card:hover { translate: 0 -8px; }
 }
 @media (prefers-reduced-motion: reduce) { .story-card { transition: none; } }
 

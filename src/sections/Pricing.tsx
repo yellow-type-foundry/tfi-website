@@ -1,4 +1,5 @@
 import type { ReactElement, ReactNode } from "react";
+import { useEffect, useRef } from "react";
 import { Button } from "../components/Button";
 import { Icon } from "../components/Icon";
 import "./Pricing.css";
@@ -38,6 +39,22 @@ const apis: Api[] = [
 ];
 
 export function Pricing() {
+  const listRef = useRef<HTMLUListElement>(null);
+  useEffect(() => {
+    const list = listRef.current;
+    if (!list || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    list.classList.add("is-entering");
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      list.classList.add("is-visible");
+      observer.disconnect();
+    }, { threshold: 0.15 });
+    observer.observe(list);
+    return () => {
+      observer.disconnect();
+      list.classList.remove("is-entering", "is-visible");
+    };
+  }, []);
   return (
     <section className="pricing" id="pricing">
       <div className="pricing__content">
@@ -55,7 +72,7 @@ export function Pricing() {
             <Button variant="outline" size="l" href="#pricing-details">See full pricing</Button>
           </div>
         </header>
-        <ul className="pricing-api-list" aria-label="API pricing">
+        <ul ref={listRef} className="pricing-api-list" aria-label="API pricing">
           {apis.map((api) => (
             <li key={api.name} className="pricing-api depth-default">
               <div className="pricing-api__lead">

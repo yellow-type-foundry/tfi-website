@@ -188,6 +188,21 @@ function StoryCarousel() {
       onBlur={() => setPaused(false)}
     >
       {slots}
+      <div className="story-pagination" role="group" aria-label="Choose customer story">
+        {stories.map((story, index) => (
+          <button
+            key={story.id}
+            type="button"
+            className="story-pagination__dot"
+            aria-label={`Show story ${index + 1}: ${story.name}`}
+            aria-current={mod(pos, n) === index ? "true" : undefined}
+            onClick={() => {
+              const delta = mod(index - mod(pos, n) + Math.floor(n / 2), n) - Math.floor(n / 2);
+              go(delta);
+            }}
+          />
+        ))}
+      </div>
       <p className="visually-hidden" aria-live="polite">
         {`Story ${mod(pos, n) + 1} of ${n}: ${stories[mod(pos, n)].name}`}
       </p>

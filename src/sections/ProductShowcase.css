@@ -14,6 +14,8 @@
 .ps-card--search { height: calc(100svh - 113px); background: var(--surface-showcase-search); }
 .ps-card--landscape { height: calc(100svh - 113px); background: var(--surface-showcase-landscape); }
 #fetch-api .ps-card { background: #bdc7ad; }
+#agent-api .ps-card { background: #e9e9dc; }
+#browser-api .ps-card { background: #f6f6f4; }
 #fetch-api .ps-card__bg { transform: scale(1.05); transform-origin: 50% 100%; clip-path: inset(1%); }
 .ps-card__bg { position: absolute; top: auto !important; bottom: 0; translate: var(--art-parallax, 0px) 0; max-width: none; object-fit: cover; pointer-events: none; user-select: none; }
 /* Cards run full width. The search card's laptop art keeps its designed size around the centred
@@ -48,12 +50,14 @@
   transition: filter 120ms ease, background-color 120ms ease;
 }
 .ps-cta:hover { filter: brightness(1.25); }
+#search-api .ps-cta { background: var(--brand-orange-900); border-color: var(--brand-orange-900); }
+#browser-api .ps-cta { background: var(--surface-accent-orange-default); border-color: var(--surface-accent-orange-default); }
+#agent-api .ps-cta { background: #06283f; border-color: #06283f; }
 .ps-cta:active { filter: brightness(0.9); }
 .ps-cta:focus-visible { outline: 2px solid var(--surface-accent-orange-default); outline-offset: 2px; }
 
 /* Mock browser window (shared BrowserWindow chrome) */
 .browser.ps-window { width: 440px; flex-shrink: 0; }
-.ps-window--dots-lg .browser__bar > .browser__dots:first-child span { width: 10px; height: 10px; }
 
 /* Chat transcript */
 .ps-chat {
