@@ -25,7 +25,7 @@
 .story-carousel { position: relative; width: 100%; height: 560px; touch-action: pan-y; user-select: none; }
 
 .story-carousel:focus-visible { outline: none; }
-.story-carousel:focus-visible .story-card--active { outline: 2px solid var(--surface-accent-orange); outline-offset: 4px; }
+.story-carousel:focus-visible .story-card--active { outline: 2px solid var(--surface-accent-orange-default); outline-offset: 4px; }
 
 .story-card {
   position: absolute; top: 0; left: calc(50% - 280px);
@@ -38,7 +38,7 @@
 .story-card__art img { position: absolute; max-width: none; }
 .story-card__logo { position: absolute; }
 .story-card__hit { position: absolute; inset: 0; z-index: 2; width: 100%; cursor: pointer; border-radius: inherit; }
-.story-card__hit:focus-visible { outline: 2px solid var(--surface-accent-orange); outline-offset: -4px; }
+.story-card__hit:focus-visible { outline: 2px solid var(--surface-accent-orange-default); outline-offset: -4px; }
 
 /* Quote block: white heading with square bottom-left corner, byline tab + concave cutout */
 .story-quote {

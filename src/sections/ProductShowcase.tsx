@@ -196,7 +196,7 @@ function ProductCard({ id, title, description, cta, tone, bg, largeDots = true, 
           <div className="ps-intro">
             <div className="ps-intro__copy">
               <h2 className="t-h2" id={`${id}-title`}>{title}</h2>
-              <p className="ps-intro__desc">{description}</p>
+              <p className="ps-intro__desc t-body-l">{description}</p>
             </div>
             <a className="ps-cta" href="#">{cta}</a>
           </div>

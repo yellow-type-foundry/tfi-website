@@ -6,9 +6,8 @@
 .footer__top { display: flex; align-items: flex-start; gap: 48px; }
 .footer__brand { flex: 1 0 0; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
 .footer__brand a:hover { opacity: 0.8; }
-/* Heading/H4 */
+/* Text style: Heading/H4 (.t-h4) */
 .footer__tagline {
-  font-family: var(--font-display); font-weight: 600; font-size: 36px; line-height: 1.15;
   color: var(--content-primary); white-space: nowrap;
 }
 
@@ -30,4 +29,4 @@
 .footer__social a { display: block; transition: opacity 120ms ease; }
 .footer__social a:hover { opacity: 0.6; }
 
-.footer a:focus-visible { outline: 2px solid var(--surface-accent-orange); outline-offset: 2px; border-radius: 2px; }
+.footer a:focus-visible { outline: 2px solid var(--surface-accent-orange-default); outline-offset: 2px; border-radius: 2px; }

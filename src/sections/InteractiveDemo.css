@@ -1,6 +1,4 @@
 .idemo {
-  --idemo-teal-subtle: #d6f2fa;
-  --idemo-teal: #4dbde5;
   background: var(--surface-primary);
   display: flex; flex-direction: column; align-items: center; gap: 80px;
   padding: 160px 16px 80px;
@@ -33,7 +31,7 @@
   position: relative; flex: 1 0 0; min-width: 0; align-self: stretch;
   display: flex; align-items: center; justify-content: center;
   padding: 40px 160px; border-radius: 16px; overflow: clip;
-  background: var(--idemo-teal-subtle);
+  background: var(--surface-accent-teal-subtle);
 }
 .idemo-stage__bg { position: absolute; left: 1px; top: -150px; width: calc(100% - 1px); height: 1115px; pointer-events: none; }
 .idemo-stage__bg img { width: 100%; height: 100%; object-fit: cover; }
@@ -54,7 +52,7 @@
   flex: 1 0 0; min-width: 0; display: flex; align-items: center; gap: 8px;
   border-radius: 9999px; text-align: left;
 }
-.idemo-step:focus-visible { outline: 2px solid var(--surface-accent-orange); outline-offset: 2px; }
+.idemo-step:focus-visible { outline: 2px solid var(--surface-accent-orange-default); outline-offset: 2px; }
 .idemo-step__badge {
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
   width: 24px; height: 24px; border-radius: 9999px;
@@ -63,7 +61,7 @@
 }
 .idemo-step__label { color: rgba(0, 0, 0, 0.88); white-space: nowrap; }
 .idemo-step:hover .idemo-step__badge { background: var(--surface-tertiary); color: var(--content-secondary); }
-.idemo-step.is-active .idemo-step__badge { background: var(--surface-accent-orange); color: var(--content-inverse); }
+.idemo-step.is-active .idemo-step__badge { background: var(--surface-accent-orange-default); color: var(--content-inverse); }
 
 /* Address bar */
 .idemo-address {
@@ -128,7 +126,7 @@
 .idemo-done {
   display: flex; align-items: center; justify-content: center;
   width: 40px; height: 40px; border-radius: 9999px;
-  background: var(--surface-accent-orange); color: var(--content-inverse);
+  background: var(--surface-accent-orange-default); color: var(--content-inverse);
 }
 
 /* Status row */
@@ -152,7 +150,7 @@
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
   width: 32px; height: 32px; border-radius: 16px; overflow: clip;
   border: 0.267px solid var(--outline-accent-neutral);
-  background: var(--idemo-teal-subtle); color: var(--idemo-teal);
+  background: var(--surface-accent-teal-subtle); color: var(--content-accent-teal-default);
 }
 .idemo-feature__icon--l { width: 40px; height: 40px; border-radius: 22px; }
 .idemo-feature__content { flex: 1 0 0; min-width: 0; display: flex; flex-direction: column; gap: 5px; }

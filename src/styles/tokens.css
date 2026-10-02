@@ -1,51 +1,27 @@
-/* Design tokens from the TFI-Design Figma variables. */
+/* Site tokens built on the Figma design system (figma-tokens.css). */
 :root {
-  /* Content */
-  --content-primary: #1b1d1b;
-  --content-secondary: #404840;
-  --content-tertiary: #999999;
-  --content-inverse: #ffffff;
-  --content-accent-orange: #ff822e;
-  --content-accent-orange-strong: #552401;
-  --content-accent-orange-subtle: #ffd5b3;
+  /* Colours, spacing, radius and text styles come from figma-tokens.css (generated from the
+     Figma variables). This file only holds what the design system doesn't define. */
 
-  /* Surface */
-  --surface-page: #f1f1e9;
-  --surface-primary: #ffffff;
-  --surface-secondary: #f5f5f5;
-  --surface-tertiary: #e2e4e2;
-  --surface-accent-orange: #ff6700;
-  --surface-accent-orange-subtle: #fef4e6;
-  --surface-accent-neutral-strong: #1e1e1a;
-  --surface-accent-neutral: #ceceb1;
-  --surface-accent-neutral-subtle: #f9f9f6;
+  /* Fills used in the design that aren't bound to a Figma variable */
+  --surface-page: #f1f1e9; /* page background */
+  --surface-browser-chrome: #f2f2ee; /* mock browser windows */
+  --surface-showcase-search: #f7f7c1; /* Search API card */
+  --surface-showcase-landscape: #e8e9dd; /* Fetch / Browser / Search cards */
+  --surface-solutions-wash: #f8f7c3; /* behind the Solutions wave art */
 
-  /* Outline */
-  --outline-default: #e2e4e2;
-  --outline-black: #000000;
-  --outline-accent-orange: #ffbe94;
-  --outline-accent-neutral: #e6e6da;
-
-  /* Depth effect colors */
-  --fx-outer-shadow: rgba(0, 0, 0, 0.12);
-  --fx-outer-highlight: #ffffff;
-  --fx-outer-highlight-soft: rgba(255, 255, 255, 0.8);
-  --fx-inner-highlight-bottom: rgba(255, 255, 255, 0.8);
-  --fx-inner-shadow: rgba(0, 0, 0, 0.13);
-  --fx-inner-glow-top: rgba(255, 255, 255, 0.5);
-  --fx-inner-highlight-top: #ffffff;
-
-  /* Depth effect styles (Surface/Strong, Default, Subtle): outer = drop shadows, inner = inset overlay */
-  --depth-strong-outer: 0 2px 4px var(--fx-outer-shadow), 0 -2px 3px var(--fx-outer-highlight), 0 -2px 4px var(--fx-outer-highlight-soft);
-  --depth-strong-inner: inset 0 2px 3px var(--fx-inner-highlight-bottom), inset 0 4px 4px var(--fx-inner-shadow), inset 0 -2px 8px var(--fx-inner-glow-top), inset 0 -4px 4px var(--fx-inner-highlight-top);
-  --depth-default-outer: 0 1px 2px var(--fx-outer-shadow), 0 -1px 1.5px var(--fx-outer-highlight), 0 -1px 2px var(--fx-outer-highlight-soft);
-  --depth-default-inner: inset 0 1px 1.5px var(--fx-inner-highlight-bottom), inset 0 2px 2px var(--fx-inner-shadow), inset 0 -1px 4px var(--fx-inner-glow-top), inset 0 -2px 2px var(--fx-inner-highlight-top);
-  --depth-strong-inner-bottom: inset 0 -2px 8px var(--fx-inner-glow-top), inset 0 -4px 4px var(--fx-inner-highlight-top);
-  --depth-default-inner-bottom: inset 0 -1px 4px var(--fx-inner-glow-top), inset 0 -2px 2px var(--fx-inner-highlight-top);
-  --depth-subtle-outer: 0 0.5px 1px var(--fx-outer-shadow), 0 -0.5px 0.75px var(--fx-outer-highlight), 0 -0.5px 1px var(--fx-outer-highlight-soft);
-  --depth-subtle-inner: inset 0 0.5px 0.75px var(--fx-inner-highlight-bottom), inset 0 1px 1px var(--fx-inner-shadow), inset 0 -0.5px 2px var(--fx-inner-glow-top), inset 0 -1px 1px var(--fx-inner-highlight-top);
+  /* Figma effect styles Surface/Strong, Default, Subtle, composed from the Effect/Depth colours:
+     outer = drop shadows, inner = inset overlay */
+  --depth-strong-outer: 0 2px 4px var(--effect-depth-outer-shadow), 0 -2px 3px var(--effect-depth-outer-highlight), 0 -2px 4px var(--effect-depth-outer-highlight-soft);
+  --depth-strong-inner: inset 0 2px 3px var(--effect-depth-inner-highlight-bottom), inset 0 4px 4px var(--effect-depth-inner-shadow), inset 0 -2px 8px var(--effect-depth-inner-glow-top), inset 0 -4px 4px var(--effect-depth-inner-highlight-top);
+  --depth-default-outer: 0 1px 2px var(--effect-depth-outer-shadow), 0 -1px 1.5px var(--effect-depth-outer-highlight), 0 -1px 2px var(--effect-depth-outer-highlight-soft);
+  --depth-default-inner: inset 0 1px 1.5px var(--effect-depth-inner-highlight-bottom), inset 0 2px 2px var(--effect-depth-inner-shadow), inset 0 -1px 4px var(--effect-depth-inner-glow-top), inset 0 -2px 2px var(--effect-depth-inner-highlight-top);
+  --depth-strong-inner-bottom: inset 0 -2px 8px var(--effect-depth-inner-glow-top), inset 0 -4px 4px var(--effect-depth-inner-highlight-top);
+  --depth-default-inner-bottom: inset 0 -1px 4px var(--effect-depth-inner-glow-top), inset 0 -2px 2px var(--effect-depth-inner-highlight-top);
+  --depth-subtle-outer: 0 0.5px 1px var(--effect-depth-outer-shadow), 0 -0.5px 0.75px var(--effect-depth-outer-highlight), 0 -0.5px 1px var(--effect-depth-outer-highlight-soft);
+  --depth-subtle-inner: inset 0 0.5px 0.75px var(--effect-depth-inner-highlight-bottom), inset 0 1px 1px var(--effect-depth-inner-shadow), inset 0 -0.5px 2px var(--effect-depth-inner-glow-top), inset 0 -1px 1px var(--effect-depth-inner-highlight-top);
   /* Same outer shadows as filter chains, for shapes built from several boxes (drop-shadow blur = radius / 2) */
-  --depth-strong-filter: drop-shadow(0 2px 2px var(--fx-outer-shadow)) drop-shadow(0 -2px 1.5px var(--fx-outer-highlight)) drop-shadow(0 -2px 2px var(--fx-outer-highlight-soft));
+  --depth-strong-filter: drop-shadow(0 2px 2px var(--effect-depth-outer-shadow)) drop-shadow(0 -2px 1.5px var(--effect-depth-outer-highlight)) drop-shadow(0 -2px 2px var(--effect-depth-outer-highlight-soft));
 
   /* Typography */
   --font-sans: "ABC Solar", system-ui, sans-serif;

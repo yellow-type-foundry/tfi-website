@@ -1,4 +1,4 @@
-.use-with { background: #ffffff; display: flex; flex-direction: column; align-items: center; padding: 200px var(--gutter); }
+.use-with { background: var(--surface-primary); display: flex; flex-direction: column; align-items: center; padding: 200px var(--gutter); }
 .use-with__content { display: flex; flex-direction: column; align-items: center; gap: 28px; }
 .use-with__heading { display: flex; flex-direction: column; align-items: center; gap: 4px; }
 .use-with__line { display: flex; align-items: flex-end; gap: 12px; }

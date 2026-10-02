@@ -6,15 +6,15 @@
 .btn__label { padding: 0 2px; }
 .btn:hover { filter: brightness(1.08); }
 .btn:active { filter: brightness(0.95); }
-.btn:focus-visible { outline: 2px solid var(--surface-accent-orange); outline-offset: 2px; }
+.btn:focus-visible { outline: 2px solid var(--surface-accent-orange-default); outline-offset: 2px; }
 
 .btn--xs { padding: 6px 8px; font-size: 12px; line-height: 16px; font-weight: 600; gap: 2px; }
 .btn--s { padding: 8px 12px; font-size: 14px; line-height: 20px; font-weight: 600; gap: 2px; }
 .btn--l { padding: 12px 20px; font-size: 16px; line-height: 24px; font-weight: 600; gap: 8px; }
 
 .btn--black { background: var(--surface-accent-neutral-strong); color: var(--content-inverse); }
-.btn--accent { background: var(--surface-accent-orange); color: var(--content-inverse); }
-.btn--neutral { background: var(--surface-accent-neutral); color: var(--content-primary); }
+.btn--accent { background: var(--surface-accent-orange-default); color: var(--content-inverse); }
+.btn--neutral { background: var(--surface-accent-neutral-default); color: var(--content-primary); }
 .btn--secondary { background: var(--surface-secondary); color: var(--content-tertiary); }
-.btn--outline { border: 1px solid var(--outline-black); color: var(--content-primary); padding-block: 11px; padding-inline: 19px; }
+.btn--outline { border: 1px solid var(--outline-static-black); color: var(--content-primary); padding-block: 11px; padding-inline: 19px; }
 .btn--outline:hover { filter: none; background: rgba(0, 0, 0, 0.04); }

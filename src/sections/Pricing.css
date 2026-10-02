@@ -1,7 +1,4 @@
 .pricing {
-  --pricing-green: #3f9a18;        /* Surface/Accent/Green/Default */
-  --pricing-green-content: #078820; /* Content/Accent/Green/Default */
-  --pricing-icon-bg: #ebf9dc;       /* Surface/Accent/Green/Subtle */
   background: var(--surface-primary);
   display: flex; flex-direction: column; align-items: center;
   padding: 80px var(--gutter);
@@ -23,7 +20,7 @@
 .pricing-pill__cutout--left { transform: scaleX(-1); }
 
 .pricing__actions { display: flex; align-items: flex-start; gap: 16px; }
-.btn.pricing__cta-free { width: 160px; background: var(--pricing-green); color: var(--content-inverse); }
+.btn.pricing__cta-free { width: 160px; background: var(--surface-accent-green-default); color: var(--content-inverse); }
 
 /* API list: 2 x 2 pills */
 .pricing-api-list { width: 800px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
@@ -35,12 +32,12 @@
 .pricing-api__icon {
   flex-shrink: 0; width: 40px; height: 40px; border-radius: 22px; overflow: clip;
   display: flex; align-items: center; justify-content: center;
-  border: 0.267px solid var(--outline-accent-neutral); background: var(--pricing-icon-bg); color: var(--pricing-green-content);
+  border: 0.267px solid var(--outline-accent-neutral); background: var(--surface-accent-green-subtle); color: var(--content-accent-green-default);
 }
 /* The icon container stacks Surface/Default's inner shadows twice in Figma. */
 .pricing-api__icon::after { box-shadow: var(--depth-default-inner), var(--depth-default-inner); }
 .pricing-api__price { flex: 1 0 0; min-width: 0; text-align: right; white-space: nowrap; }
-.pricing-api__free { color: var(--pricing-green-content); }
+.pricing-api__free { color: var(--content-accent-green-default); }
 .pricing-api__rate { color: var(--content-primary); }
 .pricing-api__rate span { color: var(--content-tertiary); }
 .pricing-api__lead > .t-h6, .pricing-api__price > span { display: block; }

@@ -4,7 +4,7 @@
   /* Fills the screen (minus the 16px inset); 906px is the Figma frame, the floor keeps the content clear. */
   height: calc(100vh - 32px); height: calc(100svh - 32px); min-height: 720px;
   display: flex; flex-direction: column; align-items: center;
-  background: #f3f095;
+  background: var(--brand-yellow-400);
 }
 .hero__card::after { z-index: 2; }
 .hero__bg {
@@ -35,7 +35,7 @@
   min-height: 434px; /* the block itself plus the Figma 40px top gap */
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px;
 }
-.hero__tagline { display: flex; align-items: center; gap: 13.333px; height: 21px; font-size: 14px; line-height: 1.5; color: #000; }
+.hero__tagline { display: flex; align-items: center; gap: 13.333px; height: 21px; font-size: 14px; line-height: 1.5; color: var(--content-static-black); }
 .hero__ai-logos { display: flex; align-items: center; gap: 5px; }
 .hero__logos {
   display: flex; align-items: center; justify-content: center; gap: 40px; padding: 16px;

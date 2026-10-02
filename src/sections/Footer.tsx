@@ -38,7 +38,7 @@ export function Footer() {
           <a href="#" aria-label="TinyFish home">
             <img src="/assets/footer/logo.svg" width={174} height={40} alt="TinyFish" />
           </a>
-          <p className="footer__tagline">Web APIs built for agents.</p>
+          <p className="footer__tagline t-h4">Web APIs built for agents.</p>
         </div>
 
         <nav className="footer__nav t-body-s" aria-label="Footer">

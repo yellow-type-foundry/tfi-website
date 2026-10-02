@@ -16,7 +16,7 @@
   transition: background-color 150ms ease;
 }
 .faq__trigger:hover { background: var(--surface-accent-neutral-subtle); }
-.faq__trigger:focus-visible { outline: 2px solid var(--surface-accent-orange); outline-offset: -2px; }
+.faq__trigger:focus-visible { outline: 2px solid var(--surface-accent-orange-default); outline-offset: -2px; }
 .faq__question { flex: 1 1 auto; min-width: 0; }
 .faq__icon {
   flex-shrink: 0; width: 32px; height: 32px; border-radius: 4px;

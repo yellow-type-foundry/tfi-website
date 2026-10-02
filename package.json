@@ -5,8 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build", "typecheck": "tsc --noEmit",
-    "preview": "vite preview"
+    "build": "tsc --noEmit && vite build",
+    "typecheck": "tsc --noEmit",
+    "preview": "vite preview",
+    "tokens": "node scripts/generate-tokens.mjs"
   },
   "dependencies": {
     "react": "^19.3.0",

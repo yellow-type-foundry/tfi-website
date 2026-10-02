@@ -16,21 +16,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 
 .page { overflow-x: clip; }
 
-/* Text styles (Figma text styles) */
-.t-h1 { font-family: var(--font-display); font-weight: 600; font-size: 72px; line-height: 1; }
-.t-h2 { font-family: var(--font-display); font-weight: 600; font-size: 60px; line-height: 1.05; }
-.t-h5 { font-family: var(--font-display); font-weight: 600; font-size: 28px; line-height: 1.2; }
-.t-h6 { font-family: var(--font-display); font-weight: 600; font-size: 20px; line-height: 1.2; }
-.t-body-xl { font-size: 20px; line-height: 28px; font-weight: 400; }
-.t-body-m { font-size: 16px; line-height: 24px; font-weight: 400; }
-.t-body-s { font-size: 14px; line-height: 20px; font-weight: 400; }
-.t-body-xs { font-size: 12px; line-height: 16px; font-weight: 400; }
-.t-label-xl { font-size: 20px; line-height: 28px; font-weight: 600; }
-.t-label-l { font-size: 16px; line-height: 24px; font-weight: 600; }
-.t-label-m { font-size: 14px; line-height: 20px; font-weight: 600; }
-.t-label-s { font-size: 12px; line-height: 16px; font-weight: 600; }
-.t-label-xs { font-size: 10px; line-height: 13.5px; font-weight: 600; }
-.t-mono-s { font-family: var(--font-mono); font-size: 12px; line-height: 20px; font-weight: 400; }
+/* Text style classes (.t-h1 … .t-mono-s) are generated in figma-tokens.css. */
 
 /* Depth surfaces: outer drop shadows on the box, inner shadows on an overlay above children. */
 .depth-strong, .depth-default, .depth-subtle { position: relative; }

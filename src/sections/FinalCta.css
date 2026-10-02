@@ -28,5 +28,5 @@
 .final-cta__cutout { flex-shrink: 0; }
 .final-cta__cutout--left { transform: scaleX(-1); }
 
-.final-cta__note { display: flex; align-items: center; justify-content: center; gap: 13.333px; height: 21px; font-size: 14px; line-height: 1.5; color: #000; white-space: nowrap; }
+.final-cta__note { display: flex; align-items: center; justify-content: center; gap: 13.333px; height: 21px; font-size: 14px; line-height: 1.5; color: var(--content-static-black); white-space: nowrap; }
 .final-cta__logos { display: flex; align-items: center; gap: 5px; }

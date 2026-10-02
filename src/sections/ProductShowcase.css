@@ -6,8 +6,8 @@
 /* Outer white panel with Surface/Strong depth, inner coloured card */
 .ps-panel { width: 100%; padding: 16px; border-radius: 20px; background: var(--surface-primary); }
 .ps-card { position: relative; overflow: hidden; border-radius: 16px; }
-.ps-card--search { height: 720px; background: #f7f7c1; }
-.ps-card--landscape { height: 640px; background: #e8e9dd; }
+.ps-card--search { height: 720px; background: var(--surface-showcase-search); }
+.ps-card--landscape { height: 640px; background: var(--surface-showcase-landscape); }
 .ps-card__bg { position: absolute; max-width: none; object-fit: cover; pointer-events: none; user-select: none; }
 /* Cards run full width. The search card's laptop art keeps its designed size around the centred
    content, so past the Figma frame its left/right edges fade into the card colour. */
@@ -32,18 +32,18 @@
 .ps-intro { align-self: stretch; width: 445px; flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 28px; }
 .ps-intro__copy { display: flex; flex-direction: column; gap: 12px; }
 .ps-intro__copy h2 { color: var(--content-primary); white-space: nowrap; }
-.ps-intro__desc { font-size: 18px; line-height: 24px; font-weight: 400; color: #000; } /* Body/L */
+.ps-intro__desc { color: var(--content-static-black); } /* text style Body/L (.t-body-l) */
 
 .ps-cta {
   display: inline-flex; align-items: center; justify-content: center;
-  padding: 12px 20px; border: 1px solid #033235; border-radius: 100px;
-  background: #033235; color: var(--content-inverse);
+  padding: 12px 20px; border: 1px solid var(--surface-accent-teal-strong); border-radius: 100px;
+  background: var(--surface-accent-teal-strong); color: var(--content-inverse);
   font-size: 16px; line-height: 1.25; font-weight: 500; white-space: nowrap;
   transition: filter 120ms ease, background-color 120ms ease;
 }
 .ps-cta:hover { filter: brightness(1.25); }
 .ps-cta:active { filter: brightness(0.9); }
-.ps-cta:focus-visible { outline: 2px solid var(--surface-accent-orange); outline-offset: 2px; }
+.ps-cta:focus-visible { outline: 2px solid var(--surface-accent-orange-default); outline-offset: 2px; }
 
 /* Mock browser window (shared BrowserWindow chrome) */
 .browser.ps-window { width: 440px; flex-shrink: 0; }
@@ -65,7 +65,7 @@
   color: var(--content-primary);
 }
 .ps-msg { background: var(--surface-secondary); }
-.ps-link { color: #4dbde5; }
+.ps-link { color: var(--content-accent-teal-default); }
 
 .ps-chat__agent { width: 100%; display: flex; flex-direction: column; gap: 4px; }
 .ps-chat__caption { padding: 6px 0; color: var(--content-tertiary); }
@@ -80,7 +80,7 @@
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
   width: 20px; height: 20px; border-radius: 4px; overflow: hidden; color: var(--content-tertiary);
 }
-.ps-step__icon--accent { color: var(--content-accent-orange); }
+.ps-step__icon--accent { color: var(--content-accent-orange-default); }
 .ps-step__label { flex: 1 0 0; min-width: 0; color: var(--content-primary); }
 .ps-step__label strong { font-weight: 600; }
 .ps-step__detail { flex-shrink: 0; color: var(--content-tertiary); text-align: right; white-space: nowrap; }
@@ -88,7 +88,7 @@
 .ps-step--block { flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 0; }
 .ps-badge {
   display: inline-flex; align-items: center; height: 20px; padding: 2px 8px; margin-bottom: 6px;
-  border-radius: 4px; background: var(--surface-accent-neutral); color: var(--content-primary); white-space: nowrap;
+  border-radius: 4px; background: var(--surface-accent-neutral-default); color: var(--content-primary); white-space: nowrap;
 }
 .ps-markdown { margin: 0; width: 100%; white-space: pre-wrap; color: var(--content-tertiary); }
 
