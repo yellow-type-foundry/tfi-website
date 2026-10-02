@@ -1,6 +1,7 @@
 import type { ReactElement } from "react";
 import { Eyebrow } from "../components/Eyebrow";
 import { Icon } from "../components/Icon";
+import { ShaderVideo } from "../components/ShaderVideo";
 import "./InteractiveDemo.css";
 
 /* Local stand-ins for SF Symbols lock.fill, person.fill and arrow.clockwise. */
@@ -38,7 +39,7 @@ function Demo() {
     <div className="idemo-frame depth-strong">
       <div className="idemo-stage">
         <div className="idemo-stage__bg" aria-hidden>
-          <img src="/assets/interactive-demo/shader-bg.png" alt="" />
+          <ShaderVideo src="/assets/interactive-demo/video/identity-loop" poster="/assets/interactive-demo/identity-poster.jpg" />
         </div>
         <div className="idemo-window" aria-hidden>
           <div className="idemo-window__head">

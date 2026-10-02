@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactElement, ReactNode } from "react";
-import { useEffect, useRef } from "react";
 import { BrowserWindow } from "../components/BrowserWindow";
+import { ShaderVideo } from "../components/ShaderVideo";
 import { Icon } from "../components/Icon";
 import "./ProductShowcase.css";
 
@@ -157,27 +157,6 @@ type ProductCardProps = {
 
 const FIGMA_CARD_WIDTH = 1376;
 
-/** Muted background loop: plays only while on screen, and stays on the poster frame for reduced motion. */
-function ShaderVideo({ name, poster, width, height, style }: { name: string; poster: string; width: number; height: number; style: CSSProperties }) {
-  const ref = useRef<HTMLVideoElement>(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const io = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) el.play().catch(() => {});
-      else el.pause();
-    });
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-  return (
-    <video ref={ref} className="ps-card__bg ps-card__bg--video" poster={poster} width={width} height={height} style={style} muted loop playsInline preload="metadata" aria-hidden>
-      <source src={`/assets/product-showcase/video/${name}.av1.mp4`} type='video/mp4; codecs="av01.0.04M.08"' />
-      <source src={`/assets/product-showcase/video/${name}.vp9.webm`} type='video/webm; codecs="vp09.00.10.08"' />
-    </video>
-  );
-}
-
 function ProductCard({ id, title, description, cta, tone, bg, largeDots = true, video, children }: ProductCardProps) {
   // Offsets are from the 1376px-wide Figma card. The laptop art (search) keeps its size, centred
   // with the content, so it never grows into the copy; the landscapes stretch with the card.
@@ -189,7 +168,7 @@ function ProductCard({ id, title, description, cta, tone, bg, largeDots = true, 
     <article className="ps-panel depth-strong" id={id} aria-labelledby={`${id}-title`}>
       <div className={`ps-card ps-card--${tone}`}>
         {video ? (
-          <ShaderVideo name={video} poster={`/assets/product-showcase/shader-${tone}.png`} width={bg.width} height={bg.height} style={bgStyle} />
+          <ShaderVideo className="ps-card__bg ps-card__bg--video" src={`/assets/product-showcase/video/${video}`} poster={`/assets/product-showcase/shader-${tone}.png`} width={bg.width} height={bg.height} style={bgStyle} />
         ) : (
           <img
             className="ps-card__bg"

@@ -33,8 +33,10 @@
   padding: 40px 160px; border-radius: 16px; overflow: clip;
   background: var(--surface-accent-teal-subtle);
 }
-.idemo-stage__bg { position: absolute; left: 1px; top: -150px; width: calc(100% - 1px); height: 1115px; pointer-events: none; }
-.idemo-stage__bg img { width: 100%; height: 100%; object-fit: cover; }
+/* The landscape loop is pre-cropped to the Figma framing (the visible part of the still at
+   left 1 / top -150 / 1367×1115) and encoded at the stage size, so it simply fills the stage. */
+.idemo-stage__bg { position: absolute; inset: 0; pointer-events: none; }
+.idemo-stage__bg video { width: 100%; height: 100%; object-fit: cover; image-rendering: pixelated; } /* identity shader loop, same crop as the Figma still */
 
 .idemo-window {
   position: relative; flex: 1 0 0; min-width: 0;
