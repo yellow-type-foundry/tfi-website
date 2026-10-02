@@ -4,8 +4,19 @@
 }
 
 /* Outer white panel with Surface/Strong depth, inner coloured card */
-.ps-panel { width: 100%; padding: 16px; border-radius: 20px; background: var(--surface-primary); }
+.ps-panel { width: 100%; max-width: calc(var(--showcase-max) - 32px); margin-inline: auto; padding: 16px; border-radius: 20px; background: var(--surface-primary); }
 .ps-card { position: relative; overflow: hidden; border-radius: 16px; }
+
+/* Stacking cards: each card sticks as you scroll and the next one slides up over it. Each sticks
+   12px lower than the last so the earlier cards' top edges peek out. On short screens the stick
+   point rises (min with 100svh - card height) so the whole card is seen before it's covered.
+   Card heights: 752px (Search, 720 + 2×16 padding) and 672px (the rest). */
+.ps-panel { position: sticky; --stack-gap: 12px; }
+.ps-panel:nth-child(1) { --stack-i: 0; --stack-h: 752px; }
+.ps-panel:nth-child(2) { --stack-i: 1; --stack-h: 672px; }
+.ps-panel:nth-child(3) { --stack-i: 2; --stack-h: 672px; }
+.ps-panel:nth-child(4) { --stack-i: 3; --stack-h: 672px; }
+.ps-panel { top: min(calc(16px + var(--stack-i) * var(--stack-gap)), calc(100svh - var(--stack-h) - 16px)); }
 .ps-card--search { height: 720px; background: var(--surface-showcase-search); }
 .ps-card--landscape { height: 640px; background: var(--surface-showcase-landscape); }
 .ps-card__bg { position: absolute; max-width: none; object-fit: cover; pointer-events: none; user-select: none; }
@@ -93,7 +104,8 @@
 .ps-markdown { margin: 0; width: 100%; white-space: pre-wrap; color: var(--content-tertiary); }
 
 .ps-chat__answer { width: 100%; padding: 18px 0; text-align: center; color: var(--content-secondary); }
-.ps-card--search .ps-chat__answer { padding: 6px 0 18px; }
+.ps-chat--compact .ps-chat__answer { padding: 6px 0 18px; }
+#browser-api .ps-msg { width: 364px; } /* Figma fixes this bubble at 364px (Search's is full width) */
 
 /* Search results: thread line on the left, source / title / snippet */
 .ps-result { align-items: stretch; justify-content: flex-start; }

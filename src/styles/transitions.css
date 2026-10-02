@@ -84,15 +84,6 @@
   --acc-collapse: 250ms;
   --acc-chevron: 250ms;
   --acc-ease: cubic-bezier(0.22, 1, 0.36, 1);
-  /* Page side-by-side */
-  --page-slide-dur: 250ms;
-  --page-fade-dur: 250ms;
-  --page-slide-distance: 8px;
-  --page-blur: 3px;
-  --page-stagger: 0ms;
-  --page-exit-enabled: 1;
-  --page-slide-ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --page-fade-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* ── Number pop-in (02) ─────────────────────────────── */
@@ -371,57 +362,9 @@
   }
 }
 
-/* ── Page side-by-side (08) ─────────────────────────────── */
-.t-page-slide {
-  position: relative;
-}
-.t-page-slide .t-page[data-page-id="1"] {
-  --t-page-from-x: calc(var(--page-slide-distance) * -1);
-}
-.t-page-slide .t-page[data-page-id="2"] {
-  --t-page-from-x: var(--page-slide-distance);
-}
-.t-page-slide .t-page {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateX(calc(var(--t-page-from-x, 0px) * var(--page-exit-enabled)));
-  filter: blur(calc(var(--page-blur) * var(--page-exit-enabled)));
-  transition:
-    opacity   var(--page-fade-dur)  var(--page-fade-ease),
-    transform var(--page-slide-dur) var(--page-slide-ease),
-    filter    var(--page-slide-dur) var(--page-slide-ease);
-  will-change: opacity, transform, filter;
-}
-.t-page-slide[data-page="1"] .t-page[data-page-id="1"],
-.t-page-slide[data-page="2"] .t-page[data-page-id="2"] {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateX(0);
-  filter: blur(0);
-  transition-delay: var(--page-stagger);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .t-page-slide .t-page { transition: none !important; }
-}
-
 /* ── Extensions (allowed by the recipes' notes) ─────────────────────── */
 /* Texts reveal: "Add more lines by adding .t-stagger-line--N with
    transition-delay: calc(var(--stagger-stagger) * (N - 1))". */
 .t-stagger-line--3 { transition-delay: calc(var(--stagger-stagger) * 2); }
 .t-stagger-line--4 { transition-delay: calc(var(--stagger-stagger) * 3); }
 .t-stagger-line--5 { transition-delay: calc(var(--stagger-stagger) * 4); }
-
-/* Page side-by-side, three pages: pages before the active one exit left,
-   pages after it exit right (data-pos is set from JS: "before" / "after"). */
-.t-page-slide .t-page[data-pos="before"] { --t-page-from-x: calc(var(--page-slide-distance) * -1); }
-.t-page-slide .t-page[data-pos="after"] { --t-page-from-x: var(--page-slide-distance); }
-.t-page-slide[data-page="3"] .t-page[data-page-id="3"] {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateX(0);
-  filter: blur(0);
-  transition-delay: var(--page-stagger);
-}

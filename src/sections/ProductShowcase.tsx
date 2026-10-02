@@ -80,6 +80,14 @@ const searchResults = [
 ];
 const searchAnswer = <>Baymarket dropped to $1,199 today.<br />The other two are holding at $1,299.</>;
 
+const browserSteps: Step[] = [
+  { icon: "fish", accent: true, label: <><strong>Browser</strong> · secure.carrier-portal.com</>, detail: "session live" },
+  { icon: "link", label: <><strong>Connected over CDP</strong> · Playwright</>, detail: "142ms" },
+  { icon: "shield", label: "Cloudflare Turnstile passed", detail: "380ms" },
+  { icon: "lock", label: "Signed in", detail: "session 4f21" },
+  { icon: "window", accent: true, label: "Quotes page reached", detail: "3 rows" },
+];
+
 const rateLimitTable = [
   "Limits apply per API key, per minute.",
   "| Tier       | Requests/min | Burst  |",
@@ -114,9 +122,10 @@ function ResultRow({ source, title, text }: { source: string; title: string; tex
 }
 
 /** Chat transcript inside the mock browser: user prompt, the agent's steps, and the final answer. */
-function AgentChat({ prompt, steps, answer }: { prompt: ReactNode; steps: ReactNode; answer: ReactNode }) {
+function AgentChat({ prompt, steps, answer, compact }: { prompt: ReactNode; steps: ReactNode; answer: ReactNode; compact?: boolean }) {
+  // compact: the updated Figma transcripts (Search, Browser) with a 364px bubble and a tighter answer.
   return (
-    <div className="ps-chat">
+    <div className={`ps-chat${compact ? " ps-chat--compact" : ""}`}>
       <div className="ps-chat__prompt">
         <p className="ps-msg t-body-s">{prompt}</p>
       </div>
@@ -226,6 +235,7 @@ export function ProductShowcase() {
         video="search-loop"
       >
         <AgentChat
+          compact
           prompt={searchPrompt}
           steps={
             <ol className="ps-steps__list">
@@ -270,7 +280,12 @@ export function ProductShowcase() {
         tone="landscape"
         bg={{ left: -83, top: 52, width: 1573, height: 674 }}
       >
-        <AgentChat prompt={quotePrompt} steps={quoteList} answer={quoteAnswer} />
+        <AgentChat
+          compact
+          prompt="Log into the carrier portal and pull our active quotes."
+          steps={<ol className="ps-steps__list">{browserSteps.map((st, i) => <StepRow key={i} {...st} />)}</ol>}
+          answer="Three active quotes: Northwind at $1,284 and Cardinal at $1,410 are approved; Beacon is still pending."
+        />
       </ProductCard>
 
       <ProductCard

@@ -31,6 +31,7 @@
   /* Layout */
   --frame-max: 1440px; /* Figma frame width: wide cards stop growing here */
   --card-max: calc(var(--frame-max) - 32px); /* 1408px card inside the 16px inset */
+  --showcase-max: 1600px; /* product cards grow past the frame, but stop here on very wide screens */
   --content-max: 1120px;
   --gutter: max(160px, calc((100% - var(--content-max)) / 2));
 }
