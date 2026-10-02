@@ -44,7 +44,7 @@
 .story-quote {
   position: absolute; left: 30px; bottom: 30px; z-index: 1;
   display: flex; flex-direction: column; align-items: flex-start;
-  filter: var(--depth-strong-filter);
+  filter: var(--depth-default-filter); /* Surface/Default, traced around quote + name tab */
 }
 .story-quote__head {
   margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;

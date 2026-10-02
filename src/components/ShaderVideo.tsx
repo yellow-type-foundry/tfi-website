@@ -6,6 +6,8 @@ type ShaderVideoProps = {
   src: string;
   /** Still frame shown before playback and for reduced motion. */
   poster: string;
+  /** Also offer `${src}.h264.mp4` as the last, most compatible fallback. */
+  h264?: boolean;
   className?: string;
   width?: number;
   height?: number;
@@ -16,7 +18,7 @@ type ShaderVideoProps = {
  * Muted, looping TinyFish shader background (AV1 with a VP9 fallback, per the export's embed
  * snippet). Plays only while on screen and stays on the poster frame for reduced motion.
  */
-export function ShaderVideo({ src, poster, className, width, height, style }: ShaderVideoProps) {
+export function ShaderVideo({ src, poster, h264, className, width, height, style }: ShaderVideoProps) {
   const ref = useRef<HTMLVideoElement>(null);
   useEffect(() => {
     const el = ref.current;
@@ -32,6 +34,7 @@ export function ShaderVideo({ src, poster, className, width, height, style }: Sh
     <video ref={ref} className={`shader-video ${className ?? ""}`.trim()} poster={poster} width={width} height={height} style={style} muted loop playsInline preload="metadata" aria-hidden>
       <source src={`${src}.av1.mp4`} type='video/mp4; codecs="av01.0.04M.08"' />
       <source src={`${src}.vp9.webm`} type='video/webm; codecs="vp09.00.10.08"' />
+      {h264 && <source src={`${src}.h264.mp4`} type='video/mp4; codecs="avc1.640020"' />}
     </video>
   );
 }

@@ -36,6 +36,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
    shadow and paint over the block's bottom highlight where they meet, so the two read as one shape.
    --join-left / --join-right: how far the patch reaches past the tab (over the concave cutouts). */
 .depth-join::after { box-shadow: var(--depth-strong-inner-bottom); }
+.depth-join.depth-inner-default::after { box-shadow: var(--depth-default-inner-bottom); } /* Surface/Default tabs */
 .depth-join::before {
   content: ""; position: absolute; bottom: 100%; height: 8px; pointer-events: none;
   left: calc(-1 * var(--join-left, 16px)); right: calc(-1 * var(--join-right, 16px));

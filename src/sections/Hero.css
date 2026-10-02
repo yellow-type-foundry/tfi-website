@@ -4,13 +4,16 @@
   /* Fills the screen (minus the 16px inset); 906px is the Figma frame, the floor keeps the content clear. */
   height: calc(100vh - 32px); height: calc(100svh - 32px); min-height: 720px;
   display: flex; flex-direction: column; align-items: center;
-  background: var(--brand-yellow-400);
+  background: var(--brand-yellow-400); /* the video sky renders as #f3f096 in browsers, i.e. this token */
 }
 .hero__card::after { z-index: 2; }
+/* Vector shader loop (3072×1875, drawn live at screen resolution) spanning the full card width.
+   Its land starts 46% down the canvas; the canvas is placed so that line sits 57% down the card, as in
+   the design. Canvas height = 61.04% of the card width, so the land is 28.08cqw below its top edge. */
+.hero__card { container-type: inline-size; }
 .hero__bg {
-  position: absolute; left: -9.1%; top: 12.91%; width: 118.27%; height: 109.11%;
-  max-width: none; pointer-events: none; user-select: none;
-  object-fit: cover; object-position: center 27%; /* keeps the horizon at the same height as the card widens */
+  position: absolute; left: 0; top: calc(57% - 28.08cqw); width: 100%; height: auto; aspect-ratio: 3072 / 1875;
+  pointer-events: none; user-select: none;
 }
 
 /* Navigation / Top Bar */
@@ -26,12 +29,11 @@
 .topbar a:not(.btn):hover { opacity: 0.65; }
 
 /* Main content */
-/* The copy block is centred in the yellow sky: the band between the nav and the horizon, which the
-   art keeps at ~58% of the card height. The promo pill stays at the bottom. */
+/* The copy block is centred in the yellow sky: the band between the nav and where the land starts
+   (57% down the card, see .hero__bg). The promo pill stays at the bottom. */
 .hero__main {
-  --hero-horizon: 58%;
   position: relative; width: 100%; flex: none;
-  height: calc(var(--hero-horizon) - 62px); /* 62px = nav row */
+  height: calc(57% - 62px); /* from below the nav row (62px) down to where the land starts */
   min-height: 434px; /* the block itself plus the Figma 40px top gap */
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px;
 }

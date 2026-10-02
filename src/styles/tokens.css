@@ -22,6 +22,7 @@
   --depth-subtle-inner: inset 0 0.5px 0.75px var(--effect-depth-inner-highlight-bottom), inset 0 1px 1px var(--effect-depth-inner-shadow), inset 0 -0.5px 2px var(--effect-depth-inner-glow-top), inset 0 -1px 1px var(--effect-depth-inner-highlight-top);
   /* Same outer shadows as filter chains, for shapes built from several boxes (drop-shadow blur = radius / 2) */
   --depth-strong-filter: drop-shadow(0 2px 2px var(--effect-depth-outer-shadow)) drop-shadow(0 -2px 1.5px var(--effect-depth-outer-highlight)) drop-shadow(0 -2px 2px var(--effect-depth-outer-highlight-soft));
+  --depth-default-filter: drop-shadow(0 1px 1px var(--effect-depth-outer-shadow)) drop-shadow(0 -1px 0.75px var(--effect-depth-outer-highlight)) drop-shadow(0 -1px 1px var(--effect-depth-outer-highlight-soft));
 
   /* Typography */
   --font-sans: "ABC Solar", system-ui, sans-serif;

@@ -67,11 +67,11 @@ const mod = (n: number, m: number) => ((n % m) + m) % m;
 function QuoteBlock({ story }: { story: Story }) {
   return (
     <div className="story-quote">
-      <blockquote className="story-quote__head depth-inner-strong">
+      <blockquote className="story-quote__head depth-inner-default">
         <p className="t-h5">{story.quote}</p>
       </blockquote>
       <div className="story-quote__tab-row">
-        <p className="story-quote__tab depth-inner-strong depth-join t-label-l">
+        <p className="story-quote__tab depth-inner-default depth-join t-label-l">
           {story.name} •{" "}
           <span className={story.mutedRole ? "story-quote__role--muted" : undefined}>{story.role}</span>
         </p>

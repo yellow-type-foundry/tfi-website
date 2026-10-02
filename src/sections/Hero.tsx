@@ -1,5 +1,6 @@
 import { Button } from "../components/Button";
 import { HeadingPill } from "../components/HeadingPill";
+import { HeroVector } from "../components/HeroVector";
 import "./Hero.css";
 
 const navLinks = ["Product", "Solutions", "Resources", "Company", "Pricing"];
@@ -20,7 +21,8 @@ export function Hero() {
   return (
     <section className="hero">
       <div className="hero__card depth-default">
-        <img className="hero__bg" src="/assets/hero/hero-bg.png" alt="" />
+        {/* The vector loop's sky is beige (#e9e9dc); recoloured to the card's Brand/Yellow/400 so it merges in. */}
+        <HeroVector className="hero__bg" src="/assets/hero/vector/hero.tfv" recolor={{ "#e9e9dc": "#f3f095" }} />
 
         <header className="topbar">
           <a href="#" className="topbar__logo" aria-label="TinyFish home">
