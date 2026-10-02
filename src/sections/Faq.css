@@ -21,15 +21,14 @@
 .faq__icon {
   flex-shrink: 0; width: 32px; height: 32px; border-radius: 4px;
   display: flex; align-items: center; justify-content: center; color: var(--content-primary);
-  transition: transform 250ms ease;
+  transition: transform var(--acc-chevron) var(--acc-ease);
 }
 .faq__item.is-open .faq__icon { transform: rotate(45deg); }
 
-.faq__panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 300ms ease; }
-.faq__item.is-open .faq__panel { grid-template-rows: 1fr; }
-.faq__panel-inner { overflow: hidden; min-height: 0; }
+/* Expand / collapse: transitions.dev accordion (.t-acc-panel / .t-acc-panel-inner in transitions.css). */
+.faq__panel-inner { min-height: 0; }
 .faq__answer { padding: 0 64px 16px 16px; color: var(--content-secondary); }
 
 @media (prefers-reduced-motion: reduce) {
-  .faq__panel, .faq__icon, .faq__trigger { transition: none; }
+  .faq__icon, .faq__trigger { transition: none; }
 }

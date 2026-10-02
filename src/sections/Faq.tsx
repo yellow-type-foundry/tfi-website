@@ -41,7 +41,7 @@ export function Faq() {
           return (
             <Fragment key={item.q}>
               {i > 0 && <img className="faq__divider" src="/assets/faq/divider.svg" width={800} height={1} alt="" />}
-              <div className={`faq__item${isOpen ? " is-open" : ""}`}>
+              <div className={`faq__item t-acc${isOpen ? " is-open" : ""}`} data-open={isOpen}>
                 <h3 className="faq__heading">
                   <button
                     id={btnId}
@@ -57,8 +57,8 @@ export function Faq() {
                     </span>
                   </button>
                 </h3>
-                <div id={panelId} role="region" aria-labelledby={btnId} className="faq__panel" inert={!isOpen}>
-                  <div className="faq__panel-inner">
+                <div id={panelId} role="region" aria-labelledby={btnId} className="faq__panel t-acc-panel" inert={!isOpen}>
+                  <div className="faq__panel-inner t-acc-panel-inner">
                     <p className="faq__answer t-body-m">{item.a}</p>
                   </div>
                 </div>

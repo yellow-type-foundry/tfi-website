@@ -61,13 +61,16 @@
 .sol-skeleton__item { display: contents; }
 .sol-skel-bar { height: 8px; border-radius: 9999px; background: linear-gradient(to right, var(--surface-secondary), var(--surface-primary)); }
 
-.sol-toast {
+.sol-toast-anchor {
   position: absolute; bottom: 75px; left: calc(50% - 0.5px); transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 16px;
-  background: var(--surface-primary); border: 0.5px solid var(--outline-default); border-radius: 16px;
   filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.01)) drop-shadow(0 4px 4px rgba(0, 0, 0, 0.03)) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.02));
   -webkit-mask-image: url("/assets/solutions/window-mask.svg"); mask-image: url("/assets/solutions/window-mask.svg");
   mask-repeat: no-repeat; mask-mode: alpha; mask-position: -183px -222px; mask-size: 556px 383px;
+}
+/* Rises in / out with the transitions.dev toast recipe (.t-toast). */
+.sol-toast {
+  display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 16px;
+  background: var(--surface-primary); border: 0.5px solid var(--outline-default); border-radius: 16px;
   white-space: nowrap;
 }
 .sol-toast__from { display: flex; align-items: flex-start; gap: 4px; }
@@ -121,11 +124,88 @@
 .sol-portal__stack { position: relative; width: 100%; display: flex; flex-direction: column; gap: 8px; }
 .sol-field { display: flex; flex-direction: column; gap: 8px; }
 .sol-field__input { display: flex; align-items: center; min-height: 36px; padding: 6px 8px; border-radius: 8px; background: var(--surface-primary); white-space: nowrap; }
-.sol-portal__cursor { position: absolute; left: 152px; top: 50px; width: 14px; height: 16px; overflow: visible; }
+.sol-portal__pointer { position: absolute; left: 152px; top: 50px; width: 0; height: 0; z-index: 1; }
+.sol-portal__cursor { position: absolute; left: 0; top: 0; width: 14px; height: 16px; overflow: visible; }
 .sol-portal__agent {
-  position: absolute; left: 159px; top: 62px; width: 32px; height: 32px; border-radius: 16px;
+  position: absolute; left: 7px; top: 12px; width: 32px; height: 32px; border-radius: 16px;
   display: flex; align-items: center; justify-content: center;
   background: var(--surface-accent-orange-subtle); color: var(--content-accent-orange);
 }
 .sol-portal__next { width: 87px; cursor: default; }
 .sol-portal__next:hover { filter: none; }
+
+/* ------------------------------------------------------------------ */
+/* Card animations: short loops that act out each job. They only run   */
+/* while the section is on screen (.is-live); with reduced motion the  */
+/* cards stay exactly as designed (the static styles are the design).  */
+/* ------------------------------------------------------------------ */
+.solutions { --sol-play: paused; }
+.solutions.is-live { --sol-play: running; }
+
+
+/* Typewriter text shared by Research and Portal. */
+.sol-typed { display: inline-block; white-space: nowrap; }
+
+/* Research: the question types out before the agent answers (the rest uses transitions.dev). */
+.sol-typed--query { animation: sol-type-query 8s infinite; animation-play-state: var(--sol-play); }
+@keyframes sol-type-query {
+  0% { clip-path: inset(0 100% 0 0); opacity: 1; animation-timing-function: steps(40, end); }
+  24%, 94% { clip-path: inset(0 0 0 0); opacity: 1; }
+  99%, 100% { clip-path: inset(0 0 0 0); opacity: 0; }
+}
+/* Portal (9s): the agent types into Contact email and Street address, then clicks Next. */
+.sol-typed--field1, .sol-typed--field2 { clip-path: inset(0 100% 0 0); animation-duration: 9s; animation-iteration-count: infinite; animation-play-state: var(--sol-play); }
+.sol-typed--field1 { animation-name: sol-type-field1; }
+.sol-typed--field2 { animation-name: sol-type-field2; }
+@keyframes sol-type-field1 {
+  0%, 10% { clip-path: inset(0 100% 0 0); opacity: 1; animation-timing-function: steps(13, end); }
+  30%, 94% { clip-path: inset(0 0 0 0); opacity: 1; }
+  98%, 100% { clip-path: inset(0 0 0 0); opacity: 0; }
+}
+@keyframes sol-type-field2 {
+  0%, 44% { clip-path: inset(0 100% 0 0); opacity: 1; animation-timing-function: steps(28, end); }
+  66%, 94% { clip-path: inset(0 0 0 0); opacity: 1; }
+  98%, 100% { clip-path: inset(0 0 0 0); opacity: 0; }
+}
+.sol-portal__pointer { animation: sol-pointer 9s infinite; animation-play-state: var(--sol-play); }
+@keyframes sol-pointer {
+  0% { opacity: 0; translate: -24px -16px; }
+  6%, 32% { opacity: 1; translate: 0 0; }
+  38%, 68% { opacity: 1; translate: 0 68px; }
+  76%, 90% { opacity: 1; translate: 178px 100px; }
+  96%, 100% { opacity: 0; translate: 178px 100px; }
+}
+.sol-portal__agent { animation: sol-agent-tap 9s infinite; animation-play-state: var(--sol-play); }
+@keyframes sol-agent-tap {
+  0%, 78% { scale: 1; }
+  81% { scale: 0.85; }
+  85%, 100% { scale: 1; }
+}
+.sol-portal__next { animation: sol-next 9s infinite; animation-play-state: var(--sol-play); }
+@keyframes sol-next {
+  0%, 81% { background: var(--surface-secondary); color: var(--content-tertiary); }
+  83%, 94% { background: var(--surface-accent-neutral-strong); color: var(--content-inverse); }
+  98%, 100% { background: var(--surface-secondary); color: var(--content-tertiary); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .solutions *, .solutions *::before { animation: none !important; }
+}
+
+/* Monitor: the plan card lights up when its price changes (motion tokens from transitions.css). */
+.sol-plan--active {
+  transition: background-color var(--duration-fast) var(--ease-smooth-out), color var(--duration-fast) var(--ease-smooth-out);
+}
+.sol-plan--active .sol-bar { transition: filter var(--duration-fast) var(--ease-smooth-out); }
+.sol-plan--active.is-idle { background: var(--surface-primary); color: var(--content-tertiary); }
+.sol-plan--active.is-idle .sol-bar { filter: grayscale(1); }
+
+/* Enrich: each empty cell is a transitions.dev skeleton (.t-skel) that keeps pulsing until revealed. */
+.sol-cell { --pulse-count: infinite; display: block; height: 20px; }
+.sol-cell .t-skel-skeleton, .sol-cell .t-skel-content { display: flex; align-items: center; white-space: nowrap; }
+.sol-shimmer { --shimmer-base: var(--content-tertiary); --shimmer-highlight: var(--content-primary); }
+
+/* Research: by-line keeps its row layout inside the texts-reveal line; reel cells match the 20px line. */
+.sol-research__by.t-stagger-line { display: flex; }
+.sol-research__by { --reel-cell: 20px; }
+.sol-research__headline { padding: 6px 0; }

@@ -156,10 +156,23 @@ function Demo() {
               <p className="idemo-address__field t-mono-s">{step.url}</p>
             </div>
           </div>
-          <div className="idemo-window__body" role="tabpanel" id="idemo-panel" aria-labelledby={`idemo-tab-${active}`}>
-            {active === 0 && <SignInCard onContinue={() => select(1)} />}
-            {active === 1 && <NavigateCard />}
-            {active === 2 && <CompleteCard onRestart={() => select(0, true)} />}
+          {/* Steps slide side by side (transitions.dev "page side-by-side"): earlier steps exit left, later ones right. */}
+          <div className="idemo-window__body t-page-slide" data-page={active + 1} role="tabpanel" id="idemo-panel" aria-labelledby={`idemo-tab-${active}`}>
+            {[
+              <SignInCard key="login" onContinue={() => select(1)} />,
+              <NavigateCard key="navigate" />,
+              <CompleteCard key="complete" onRestart={() => select(0, true)} />,
+            ].map((card, i) => (
+              <section
+                key={i}
+                className="idemo-page t-page"
+                data-page-id={i + 1}
+                data-pos={i < active ? "before" : i > active ? "after" : "current"}
+                inert={i !== active}
+              >
+                {card}
+              </section>
+            ))}
           </div>
           <div className="idemo-status" aria-live="polite">
             <div className="idemo-status__lead">

@@ -4,19 +4,29 @@
 }
 
 /* Outer white panel with Surface/Strong depth, inner coloured card */
-.ps-panel { width: 100%; max-width: var(--card-max); margin-inline: auto; padding: 16px; border-radius: 20px; background: var(--surface-primary); }
+.ps-panel { width: 100%; padding: 16px; border-radius: 20px; background: var(--surface-primary); }
 .ps-card { position: relative; overflow: hidden; border-radius: 16px; }
 .ps-card--search { height: 720px; background: #f7f7c1; }
 .ps-card--landscape { height: 640px; background: #e8e9dd; }
 .ps-card__bg { position: absolute; max-width: none; object-fit: cover; pointer-events: none; user-select: none; }
+/* Cards run full width. The search card's laptop art keeps its designed size around the centred
+   content, so past the Figma frame its left/right edges fade into the card colour. */
+@media (min-width: 1441px) {
+  .ps-card--search .ps-card__bg {
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 160px, #000 calc(100% - 160px), transparent);
+    mask-image: linear-gradient(to right, transparent, #000 160px, #000 calc(100% - 160px), transparent);
+  }
+}
+.ps-card__bg--video { image-rendering: pixelated; } /* crisp shader pixels when scaled, per the export notes */
 
 /* Figma: landscape layouts are 1408px wide inside a 1376px card, so the window sits 48px from the right edge. */
 .ps-card__layout {
-  position: relative; height: 100%;
+  position: relative; height: 100%; width: 100%; max-width: 1376px; margin-inline: auto; /* content stays at the Figma card width */
   display: flex; align-items: center; justify-content: space-between;
   padding: 60px 80px;
 }
 .ps-card--landscape .ps-card__layout { padding-right: 48px; }
+.ps-card--search .ps-card__layout { padding-right: 64px; } /* window sits at x 872 in the 1376 card */
 
 /* Intro copy */
 .ps-intro { align-self: stretch; width: 445px; flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 28px; }
@@ -38,17 +48,14 @@
 /* Mock browser window (shared BrowserWindow chrome) */
 .browser.ps-window { width: 440px; flex-shrink: 0; }
 .ps-window--dots-lg .browser__bar > .browser__dots:first-child span { width: 10px; height: 10px; }
-.ps-card--search .ps-window { background: var(--surface-primary); border: 1px solid var(--outline-default); }
-.ps-card--search .ps-window .browser__body { padding: 0; }
 
 /* Chat transcript */
 .ps-chat {
   position: relative; display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 16px;
   padding: 16px 20px; border-radius: 16px;
 }
-.ps-card--search .ps-chat { background: var(--surface-accent-neutral-subtle); }
-.ps-card--landscape .ps-chat { background: var(--surface-primary); box-shadow: var(--depth-default-outer); }
-.ps-card--landscape .ps-chat::after {
+.ps-chat { background: var(--surface-primary); box-shadow: var(--depth-default-outer); }
+.ps-chat::after {
   content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; box-shadow: var(--depth-default-inner);
 }
 
@@ -57,16 +64,14 @@
   width: 100%; padding: 12px 20px 12px 16px; border-radius: 20px 20px 20px 4px;
   color: var(--content-primary);
 }
-.ps-card--search .ps-msg { background: var(--surface-primary); }
-.ps-card--landscape .ps-msg { background: var(--surface-secondary); }
+.ps-msg { background: var(--surface-secondary); }
 .ps-link { color: #4dbde5; }
 
 .ps-chat__agent { width: 100%; display: flex; flex-direction: column; gap: 4px; }
 .ps-chat__caption { padding: 6px 0; color: var(--content-tertiary); }
 
 .ps-steps { padding: 12px; border-radius: 16px; }
-.ps-card--search .ps-steps { background: var(--surface-primary); }
-.ps-card--landscape .ps-steps { background: var(--surface-accent-neutral-subtle); }
+.ps-steps { background: var(--surface-accent-neutral-subtle); }
 .ps-steps__list { display: flex; flex-direction: column; gap: 4px; }
 
 .ps-step { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 0; }
@@ -88,3 +93,11 @@
 .ps-markdown { margin: 0; width: 100%; white-space: pre-wrap; color: var(--content-tertiary); }
 
 .ps-chat__answer { width: 100%; padding: 18px 0; text-align: center; color: var(--content-secondary); }
+.ps-card--search .ps-chat__answer { padding: 6px 0 18px; }
+
+/* Search results: thread line on the left, source / title / snippet */
+.ps-result { align-items: stretch; justify-content: flex-start; }
+.ps-result__thread { width: 20px; height: auto; flex-shrink: 0; align-self: stretch; }
+.ps-result__body { flex: 1 0 0; min-width: 0; display: flex; flex-direction: column; gap: 2px; color: var(--content-primary); }
+.ps-result__source { color: var(--content-tertiary); }
+.ps-result__text { color: var(--content-secondary); }
