@@ -14,6 +14,10 @@ type VectorLoopProps = {
   /** Skip exported fallback frames where this layer is visible. */
   excludeFramesWithLayer?: number;
   noShadows?: boolean;
+  pixelRatio?: number;
+  renderFps?: number;
+  noEffects?: boolean;
+  hoverGridScale?: number;
 };
 
 /** Rewrites palette colours in a TFV1 file's JSON header and returns new (uncompressed) bytes. */
@@ -35,7 +39,7 @@ function recolorTfv(bytes: Uint8Array, map: Record<string, string>) {
  * The player pauses off screen, shows the first frame for reduced motion, and handles any
  * hover-reveal layers in the file (pointer brush; touch follows a held finger).
  */
-export function VectorLoop({ src, width, height, className, style, recolor, excludeFramesWithLayer, noShadows }: VectorLoopProps) {
+export function VectorLoop({ src, width, height, className, style, recolor, excludeFramesWithLayer, noShadows, pixelRatio, renderFps, noEffects, hoverGridScale }: VectorLoopProps) {
   const ref = useRef<HTMLCanvasElement>(null);
   const recolorKey = JSON.stringify(recolor ?? {});
 
@@ -54,7 +58,7 @@ export function VectorLoop({ src, width, height, className, style, recolor, excl
       .catch((e) => console.error(e));
     return () => { cancelled = true; player?.pause(); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [src, recolorKey, excludeFramesWithLayer, noShadows]);
+  }, [src, recolorKey, excludeFramesWithLayer, noShadows, pixelRatio, renderFps, noEffects, hoverGridScale]);
 
-  return <canvas ref={ref} className={className} style={style} width={width} height={height} data-tfv-exclude-layer={excludeFramesWithLayer} data-tfv-no-shadows={noShadows ? "" : undefined} aria-hidden />;
+  return <canvas ref={ref} className={className} style={style} width={width} height={height} data-tfv-exclude-layer={excludeFramesWithLayer} data-tfv-no-shadows={noShadows ? "" : undefined} data-tfv-dpr={pixelRatio} data-tfv-render-fps={renderFps} data-tfv-no-effects={noEffects ? "" : undefined} data-tfv-hover-grid-scale={hoverGridScale} aria-hidden />;
 }

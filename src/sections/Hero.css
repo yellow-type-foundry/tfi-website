@@ -21,7 +21,7 @@
 }
 .hero__bg {
   position: absolute; left: 50%; bottom: 0; transform: translateX(-50%);
-  width: calc(100% * var(--hero-art-scale)); max-width: none; height: auto; aspect-ratio: 9704 / 3930;
+  width: calc(100% * var(--hero-art-scale)); max-width: none; height: auto; aspect-ratio: 2880 / 1166;
 }
 
 /* In-card nav: the shared TopBar with the hero's wider side padding */

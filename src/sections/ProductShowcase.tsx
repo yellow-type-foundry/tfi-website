@@ -166,7 +166,7 @@ function ProductCard({ id, title, description, cta, tone, bg, largeDots = true, 
       ? { left: `calc(50% - ${FIGMA_CARD_WIDTH / 2 - bg.left}px)`, top: bg.top, width: bg.width, height: bg.height, objectPosition: bg.position }
       : { left: bg.left, top: bg.top, width: `calc(100% + ${bg.width - FIGMA_CARD_WIDTH}px)`, height: bg.height, objectPosition: bg.position };
   return (
-    <article className="ps-panel depth-strong" id={id} aria-labelledby={`${id}-title`}>
+    <article className="ps-panel" id={id} aria-labelledby={`${id}-title`}>
       <div className={`ps-card ps-card--${tone}`}>
         {vector ? (
           <VectorLoop className="ps-card__bg" src={`/assets/product-showcase/vector/${vector.src}`} width={vector.width} height={vector.height} style={bgStyle} />
@@ -196,52 +196,47 @@ function ProductCard({ id, title, description, cta, tone, bg, largeDots = true, 
   );
 }
 
-/**
- * Depth for the stacking cards: as the next card slides over one, the covered card scales down
- * towards STACK_MIN_SCALE (from its top edge, so the peeking strips stay put). Scroll-linked, so it
- * reverses on the way back up; skipped for reduced motion.
- */
-const STACK_MIN_SCALE = 0.9;
-
-function useStackDepth() {
-  const ref = useRef<HTMLElement>(null);
+export function ProductShowcase() {
+  const scrollRef = useRef<HTMLElement>(null);
   useEffect(() => {
-    const section = ref.current;
-    if (!section || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const panels = Array.from(section.querySelectorAll<HTMLElement>(".ps-panel"));
+    const section = scrollRef.current;
+    const track = section?.querySelector<HTMLElement>(".product-showcase");
+    if (!section || !track) return;
     let raf = 0;
+    let distance = 0;
+    const panels = Array.from(track.querySelectorAll<HTMLElement>(".ps-panel"));
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const update = () => {
       raf = 0;
-      panels.forEach((panel, i) => {
-        const next = panels[i + 1];
-        if (!next) return;
-        const a = panel.getBoundingClientRect();
-        const height = panel.offsetHeight;
-        const stackGap = parseFloat(getComputedStyle(panel).getPropertyValue("--stack-gap")) || 0;
-        const covered = Math.min(Math.max((a.top + height - next.getBoundingClientRect().top) / (height - stackGap), 0), 1);
-        panel.style.setProperty("--stack-scale", String(1 - (1 - STACK_MIN_SCALE) * covered));
-        panel.style.setProperty("--stack-opacity", String(1 - covered));
+      const top = parseFloat(getComputedStyle(track).top) || 0;
+      const progress = Math.max(0, Math.min(distance, top - section.getBoundingClientRect().top));
+      track.scrollLeft = progress;
+      panels.forEach((panel) => {
+        const offset = progress - panel.offsetLeft + 16;
+        const shift = reducedMotion.matches ? 0 : Math.max(-100, Math.min(100, offset * 0.2));
+        panel.style.setProperty("--art-parallax", `${shift}px`);
       });
+    };
+    const measure = () => {
+      distance = Math.max(0, track.scrollWidth - track.clientWidth);
+      section.style.height = `${track.offsetHeight + distance}px`;
+      update();
     };
     const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
-    update();
-    addEventListener("scroll", onScroll, { passive: true });
-    addEventListener("resize", onScroll);
+    const observer = new ResizeObserver(measure);
+    observer.observe(track);
+    measure();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", measure);
     return () => {
-      removeEventListener("scroll", onScroll);
-      removeEventListener("resize", onScroll);
+      observer.disconnect();
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", measure);
       cancelAnimationFrame(raf);
-      panels.forEach((panel) => {
-        panel.style.removeProperty("--stack-scale");
-        panel.style.removeProperty("--stack-opacity");
-      });
+      section.style.removeProperty("height");
+      panels.forEach((panel) => panel.style.removeProperty("--art-parallax"));
     };
   }, []);
-  return ref;
-}
-
-export function ProductShowcase() {
-  const stackRef = useStackDepth();
   const quoteList = (
     <ol className="ps-steps__list">
       {quoteSteps.map((s, i) => <StepRow key={i} {...s} />)}
@@ -249,7 +244,8 @@ export function ProductShowcase() {
   );
 
   return (
-    <section ref={stackRef} className="product-showcase" id="products" aria-label="TinyFish APIs">
+    <section ref={scrollRef} className="product-showcase-scroll" id="products" aria-label="TinyFish APIs">
+      <div className="product-showcase">
       <ProductCard
         id="search-api"
         title="Search API"
@@ -280,6 +276,7 @@ export function ProductShowcase() {
         cta="Try Fetch for Free"
         tone="landscape"
         bg={{ left: -83, top: 86, width: 1573, height: 674 }}
+        vector={{ src: "fetch-v16.tfv", width: 3444, height: 1698 }}
         largeDots={false}
       >
         <AgentChat
@@ -323,6 +320,7 @@ export function ProductShowcase() {
       >
         <AgentChat prompt={quotePrompt} steps={quoteList} answer={quoteAnswer} />
       </ProductCard>
+      </div>
     </section>
   );
 }

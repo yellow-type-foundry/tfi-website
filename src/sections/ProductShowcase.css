@@ -1,26 +1,21 @@
+.product-showcase-scroll { position: relative; background: var(--surface-primary); }
 .product-showcase {
-  display: flex; flex-direction: column; gap: 16px;
+  position: sticky; top: 97px;
+  display: flex; flex-direction: row; gap: 16px;
+  overflow: hidden;
+  align-items: flex-start; padding-bottom: 16px;
   padding: 0 16px; background: var(--surface-primary);
 }
 
-/* Outer white panel with Surface/Strong depth, inner coloured card */
-.ps-panel { width: 100%; max-width: calc(var(--showcase-max) - 32px); margin-inline: auto; padding: 16px; border-radius: 20px; background: var(--surface-primary); }
+/* One coloured surface per showcase card. */
+.ps-panel { width: 100%; flex: 0 0 100%; margin-inline: 0; }
 .ps-card { position: relative; overflow: hidden; border-radius: 16px; }
 
-/* Stacking cards: each card sticks as you scroll and the next one slides up over it. Each sticks
-   12px lower than the last so the earlier cards' top edges peek out. On short screens the stick
-   point rises (min with 100svh - card height) so the whole card is seen before it's covered.
-   Card heights: 752px (Search, 720 + 2×16 padding) and 672px (the rest). */
-.ps-panel { position: sticky; --stack-gap: 12px; transform: scale(var(--stack-scale, 1)); opacity: var(--stack-opacity, 1); transform-origin: 50% 0; } /* scale and fade set on scroll for depth */
-.ps-panel:nth-child(1) { --stack-i: 0; --stack-h: 752px; }
-.ps-panel:nth-child(2) { --stack-i: 1; --stack-h: 672px; }
-.ps-panel:nth-child(3) { --stack-i: 2; --stack-h: 672px; }
-.ps-panel:nth-child(4) { --stack-i: 3; --stack-h: 672px; }
-/* Stack just below the sticky nav (16px gap + 65px bar + 16px gap) so the peeking strips stay visible. */
-.ps-panel { --stack-top: 97px; top: min(calc(var(--stack-top) + var(--stack-i) * var(--stack-gap)), calc(100svh - var(--stack-h) - 16px)); }
-.ps-card--search { height: 720px; background: var(--surface-showcase-search); }
-.ps-card--landscape { height: 640px; background: var(--surface-showcase-landscape); }
-.ps-card__bg { position: absolute; max-width: none; object-fit: cover; pointer-events: none; user-select: none; }
+.ps-card--search { height: calc(100svh - 113px); background: var(--surface-showcase-search); }
+.ps-card--landscape { height: calc(100svh - 113px); background: var(--surface-showcase-landscape); }
+#fetch-api .ps-card { background: #bdc7ad; }
+#fetch-api .ps-card__bg { transform: scale(1.05); transform-origin: 50% 100%; clip-path: inset(1%); }
+.ps-card__bg { position: absolute; top: auto !important; bottom: 0; translate: var(--art-parallax, 0px) 0; max-width: none; object-fit: cover; pointer-events: none; user-select: none; }
 /* Cards run full width. The search card's laptop art keeps its designed size around the centred
    content, so past the Figma frame its left/right edges fade into the card colour. */
 @media (min-width: 1441px) {

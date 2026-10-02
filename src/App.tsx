@@ -22,8 +22,10 @@ export default function App() {
       <CustomerStories />
       <Pricing />
       <Faq />
-      <FinalCta />
-      <Footer />
+      <div className="footer-reveal">
+        <FinalCta />
+        <Footer />
+      </div>
     </main>
   );
 }
