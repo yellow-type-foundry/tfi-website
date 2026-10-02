@@ -1,0 +1,17 @@
+/* Pinned 16px from the top and lined up with the product showcase's outer white panels:
+   16px from the screen edges, stopping at the same width they do on very wide screens. */
+.sticky-nav {
+  position: fixed; top: 16px; left: 50%; z-index: 100;
+  width: min(calc(100% - 32px), calc(var(--showcase-max) - 32px));
+  transform: translate(-50%, calc(-100% - 24px)); opacity: 0;
+  transition: transform var(--duration-medium) var(--ease-smooth-out), opacity var(--duration-quick) var(--ease-out);
+  pointer-events: none;
+}
+.sticky-nav.is-shown {
+  transform: translate(-50%, 0); opacity: 1; pointer-events: auto;
+  transition: transform var(--duration-slow) var(--ease-smooth-out), opacity var(--duration-fast) var(--ease-out);
+}
+.sticky-nav__bar {
+  background: var(--surface-primary); border: 0.6px solid var(--outline-default); border-radius: 100px;
+}
+@media (prefers-reduced-motion: reduce) { .sticky-nav { transition: none; } }

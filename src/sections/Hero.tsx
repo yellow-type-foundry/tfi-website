@@ -1,9 +1,8 @@
 import { Button } from "../components/Button";
 import { HeadingPill } from "../components/HeadingPill";
-import { HeroVector } from "../components/HeroVector";
+import { TopBar } from "../components/TopBar";
+import { VectorLoop } from "../components/VectorLoop";
 import "./Hero.css";
-
-const navLinks = ["Product", "Solutions", "Resources", "Company", "Pricing"];
 
 const aiLogos = ["ai-logo-1", "ai-logo-2", "ai-logo-3"];
 
@@ -21,25 +20,10 @@ export function Hero() {
   return (
     <section className="hero">
       <div className="hero__card depth-default">
-        {/* The vector loop's sky is beige (#e9e9dc); recoloured to the card's Brand/Yellow/400 so it merges in. */}
-        <HeroVector className="hero__bg" src="/assets/hero/vector/hero.tfv" recolor={{ "#e9e9dc": "#f3f095" }} />
+        {/* Vector loop with push-on-hover; its sky is already the card's Brand/Yellow/400. */}
+        <VectorLoop className="hero__bg" src="/assets/hero/vector/hero.tfv" width={9704} height={3930} />
 
-        <header className="topbar">
-          <a href="#" className="topbar__logo" aria-label="TinyFish home">
-            <img src="/assets/hero/brand-logo.svg" width={70} height={16} alt="TinyFish" />
-          </a>
-          <nav className="topbar__nav t-body-s" aria-label="Primary">
-            {navLinks.map((l) => (
-              <a key={l} href={`#${l.toLowerCase()}`}>{l}</a>
-            ))}
-          </nav>
-          <div className="topbar__actions t-body-s">
-            <a href="#contact">Contact</a>
-            <img className="topbar__separator" src="/assets/hero/separator.svg" width={20} height={1} alt="" />
-            <a href="#login">Login</a>
-            <Button variant="black" size="s">Sign Up</Button>
-          </div>
-        </header>
+        <TopBar className="hero__topbar" />
 
         <div className="hero__main">
           <HeadingPill as="h1" heading="The web stack for AI agents" body="Search, extract, browse, and act on the web with one platform." />
@@ -52,13 +36,20 @@ export function Hero() {
               ))}
             </div>
           </div>
-          <ul className="hero__logos" aria-label="Trusted by">
-            {customerLogos.map((l) => (
-              <li key={l.file}>
-                <img src={`/assets/hero/${l.file}.svg`} width={l.w} height={l.h} alt={l.name} />
-              </li>
-            ))}
-          </ul>
+          {/* Auto-scrolling logo carousel: two identical sets scroll left; the second is decorative. */}
+          <div className="hero__logos">
+            <div className="hero__logos-track">
+              {[0, 1].map((copy) => (
+                <ul key={copy} className="hero__logos-set" aria-label={copy === 0 ? "Trusted by" : undefined} aria-hidden={copy === 1 || undefined}>
+                  {customerLogos.map((l) => (
+                    <li key={l.file}>
+                      <img src={`/assets/hero/${l.file}.svg`} width={l.w} height={l.h} alt={copy === 0 ? l.name : ""} />
+                    </li>
+                  ))}
+                </ul>
+              ))}
+            </div>
+          </div>
         </div>
 
         <div className="hero__footer">

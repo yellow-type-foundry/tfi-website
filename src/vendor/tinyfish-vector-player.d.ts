@@ -1,4 +1,5 @@
-// Types for the vendored TinyFish vector loop player (tinyfish-vector-player.js, unmodified).
+// Types for the vendored TinyFish vector loop player (tinyfish-vector-player.js, unmodified; the
+// "Push on Hover" build, which also plays plain loops).
 export {};
 
 declare global {

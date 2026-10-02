@@ -1,8 +1,11 @@
 import { useEffect, useRef } from "react";
 import "../vendor/tinyfish-vector-player.js";
 
-type HeroVectorProps = {
+type VectorLoopProps = {
   src: string;
+  /** The loop's canvas size from its export (e.g. 3072×1875); sets the aspect ratio. */
+  width: number;
+  height: number;
   className?: string;
   /** Replace colours in the loop's palettes at load time (the .tfv file itself is untouched). */
   recolor?: Record<string, string>;
@@ -24,9 +27,10 @@ function recolorTfv(bytes: Uint8Array, map: Record<string, string>) {
 
 /**
  * TinyFish vector shader loop (.tfv) drawn live on a canvas at the screen's real resolution.
- * The player pauses off screen and shows the first frame for reduced motion.
+ * The player pauses off screen, shows the first frame for reduced motion, and handles any
+ * hover-reveal layers in the file (pointer brush; touch follows a held finger).
  */
-export function HeroVector({ src, className, recolor }: HeroVectorProps) {
+export function VectorLoop({ src, width, height, className, recolor }: VectorLoopProps) {
   const ref = useRef<HTMLCanvasElement>(null);
   const recolorKey = JSON.stringify(recolor ?? {});
 
@@ -46,5 +50,5 @@ export function HeroVector({ src, className, recolor }: HeroVectorProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [src, recolorKey]);
 
-  return <canvas ref={ref} className={className} width={3072} height={1875} aria-hidden />;
+  return <canvas ref={ref} className={className} width={width} height={height} aria-hidden />;
 }

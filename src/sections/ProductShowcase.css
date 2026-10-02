@@ -11,12 +11,13 @@
    12px lower than the last so the earlier cards' top edges peek out. On short screens the stick
    point rises (min with 100svh - card height) so the whole card is seen before it's covered.
    Card heights: 752px (Search, 720 + 2×16 padding) and 672px (the rest). */
-.ps-panel { position: sticky; --stack-gap: 12px; }
+.ps-panel { position: sticky; --stack-gap: 12px; transform: scale(var(--stack-scale, 1)); transform-origin: 50% 0; } /* scale set on scroll for depth */
 .ps-panel:nth-child(1) { --stack-i: 0; --stack-h: 752px; }
 .ps-panel:nth-child(2) { --stack-i: 1; --stack-h: 672px; }
 .ps-panel:nth-child(3) { --stack-i: 2; --stack-h: 672px; }
 .ps-panel:nth-child(4) { --stack-i: 3; --stack-h: 672px; }
-.ps-panel { top: min(calc(16px + var(--stack-i) * var(--stack-gap)), calc(100svh - var(--stack-h) - 16px)); }
+/* Stack just below the sticky nav (16px gap + 65px bar + 16px gap) so the peeking strips stay visible. */
+.ps-panel { --stack-top: 97px; top: min(calc(var(--stack-top) + var(--stack-i) * var(--stack-gap)), calc(100svh - var(--stack-h) - 16px)); }
 .ps-card--search { height: 720px; background: var(--surface-showcase-search); }
 .ps-card--landscape { height: 640px; background: var(--surface-showcase-landscape); }
 .ps-card__bg { position: absolute; max-width: none; object-fit: cover; pointer-events: none; user-select: none; }

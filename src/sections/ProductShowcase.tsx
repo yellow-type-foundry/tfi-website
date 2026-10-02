@@ -1,4 +1,5 @@
 import type { CSSProperties, ReactElement, ReactNode } from "react";
+import { useEffect, useRef } from "react";
 import { BrowserWindow } from "../components/BrowserWindow";
 import { ShaderVideo } from "../components/ShaderVideo";
 import { Icon } from "../components/Icon";
@@ -195,7 +196,41 @@ function ProductCard({ id, title, description, cta, tone, bg, largeDots = true, 
   );
 }
 
+/**
+ * Depth for the stacking cards: as the next card slides over one, the covered card scales down
+ * towards STACK_MIN_SCALE (from its top edge, so the peeking strips stay put). Scroll-linked, so it
+ * reverses on the way back up; skipped for reduced motion.
+ */
+const STACK_MIN_SCALE = 0.95;
+
+function useStackDepth() {
+  const ref = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const section = ref.current;
+    if (!section || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const panels = Array.from(section.querySelectorAll<HTMLElement>(".ps-panel"));
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      panels.forEach((panel, i) => {
+        const next = panels[i + 1];
+        if (!next) return;
+        const a = panel.getBoundingClientRect();
+        const covered = Math.min(Math.max((a.bottom - next.getBoundingClientRect().top) / a.height, 0), 1);
+        panel.style.setProperty("--stack-scale", String(1 - (1 - STACK_MIN_SCALE) * covered));
+      });
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+    update();
+    addEventListener("scroll", onScroll, { passive: true });
+    addEventListener("resize", onScroll);
+    return () => { removeEventListener("scroll", onScroll); removeEventListener("resize", onScroll); cancelAnimationFrame(raf); };
+  }, []);
+  return ref;
+}
+
 export function ProductShowcase() {
+  const stackRef = useStackDepth();
   const quoteList = (
     <ol className="ps-steps__list">
       {quoteSteps.map((s, i) => <StepRow key={i} {...s} />)}
@@ -203,7 +238,7 @@ export function ProductShowcase() {
   );
 
   return (
-    <section className="product-showcase" id="products" aria-label="TinyFish APIs">
+    <section ref={stackRef} className="product-showcase" id="products" aria-label="TinyFish APIs">
       <ProductCard
         id="search-api"
         title="Search API"
