@@ -29,13 +29,13 @@
 .pricing-api-list { width: 551px; /* matches the "real web work." row above */ max-width: 100%; display: grid; grid-template-columns: 1fr; gap: 8px; }
 .pricing-api {
   display: flex; align-items: center; justify-content: space-between; min-width: 0;
-  padding: 12px 24px 12px 12px; border-radius: 9999px; background: var(--surface-accent-neutral-subtle); /* the icon sits 12px from the edge */
+  padding: 24px; border-radius: 24px; background: var(--surface-accent-neutral-subtle);
 }
 .pricing-api__lead { flex: 1 0 0; min-width: 0; display: flex; align-items: center; gap: 12px; color: var(--content-primary); }
 .pricing-api__icon {
   flex-shrink: 0; width: 48px; height: 48px; border-radius: 24px; overflow: clip;
   display: flex; align-items: center; justify-content: center;
-  border: 0.267px solid var(--outline-accent-orange); background: var(--brand-orange-200); color: var(--surface-accent-orange-default);
+  border: 0.267px solid var(--outline-accent-neutral); background: var(--surface-accent-orange-subtle); color: var(--content-accent-orange-default);
 }
 .pricing-api__price { flex: 1 0 0; min-width: 0; text-align: right; white-space: nowrap; }
 .pricing-api__free { color: var(--surface-accent-orange-default); }
@@ -54,16 +54,16 @@
   .pricing-pill__head { width: 100%; padding: 16px 16px 4px; }
   .pricing-pill__tab-row { width: calc(100% - 24px); padding: 0; }
   .pricing-pill__tab { flex: 1; min-width: 0; padding: 0 8px 16px; }
-  .pricing__actions { width: 100%; gap: 8px; }
-  .pricing__actions .btn { flex: 1; width: auto; min-width: 0; padding: 11px 8px; font-size: 14px; line-height: 20px; }
-  .pricing-api-list { width: 100%; }
-  .pricing-api { padding: 10px 14px 10px 10px; gap: 8px; }
-  .pricing-api__lead { flex: 1 1 auto; gap: 8px; }
-  .pricing-api__icon { width: 32px; height: 32px; }
-  .pricing-api__icon svg { width: 18px; height: 18px; }
+  .pricing__actions { width: 100%; justify-content: center; flex-wrap: wrap; gap: 8px; }
+  .pricing__actions .btn { flex: none; width: auto; min-width: 0; padding: 11px 16px; font-size: 14px; line-height: 20px; }
+  .pricing-api-list { width: 100%; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pricing-api { flex-direction: column; align-items: flex-start; justify-content: flex-start; padding: 16px; gap: 4px; }
+  .pricing-api__lead { flex: none; width: 100%; flex-direction: column; align-items: flex-start; gap: 12px; }
+  .pricing-api__icon { width: 40px; height: 40px; }
+  .pricing-api__icon svg { width: 20px; height: 20px; }
   .pricing-api__lead > .t-h6, .pricing-api__free { font-size: 16px; line-height: 22px; }
-  .pricing-api__price { flex: 0 0 auto; }
-  .pricing-api__rate { font-size: 14px; line-height: 22px; }
+  .pricing-api__price { flex: none; width: 100%; text-align: left; white-space: normal; }
+  .pricing-api__rate { font-size: 16px; line-height: 22px; }
 }
 
 .pricing-api-list.is-entering .pricing-api { opacity: 0; translate: 0 20px; }

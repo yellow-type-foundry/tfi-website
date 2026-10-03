@@ -70,9 +70,9 @@ export function Pricing() {
         </header>
         <ul ref={listRef} className="pricing-api-list" aria-label="API pricing">
           {apis.map((api) => (
-            <li key={api.name} className="pricing-api depth-default">
+            <li key={api.name} className="pricing-api">
               <div className="pricing-api__lead">
-                <span className="pricing-api__icon depth-subtle">{api.icon}</span>
+                <span className="pricing-api__icon depth-default">{api.icon}</span>
                 <span className="t-h6">{api.name}</span>
               </div>
               <span className="pricing-api__price">{api.price}</span>
