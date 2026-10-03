@@ -76,12 +76,12 @@
 /* Three layers so nothing clips the shadow: the Figma fade mask covers the whole preview area (556×383
    at y 17), the positioner carries the drop shadow, and the toast itself runs the transition. */
 .sol-toast-anchor {
-  position: absolute; left: 0; top: 17px; width: 556px; height: 383px; pointer-events: none;
+  position: absolute; left: 50%; transform: translateX(-50%); top: 17px; width: 556px; height: 383px; pointer-events: none;
   -webkit-mask-image: url("/assets/solutions/window-mask.svg"); mask-image: url("/assets/solutions/window-mask.svg");
   mask-repeat: no-repeat; mask-mode: alpha; mask-size: 556px 383px;
 }
 .sol-toast-pos {
-  position: absolute; bottom: 75px; left: calc(50% - 0.5px); transform: translateX(-50%);
+  position: absolute; bottom: 75px; left: 50%; transform: translateX(-50%);
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.01)) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.03)) drop-shadow(0 2px 12px rgba(0, 0, 0, 0.02));
 }
 /* Rises in / out with the transitions.dev toast recipe (.t-toast). */
