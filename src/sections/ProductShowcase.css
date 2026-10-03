@@ -1,5 +1,5 @@
 .product-showcase-scroll { width: 100%; padding-block: 200px; padding-inline: max(16px, calc((100% - 1122px) / 2)); background: var(--surface-primary); }
-.product-showcase-tabs { display: flex; align-items: flex-end; justify-content: flex-start; } /* flush with the card's left edge */
+.product-showcase-tabs { display: flex; align-items: flex-end; } /* tabs share the card's width equally */
 .ps-tab { position: relative; display: inline-flex; align-items: center; gap: 12px; padding: 16px 20px; border: 0; border-radius: 16px 16px 0 0; background: transparent; color: var(--content-primary); font-family: var(--font-display); font-size: 20px; font-weight: 600; line-height: 24px; cursor: pointer; }
 /* One surface colour for the active tab and card; registered so it can animate between products */
 @property --ps-tab-bg { syntax: "<color>"; inherits: true; initial-value: #f7f7c3; }
@@ -7,7 +7,7 @@
 .product-showcase-scroll { --ps-switch-dur: 280ms; --ps-switch-ease: ease-in-out; }
 .product-showcase-scroll { --ps-tab-bg: #f7f7c3; transition: --ps-tab-bg var(--ps-switch-dur) var(--ps-switch-ease); }
 .product-showcase-tabs { position: relative; }
-.ps-tab { z-index: 1; transition: transform var(--ps-switch-dur) var(--ps-switch-ease), color var(--ps-switch-dur) var(--ps-switch-ease); }
+.ps-tab { z-index: 1; flex: 1 1 0; justify-content: center; transition: transform var(--ps-switch-dur) var(--ps-switch-ease), color var(--ps-switch-dur) var(--ps-switch-ease); }
 .ps-tab:not(.ps-tab--active) { transform: translateY(2px); color: var(--content-tertiary); } /* unselected labels sit a touch lower, muted */
 @media (hover: hover) {
   .ps-tab:not(.ps-tab--active):hover { color: var(--content-secondary); transform: translateY(1px); transition-duration: 150ms; }
@@ -19,14 +19,16 @@
 .ps-tab-indicator::before { left: -16px; background: radial-gradient(circle at 0 0, transparent 15.5px, var(--ps-tab-bg) 16px); transition: opacity var(--ps-switch-dur) var(--ps-switch-ease); }
 /* The first tab sits on the card's corner: square that corner and drop the tab's outer curve */
 .product-showcase[data-first-active] .ps-tab-indicator::before { opacity: 0; }
-.ps-tab-indicator::after { right: -16px; background: radial-gradient(circle at 100% 0, transparent 15.5px, var(--ps-tab-bg) 16px); }
+.product-showcase[data-last-active] .ps-tab-indicator::after { opacity: 0; }
+.ps-tab-indicator::after { right: -16px; background: radial-gradient(circle at 100% 0, transparent 15.5px, var(--ps-tab-bg) 16px); transition: opacity var(--ps-switch-dur) var(--ps-switch-ease); }
 @media (prefers-reduced-motion: reduce) { .ps-tab-indicator, .product-showcase-scroll, .ps-tab { transition: none; } }
 .ps-tab:focus-visible { outline: 2px solid var(--surface-accent-orange-default); outline-offset: -4px; }
 /* Figma: tabs + card on the left, the UI window standing beside them (top of tabs to bottom of card) */
 .product-showcase { display: flex; align-items: stretch; gap: 20px; }
 .ps-main { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; justify-content: flex-end; }
-.ps-card { --ps-copy-inset: 40px; position: relative; overflow: hidden; flex: 1 0 526px; /* grows to the window height when its transcript runs taller */ border-radius: 16px; background: var(--ps-tab-bg); transition: border-top-left-radius var(--ps-switch-dur) var(--ps-switch-ease); }
+.ps-card { --ps-copy-inset: 40px; position: relative; overflow: hidden; flex: 1 0 526px; /* grows to the window height when its transcript runs taller */ border-radius: 16px; background: var(--ps-tab-bg); transition: border-top-left-radius var(--ps-switch-dur) var(--ps-switch-ease), border-top-right-radius var(--ps-switch-dur) var(--ps-switch-ease); }
 .product-showcase[data-first-active] .ps-card { border-top-left-radius: 0; }
+.product-showcase[data-last-active] .ps-card { border-top-right-radius: 0; }
 /* Each product's art; all stay drawn and cross-fade, hidden once faded out */
 .ps-art { opacity: 0; visibility: hidden; transition: opacity var(--ps-switch-dur) var(--ps-switch-ease), visibility 0s linear var(--ps-switch-dur); }
 .ps-art--active { opacity: 1; visibility: visible; transition: opacity var(--ps-switch-dur) var(--ps-switch-ease), visibility 0s; }
@@ -80,8 +82,12 @@ canvas.ps-card__bg { opacity: 0; transition: opacity var(--ps-switch-dur) var(--
   padding: 12px 20px; border: 1px solid var(--surface-accent-orange-default); border-radius: 100px;
   background: var(--surface-accent-orange-default); color: var(--content-inverse);
   font-size: 16px; line-height: 1.25; font-weight: 500; white-space: nowrap;
-  transition: filter 120ms ease, background-color 120ms ease;
+  transition: filter 120ms ease, background-color 120ms ease, width var(--ps-morph-dur) var(--ps-morph-ease);
+  overflow: hidden; /* the new label never spills out while the width catches up */
 }
+.ps-cta__label { white-space: nowrap; }
+.product-showcase[data-switched] .ps-cta__label { animation: ps-window-content-in var(--ps-morph-dur) var(--ps-morph-ease); }
+@media (prefers-reduced-motion: reduce) { .ps-cta { transition: filter 120ms ease; } .product-showcase[data-switched] .ps-cta__label { animation: none; } }
 .ps-cta:hover { filter: brightness(1.25); }
 
 .ps-cta:active { filter: brightness(0.9); }
@@ -102,6 +108,20 @@ canvas.ps-card__bg { opacity: 0; transition: opacity var(--ps-switch-dur) var(--
 .ps-chat__answer { transition: padding var(--ps-morph-dur) var(--ps-morph-ease); }
 .product-showcase[data-switched] .ps-window__live .ps-morph__inner { animation: ps-window-content-in var(--ps-morph-dur) var(--ps-morph-ease); }
 @keyframes ps-window-content-in { from { opacity: 0; filter: blur(2px); } }
+/* Transcript playback (see useTranscriptPlayer): the prompt types out character by character; the
+   steps use transitions.dev Texts reveal, retuned to a slower stagger so they arrive one by one; the
+   "Your agent" caption shimmers while they do (Shimmer text); the answer uses Streaming text. Before
+   replaying, everything fades out in place. */
+.ps-type-c { opacity: 0; }
+.ps-type-c.is-in { opacity: 1; }
+/* Steps are revealed one at a time by the player: not-yet-arrived steps take no space, so the panel
+   grows as each arrives; a step's .is-shown is Texts reveal's resting state applied per line */
+.ps-steps__list.t-stagger { --stagger-dur: 380ms; }
+.ps-steps__list > li.is-pending { display: none; }
+.ps-steps__list > .t-stagger-line.is-shown { opacity: 1; transform: translateY(0); filter: blur(0); }
+.ps-steps__list.is-hiding > .t-stagger-line.is-shown { opacity: 0; transform: translateY(0); filter: blur(0); transition: opacity 200ms ease, transform 0s linear, filter 0s linear; } /* Texts reveal's exit */
+.ps-shimmer { --shimmer-base: var(--content-tertiary); --shimmer-highlight: var(--content-primary); }
+.ps-chat.is-hiding .ps-type-c, .ps-chat.is-hiding .t-stream-w { opacity: 0; transition: opacity 200ms ease; }
 @media (prefers-reduced-motion: reduce) {
   .ps-morph, .ps-chat__answer { transition: none; }
   .product-showcase[data-switched] .ps-window__live .ps-morph__inner { animation: none; }

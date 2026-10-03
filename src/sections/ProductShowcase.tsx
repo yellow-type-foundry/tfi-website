@@ -3,6 +3,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import { BrowserWindow } from "../components/BrowserWindow";
 import { VectorLoop } from "../components/VectorLoop";
 import { Icon } from "../components/Icon";
+import { useInView } from "../hooks/useLoop";
 import "./ProductShowcase.css";
 
 /* Local stand-ins for the SF Symbols used in the agent step lists (link, shield.fill, lock.fill, macwindow, ellipsis). */
@@ -154,9 +155,11 @@ function Morph({ id, className, innerClassName = "", children }: { id: string; c
       measured = { container: container.clientWidth, inner: height };
     };
     fit(outer.style.height !== ""); // morph when the contents change, snap on first paint
-    // Re-fit (snapping) only when the layout really changed: fonts loading, responsive reflow
+    // Re-fit when the layout really changed: snap if the column resized (responsive reflow), animate
+    // if only the contents grew or shrank (steps arriving during playback)
     const observer = new ResizeObserver(() => {
-      if (container.clientWidth !== measured.container || inner.offsetHeight !== measured.inner) fit(false);
+      if (container.clientWidth !== measured.container) fit(false);
+      else if (inner.offsetHeight !== measured.inner) fit(true);
     });
     observer.observe(container);
     observer.observe(inner);
@@ -169,17 +172,146 @@ function Morph({ id, className, innerClassName = "", children }: { id: string; c
   );
 }
 
-/** Chat transcript inside the mock browser: user prompt, the agent's steps, and the final answer.
-    Each part is a Morph, so switching products reshapes the same bubble, panel and answer. */
-function AgentChat({ id, chat }: { id: string; chat: ChatContent }) {
-  // compact: the updated Figma transcripts (Search, Browser) with a tighter answer.
+/** The card's call to action: one button for every product whose width morphs to fit the next label
+    (same timing as the window), while the new label fades in. */
+function MorphCta({ label }: { label: string }) {
+  const buttonRef = useRef<HTMLAnchorElement>(null);
+  const labelRef = useRef<HTMLSpanElement>(null);
+  useLayoutEffect(() => {
+    const button = buttonRef.current;
+    const text = labelRef.current;
+    if (!button || !text) return;
+    const fit = (animate: boolean) => {
+      const from = button.getBoundingClientRect().width;
+      button.style.transition = "none";
+      button.style.width = "";
+      const to = button.getBoundingClientRect().width; // natural width for this label
+      if (animate) button.style.width = `${from}px`;
+      void button.offsetWidth;
+      button.style.transition = "";
+      button.style.width = `${to}px`;
+    };
+    fit(button.style.width !== "");
+    let textWidth = text.offsetWidth;
+    const observer = new ResizeObserver(() => { // web fonts loading: snap to the new natural width
+      if (text.offsetWidth !== textWidth) { textWidth = text.offsetWidth; fit(false); }
+    });
+    observer.observe(text);
+    return () => observer.disconnect();
+  }, [label]);
   return (
-    <div className={`ps-chat${chat.compact ? " ps-chat--compact" : ""}`} data-product={id}>
+    <a ref={buttonRef} className="ps-cta" href="#">
+      <span ref={labelRef} key={label} className="ps-cta__label">{label}</span>
+    </a>
+  );
+}
+
+/** Wraps every character ("char") or word ("word") of an element's text in a span with `className`,
+    once, and returns the spans. Nested markup (links) is kept; whitespace between words stays text. */
+function wrapText(el: Element | null, unit: "char" | "word", className: string): HTMLElement[] {
+  if (!el) return [];
+  if (!el.hasAttribute("data-wrapped")) {
+    el.setAttribute("data-wrapped", "");
+    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    const nodes: Text[] = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode as Text);
+    for (const node of nodes) {
+      const frag = document.createDocumentFragment();
+      const parts = unit === "char" ? Array.from(node.data) : node.data.split(/(\s+)/);
+      for (const part of parts) {
+        if (!part) continue;
+        if (unit === "word" && /^\s+$/.test(part)) { frag.append(part); continue; }
+        const span = document.createElement("span");
+        span.className = className;
+        span.textContent = part;
+        frag.append(span);
+      }
+      node.replaceWith(frag);
+    }
+  }
+  return Array.from(el.querySelectorAll<HTMLElement>(`.${className}`));
+}
+
+/**
+ * Plays a transcript like the Solutions cards: the prompt types out (as Research's question does),
+ * the "Your agent" caption shimmers while the steps rise in (transitions.dev Shimmer text + Texts
+ * reveal), then the answer streams in word by word (transitions.dev Streaming text). It holds,
+ * fades out and replays. Not playing (off screen, reduced motion): the full transcript shows.
+ * A new `key` (another product) restarts it on the new contents.
+ */
+function useTranscriptPlayer(rootRef: React.RefObject<HTMLDivElement | null>, inView: boolean, key: string) {
+  useLayoutEffect(() => {
+    const root = rootRef.current;
+    if (!root || key === "static") return; // the hidden sizing copies just show their text
+    const playing = inView && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const chars = wrapText(root.querySelector(".ps-msg .ps-morph__inner"), "char", "ps-type-c");
+    const words = wrapText(root.querySelector(".ps-answer .ps-morph__inner p"), "word", "t-stream-w");
+    const list = root.querySelector<HTMLElement>(".ps-steps__list");
+    const items = list ? Array.from(list.children) : [];
+    list?.classList.add("t-stagger");
+    items.forEach((li) => li.classList.add("t-stagger-line"));
+    const caption = root.querySelector<HTMLElement>(".ps-chat__caption span");
+    const shimmer = (on: boolean) => caption?.classList.toggle("t-shimmer", on);
+    const showAll = () => {
+      root.classList.remove("is-hiding");
+      chars.forEach((c) => c.classList.add("is-in"));
+      words.forEach((w) => w.classList.add("is-in"));
+      list?.classList.remove("is-hiding");
+      items.forEach((li) => { li.classList.remove("is-pending"); li.classList.add("is-shown"); });
+      shimmer(false);
+    };
+    if (!playing) { showAll(); return; }
+
+    const timers: number[] = [];
+    const at = (t: number, fn: () => void) => timers.push(window.setTimeout(fn, t));
+    const run = () => {
+      // Wipe without transitions (Streaming text's replay note), then play forward
+      words.forEach((w) => { w.style.transition = "none"; w.classList.remove("is-in"); });
+      void root.offsetWidth;
+      words.forEach((w) => { w.style.transition = ""; });
+      chars.forEach((c) => c.classList.remove("is-in"));
+      list?.classList.remove("is-hiding");
+      items.forEach((li) => { li.classList.add("is-pending"); li.classList.remove("is-shown"); }); // panel collapses
+      root.classList.remove("is-hiding");
+      shimmer(false);
+
+      let t = 150;
+      chars.forEach((c, i) => at(t + i * 18, () => c.classList.add("is-in"))); // typing
+      t += chars.length * 18 + 250;
+      at(t, () => shimmer(true));
+      // Each step takes its place (the panel grows to fit, via Morph) and rises in
+      items.forEach((li, i) => at(t + i * 260, () => {
+        li.classList.remove("is-pending");
+        void (li as HTMLElement).offsetWidth;
+        li.classList.add("is-shown");
+      }));
+      t += Math.max(items.length - 1, 0) * 260 + 400;
+      at(t, () => shimmer(false));
+      words.forEach((w, i) => at(t + i * 60, () => w.classList.add("is-in"))); // answer streams in
+      t += words.length * 60 + 350;
+      at(t + 3000, () => { root.classList.add("is-hiding"); list?.classList.add("is-hiding"); });
+      at(t + 3300, run);
+    };
+    run();
+    return () => { timers.forEach(clearTimeout); showAll(); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inView, key]);
+}
+
+/** Chat transcript inside the mock browser: user prompt, the agent's steps, and the final answer.
+    Each part is a Morph, so switching products reshapes the same bubble, panel and answer; with
+    `inView` set, the transcript plays (see useTranscriptPlayer). */
+function AgentChat({ id, chat, inView }: { id: string; chat: ChatContent; inView?: boolean }) {
+  // compact: the updated Figma transcripts (Search, Browser) with a tighter answer.
+  const rootRef = useRef<HTMLDivElement>(null);
+  useTranscriptPlayer(rootRef, inView === true, inView === undefined ? "static" : id);
+  return (
+    <div ref={rootRef} className={`ps-chat${chat.compact ? " ps-chat--compact" : ""}`} data-product={id}>
       <div className="ps-chat__prompt">
         <Morph id={id} className="ps-msg" innerClassName="t-body-s">{chat.prompt}</Morph>
       </div>
       <div className="ps-chat__agent">
-        <p className="ps-chat__caption t-body-s">Your agent</p>
+        <p className="ps-chat__caption t-body-s"><span className="ps-shimmer" data-text="Your agent">Your agent</span></p>
         <Morph id={id} className="ps-steps depth-default">{chat.steps}</Morph>
       </div>
       <div className="ps-chat__answer">
@@ -292,6 +424,7 @@ function artStyle({ tone, bg }: Product): CSSProperties {
 
 export function ProductShowcase() {
   const [active, setActiveState] = useState(products[0].id);
+  const [sectionRef, inView] = useInView<HTMLElement>();
   const [switched, setSwitched] = useState(false); // headings only animate once the visitor switches tabs
   const setActive = (id: string) => { setActiveState(id); setSwitched(true); };
   const product = products.find((p) => p.id === active) ?? products[0];
@@ -327,8 +460,8 @@ export function ProductShowcase() {
   }, [active]);
 
   return (
-    <section className="product-showcase-scroll" id="products" aria-label="TinyFish APIs">
-      <div className="product-showcase" data-active={active} data-first-active={active === products[0].id || undefined} data-switched={switched || undefined}>
+    <section ref={sectionRef} className="product-showcase-scroll" id="products" aria-label="TinyFish APIs">
+      <div className="product-showcase" data-active={active} data-first-active={active === products[0].id || undefined} data-last-active={active === products[products.length - 1].id || undefined} data-switched={switched || undefined}>
         <div className="ps-main">
           <div ref={tabsRef} className="product-showcase-tabs" role="tablist" aria-label="APIs">
             <span ref={indicatorRef} className="ps-tab-indicator" aria-hidden />
@@ -355,12 +488,12 @@ export function ProductShowcase() {
               </div>
             ))}
             <div className="ps-card__layout">
-              <div className="ps-intro" key={product.id}>
-                <div className="ps-intro__copy">
+              <div className="ps-intro">
+                <div className="ps-intro__copy" key={product.id}>
                   <h2 className="t-h4">{product.title}</h2>
                   <p className="ps-intro__desc t-body-l">{product.description}</p>
                 </div>
-                <a className="ps-cta" href="#">{product.cta}</a>
+                <MorphCta label={product.cta} />
               </div>
             </div>
           </div>
@@ -372,7 +505,7 @@ export function ProductShowcase() {
             {products.map((p) => (
               <div key={p.id} className="ps-window__sizer" aria-hidden><AgentChat id={p.id} chat={p.chat} /></div>
             ))}
-            <div className="ps-window__live"><AgentChat id={product.id} chat={product.chat} /></div>
+            <div className="ps-window__live"><AgentChat id={product.id} chat={product.chat} inView={inView} /></div>
           </div>
         </BrowserWindow>
       </div>
