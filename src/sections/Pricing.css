@@ -13,9 +13,12 @@
   background: var(--surface-accent-neutral-subtle); color: var(--content-primary);
   text-align: center; white-space: nowrap; line-height: 1.05;
 }
-.pricing-pill__head { padding: 16px 64px 16px; border-radius: 24px; }
+.pricing-pill__head { padding: 16px 64px 4px; border-radius: 24px; }
+/* The tab's surface stays over the head's (a seamless join); only the head's text is lifted above it,
+   so descenders (the g in pricing) aren't covered */
+.pricing-pill__text { position: relative; z-index: 2; }
 .pricing-pill__tab-row { width: 100%; display: flex; align-items: flex-start; justify-content: center; padding: 0 80px; }
-.pricing-pill__tab { padding: 4px 32px 16px; border-radius: 0 0 24px 24px; }
+.pricing-pill__tab { padding: 0 32px 16px; border-radius: 0 0 24px 24px; }
 .pricing-pill__cutout { flex-shrink: 0; }
 .pricing-pill__cutout--left { transform: scaleX(-1); }
 

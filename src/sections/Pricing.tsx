@@ -56,7 +56,7 @@ export function Pricing() {
       <div className="pricing__content">
         <header className="pricing__header">
           <h1 className="pricing-pill">
-            <span className="pricing-pill__head depth-inner-strong t-h1">Simple pricing for</span>
+            <span className="pricing-pill__head depth-inner-strong t-h1"><span className="pricing-pill__text">Simple pricing for</span></span>
             <span className="pricing-pill__tab-row">
               <img className="pricing-pill__cutout pricing-pill__cutout--left" src="/assets/pricing/cutout-left.svg" width={16} height={16} alt="" />
               <span className="pricing-pill__tab depth-inner-strong depth-join t-h1">real web work.</span>

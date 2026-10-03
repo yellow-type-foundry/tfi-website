@@ -12,6 +12,9 @@
   padding: 16px 28px 24px; border-radius: 24px; background: var(--surface-secondary);
 }
 .cs-pill__head { padding-bottom: 4px; }
+/* The tab's surface stays over the head's (a seamless join); only the head's text is lifted above it,
+   so descenders (p, y) aren't covered */
+.cs-pill__head > .cs-pill__title { position: relative; z-index: 2; }
 .cs-pill__title { text-align: center; white-space: nowrap; font-size: clamp(20px, 4.5vw, 72px); line-height: 1.05; }
 .cs-pill__tab.cs-pill__tab--title { padding: 0 32px 16px; border-radius: 0 0 24px 24px; }
 .cs-pill__tab-row { width: 100%; display: flex; align-items: flex-start; justify-content: center; padding: 0 80px; }
