@@ -61,3 +61,20 @@
   .use-with .heading-pill__tab-row:last-child p { font-size: 16px; line-height: 1.4; text-wrap: balance; }
   .use-with__actions { flex-wrap: wrap; justify-content: center; }
 }
+
+@media (max-width: 640px) {
+  .use-with__pill { filter: none; }
+  .use-with .heading-pill__cutout { display: none; }
+  .use-with .heading-pill__head,
+  .use-with .heading-pill__tab { background: transparent; box-shadow: none; border-radius: 0; padding-inline: 0; }
+  .use-with .heading-pill__head::before,
+  .use-with .heading-pill__head::after,
+  .use-with .heading-pill__tab::before,
+  .use-with .heading-pill__tab::after { display: none; }
+  .use-with .heading-pill__tab-row,
+  .use-with .use-with__code-row,
+  .use-with .heading-pill__tab-row:last-child { width: 100%; }
+  .use-with__line { font-size: min(48px, calc(100cqw / 10.5)); }
+  .use-with .heading-pill__tab-row:last-child { margin-top: 16px; }
+  .use-with .heading-pill__tab-row:last-child p { font-size: 18px; line-height: 1.5; }
+}

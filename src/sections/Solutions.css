@@ -234,5 +234,32 @@
 
 @media (max-width: 640px) {
   .solutions__header { width: 100%; container-type: inline-size; white-space: normal; }
-  .solutions__header > h1, .solutions__header > p { display: none; }
+  .solutions__header > h1 { font-size: min(72px, calc((100cqw - 72px) / 8.2)); line-height: 1.05; }
+}
+
+.feature-card__preview-stage { position: relative; width: 100%; height: 100%; }
+@media (max-width: 640px) {
+  .feature-card { container-type: inline-size; }
+  .feature-card__preview { height: calc(380px * min(1, (100cqw - 32px) / 400px)); }
+  .feature-card__preview-stage {
+    position: absolute; width: 556px; height: 380px; left: 50%; top: 0;
+    transform: translateX(-50%) scale(min(1, (100cqw - 32px) / 400px));
+    transform-origin: center top;
+  }
+}
+
+@media (max-width: 640px) {
+  .sol-toast-pos { transform: translateX(-50%) scale(1.2); transform-origin: center bottom; }
+}
+
+@media (max-width: 640px) {
+  .feature-card__content p { text-wrap: balance; }
+}
+
+@media (max-width: 640px) {
+  .sol-monitor-description { white-space: normal; }
+}
+
+@media (max-width: 640px) {
+  .feature-card__content { padding-inline: 32px; }
 }

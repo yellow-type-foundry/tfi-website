@@ -79,7 +79,7 @@ const searchResults = [
   { source: "baymarket.com • updated today", title: "Aurora 14 Laptop (2026)", text: "$1,199.00 after instant rebate. Limited stock." },
   { source: "havenshop.com • · updated 5 days ago", title: "Aurora 14 Laptop", text: "$1,299.00. Ships in 2 to 3 business days." },
 ];
-const searchAnswer = <>Baymarket dropped to $1,199 today.<br />The other two are holding at $1,299.</>;
+const searchAnswer = <>Baymarket dropped to $1,199 today.<br className="ps-answer-break" /> The other two are holding at $1,299.</>;
 
 const browserSteps: Step[] = [
   { icon: "fish", accent: true, label: <><strong>Browser</strong> · secure.carrier-portal.com</>, detail: "session live" },
