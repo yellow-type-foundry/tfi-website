@@ -1,5 +1,5 @@
 .product-showcase-scroll { width: 100%; padding-block: 200px; padding-inline: max(16px, calc((100% - 1122px) / 2)); background: var(--surface-primary); }
-.product-showcase-tabs { display: flex; align-items: flex-end; } /* tabs share the card's width equally */
+.product-showcase-tabs { display: flex; align-items: flex-end; padding-inline: 40px; } /* equal tabs, inset to the card's copy line */
 .ps-tab { position: relative; display: inline-flex; align-items: center; gap: 12px; padding: 16px 20px; border: 0; border-radius: 16px 16px 0 0; background: transparent; color: var(--content-primary); font-family: var(--font-display); font-size: 20px; font-weight: 600; line-height: 24px; cursor: pointer; }
 /* One surface colour for the active tab and card; registered so it can animate between products */
 @property --ps-tab-bg { syntax: "<color>"; inherits: true; initial-value: #f7f7c3; }
@@ -16,19 +16,14 @@
 .ps-tab-indicator { position: absolute; left: 0; bottom: 0; border-radius: 16px 16px 0 0; background: var(--ps-tab-bg); pointer-events: none; }
 .ps-tab-indicator { transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1), width 420ms cubic-bezier(0.22, 1, 0.36, 1); }
 .ps-tab-indicator::before, .ps-tab-indicator::after { content: ""; position: absolute; bottom: 0; width: 16px; height: 16px; }
-.ps-tab-indicator::before { left: -16px; background: radial-gradient(circle at 0 0, transparent 15.5px, var(--ps-tab-bg) 16px); transition: opacity var(--ps-switch-dur) var(--ps-switch-ease); }
-/* The first tab sits on the card's corner: square that corner and drop the tab's outer curve */
-.product-showcase[data-first-active] .ps-tab-indicator::before { opacity: 0; }
-.product-showcase[data-last-active] .ps-tab-indicator::after { opacity: 0; }
-.ps-tab-indicator::after { right: -16px; background: radial-gradient(circle at 100% 0, transparent 15.5px, var(--ps-tab-bg) 16px); transition: opacity var(--ps-switch-dur) var(--ps-switch-ease); }
+.ps-tab-indicator::before { left: -16px; background: radial-gradient(circle at 0 0, transparent 15.5px, var(--ps-tab-bg) 16px); }
+.ps-tab-indicator::after { right: -16px; background: radial-gradient(circle at 100% 0, transparent 15.5px, var(--ps-tab-bg) 16px); }
 @media (prefers-reduced-motion: reduce) { .ps-tab-indicator, .product-showcase-scroll, .ps-tab { transition: none; } }
 .ps-tab:focus-visible { outline: 2px solid var(--surface-accent-orange-default); outline-offset: -4px; }
 /* Figma: tabs + card on the left, the UI window standing beside them (top of tabs to bottom of card) */
 .product-showcase { display: flex; align-items: stretch; gap: 20px; }
 .ps-main { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; justify-content: flex-end; }
-.ps-card { --ps-copy-inset: 40px; position: relative; overflow: hidden; flex: 1 0 526px; /* grows to the window height when its transcript runs taller */ border-radius: 16px; background: var(--ps-tab-bg); transition: border-top-left-radius var(--ps-switch-dur) var(--ps-switch-ease), border-top-right-radius var(--ps-switch-dur) var(--ps-switch-ease); }
-.product-showcase[data-first-active] .ps-card { border-top-left-radius: 0; }
-.product-showcase[data-last-active] .ps-card { border-top-right-radius: 0; }
+.ps-card { --ps-copy-inset: 40px; position: relative; overflow: hidden; flex: 1 0 526px; min-height: calc(var(--ps-full-h, 0px) - var(--ps-tabs-h, 0px)); /* tall enough for the longest transcript beside it */ border-radius: 16px; background: var(--ps-tab-bg); }
 /* Each product's art; all stay drawn and cross-fade, hidden once faded out */
 /* Each layer carries its animation's background colour across the whole card, so colour and art
    cross-fade together as one layer and never drift from the card colour */
@@ -42,10 +37,10 @@
 @media (max-width: 1100px) {
   .product-showcase { flex-direction: column; align-items: center; }
   .ps-main { width: 100%; flex: none; }
-  .browser.ps-window { width: 100%; max-width: 560px; }
+  .browser.ps-window { width: 100%; max-width: 560px; align-self: center; }
 }
 @media (max-width: 640px) {
-  .product-showcase-tabs { overflow-x: auto; }
+  .product-showcase-tabs { overflow-x: auto; padding-inline: 16px; }
   .ps-tab { flex-shrink: 0; font-size: 16px; padding: 14px 12px; gap: 6px; }
   .ps-card { --ps-copy-inset: 24px; }
   .ps-card__layout { padding: 28px 24px; }
@@ -102,13 +97,18 @@ canvas.ps-card__bg { opacity: 0; transition: opacity var(--ps-switch-dur) var(--
 .ps-cta:focus-visible { outline: 2px solid var(--surface-accent-orange-default); outline-offset: 2px; }
 
 /* Mock browser window (shared BrowserWindow chrome) */
-.browser.ps-window { width: 440px; max-width: none; flex-shrink: 0; }
-.ps-window .browser__body { flex: 1 0 auto; display: flex; flex-direction: column; }
+/* Window height per product (set by useWindowHeight): the longest transcript (Search) spans tabs + card;
+   the others match the card, aligned to its bottom. It morphs between them. */
+.browser.ps-window { width: 440px; max-width: none; flex-shrink: 0; align-self: flex-end; height: var(--ps-window-h, auto); transition: height var(--ps-morph-dur) var(--ps-morph-ease); }
+/* ABC Solar text in the window is never below 15px (mono details and the display-face answer keep theirs) */
+.ps-window :is(.t-body-s, .t-body-xs, .t-label-s, .t-label-xs) { font-size: 15px; line-height: 22px; }
+.ps-window .browser__body { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
 /* The window stays mounted across products. Hidden copies of every transcript share one grid cell with
    the live one, so the window takes the tallest one's height and the live chat panel stretches to fill it. */
-.ps-window__viewport { flex: 1 0 auto; display: grid; grid-template-columns: minmax(0, 1fr); }
-.ps-window__sizer, .ps-window__live { grid-area: 1 / 1; display: flex; flex-direction: column; }
-.ps-window__sizer { visibility: hidden; }
+.ps-window__viewport { position: relative; flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+/* Hidden copies of every transcript, only for measuring each one's natural height */
+.ps-window__sizer { position: absolute; top: 0; left: 0; right: 0; visibility: hidden; display: flex; flex-direction: column; }
+.ps-window__live { flex: 1 0 auto; display: flex; flex-direction: column; }
 .ps-window__live > .ps-chat { flex: 1 0 auto; }
 /* Morphing parts: the bubble, steps panel and answer reshape to the next product while its text fades in */
 .product-showcase { --ps-morph-dur: 450ms; --ps-morph-ease: cubic-bezier(0.22, 1, 0.36, 1); }
@@ -131,7 +131,7 @@ canvas.ps-card__bg { opacity: 0; transition: opacity var(--ps-switch-dur) var(--
 .ps-shimmer { --shimmer-base: var(--content-tertiary); --shimmer-highlight: var(--content-primary); }
 .ps-chat.is-hiding .ps-type-c, .ps-chat.is-hiding .t-stream-w { opacity: 0; transition: opacity 200ms ease; }
 @media (prefers-reduced-motion: reduce) {
-  .ps-morph, .ps-chat__answer { transition: none; }
+  .ps-morph, .ps-chat__answer, .browser.ps-window { transition: none; }
   .product-showcase[data-switched] .ps-window__live .ps-morph__inner { animation: none; }
 }
 
@@ -172,7 +172,7 @@ canvas.ps-card__bg { opacity: 0; transition: opacity var(--ps-switch-dur) var(--
 
 .ps-step--block { flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 0; }
 .ps-badge {
-  display: inline-flex; align-items: center; height: 20px; padding: 2px 8px; margin-bottom: 6px;
+  display: inline-flex; align-items: center; padding: 2px 8px; margin-bottom: 6px;
   border-radius: 4px; background: var(--surface-accent-neutral-default); color: var(--content-primary); white-space: nowrap;
 }
 .ps-markdown { margin: 0; width: 100%; white-space: pre-wrap; color: var(--content-tertiary); }

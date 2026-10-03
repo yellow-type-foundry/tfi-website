@@ -215,8 +215,17 @@ export function CustomerStories() {
     <section className="customer-stories" id="customer-stories">
       <header className="customer-stories__header">
         <div className="cs-pill">
-          <div className="cs-pill__head depth-inner-strong">
-            <h1 className="t-h1"><span>Trusted by 200K developers</span><span>and the team behind them</span></h1>
+          {/* Stepped title: the longer first line in the block, the second in a tab with its own cutouts */}
+          <h1 className="visually-hidden">Trusted by 200K developers and the team behind them</h1>
+          <div className="cs-pill__head depth-inner-strong" aria-hidden>
+            <p className="cs-pill__title t-h1">Trusted by 200K developers and</p>
+          </div>
+          <div className="cs-pill__tab-row" aria-hidden>
+            <img className="cs-pill__cutout cs-pill__cutout--left" src="/assets/customer-stories/cutout-left.svg" width={16} height={16} alt="" />
+            <div className="cs-pill__tab cs-pill__tab--title depth-inner-strong depth-join">
+              <p className="cs-pill__title t-h1">the team behind them</p>
+            </div>
+            <img className="cs-pill__cutout" src="/assets/customer-stories/cutout-right.svg" width={16} height={16} alt="" />
           </div>
           <div className="cs-pill__tab-row">
             <img className="cs-pill__cutout cs-pill__cutout--left" src="/assets/customer-stories/cutout-left.svg" width={16} height={16} alt="" />

@@ -8,10 +8,15 @@
   .use-with__line { white-space: normal; font-size: 36px; }
   .use-with .heading-pill__tab { white-space: normal; max-width: 100%; }
 }
-.use-with .heading-pill__head { padding-top: 16px; padding-bottom: 8px; }
+/* Rows sit tight (text line height): the logos overhang their line by --logo-rise instead of
+   stretching it, so the top padding adds that overhang back to keep the logos 16px from the edge.
+   On row 2 the Hermes logo rises into the gap, under "Use with", which has no descenders. */
+.use-with { --logo-rise: 0.32em; }
+.use-with .heading-pill__head { padding-top: 10px; padding-bottom: 4px; } /* + the logo overhang = logos 16px from the top edge */
+.use-with .heading-pill__head .use-with__line { padding-top: var(--logo-rise); } /* em of the heading size */
 .use-with__row { padding: 0; }
-.use-with__title-tab { padding: 0 32px 24px; border-radius: 0 0 24px 24px; }
+.use-with__title-tab { padding: 0 32px 16px; border-radius: 0 0 24px 24px; }
 .use-with__brand { white-space: nowrap; }
-.use-with__chatgpt, .use-with__claude, .use-with__hermes { display: inline-block; position: relative; width: 1.333em; height: 1.333em; margin-right: 0.083em; /* 96px at the 72px heading size */ vertical-align: -0.25em; overflow: hidden; border-radius: 50%; mix-blend-mode: multiply; } /* the animations have white grounds; multiply drops them onto the grey pill */
+.use-with__chatgpt, .use-with__claude, .use-with__hermes { display: inline-block; position: relative; width: 1.333em; height: 1.333em; margin-right: 0.083em; margin-top: calc(var(--logo-rise) * -1); /* 96px at the 72px heading size */ vertical-align: -0.25em; overflow: hidden; border-radius: 50%; mix-blend-mode: multiply; } /* the animations have white grounds; multiply drops them onto the grey pill */
 .use-with__chatgpt-animation, .use-with__claude-animation, .use-with__hermes-animation { position: absolute; width: 125%; height: 125%; left: -12.5%; top: -12.5%; }
 .use-with__actions { display: flex; gap: 12px; }

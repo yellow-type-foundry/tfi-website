@@ -66,8 +66,7 @@ const quoteSteps: Step[] = [
 
 const quotePrompt = (
   <>
-    Get a liability quote from <span className="ps-link">kestrel.com/quote</span>.<br />
-    Consulting firm, five employees, California.
+    Get a liability quote from <span className="ps-link">kestrel.com/quote</span>. Consulting firm, five employees, California.
   </>
 );
 const quoteAnswer = "$1,284 a year with Kestrel. $1M limit, $500 deductible. Nobody wrote a script.";
@@ -444,9 +443,45 @@ function artStyle({ tone, bg }: Product): CSSProperties {
     : { left: "50%", width: bg.width, height: bg.height };
 }
 
+/**
+ * Sizes the window per product from the hidden transcript copies: the tallest transcript gets the full
+ * height (tabs + card) and the card is kept at least that tall beside it; a product whose transcript
+ * fits within the card gets the card's height instead, so it doesn't float in white space.
+ */
+function useWindowHeight(rowRef: React.RefObject<HTMLDivElement | null>, active: string) {
+  useLayoutEffect(() => {
+    const row = rowRef.current;
+    const win = row?.querySelector<HTMLElement>(".ps-window");
+    const viewport = win?.querySelector<HTMLElement>(".ps-window__viewport");
+    const tabs = row?.querySelector<HTMLElement>(".product-showcase-tabs");
+    if (!row || !win || !viewport || !tabs) return;
+    const measure = () => {
+      const chrome = win.offsetHeight - viewport.offsetHeight; // title bar + body padding
+      const natural: Record<string, number> = {};
+      viewport.querySelectorAll<HTMLElement>(".ps-window__sizer").forEach((sizer) => {
+        const id = sizer.querySelector<HTMLElement>(".ps-chat")?.dataset.product;
+        if (id) natural[id] = chrome + sizer.offsetHeight;
+      });
+      const tabsH = tabs.offsetHeight;
+      const full = Math.max(526 + tabsH, ...Object.values(natural));
+      const card = full - tabsH;
+      row.style.setProperty("--ps-tabs-h", `${tabsH}px`);
+      row.style.setProperty("--ps-full-h", `${full}px`);
+      row.style.setProperty("--ps-window-h", `${(natural[active] ?? full) > card ? full : card}px`);
+    };
+    measure();
+    const observer = new ResizeObserver(measure); // fonts loading, responsive reflow
+    viewport.querySelectorAll(".ps-window__sizer").forEach((sizer) => observer.observe(sizer));
+    observer.observe(tabs);
+    return () => observer.disconnect();
+  }, [rowRef, active]);
+}
+
 export function ProductShowcase() {
   const [active, setActiveState] = useState(products[0].id);
   const [sectionRef, inView] = useInView<HTMLElement>();
+  const rowRef = useRef<HTMLDivElement>(null);
+  useWindowHeight(rowRef, active);
   const [switched, setSwitched] = useState(false); // headings only animate once the visitor switches tabs
   const setActive = (id: string) => { setActiveState(id); setSwitched(true); };
   const product = products.find((p) => p.id === active) ?? products[0];
@@ -487,7 +522,7 @@ export function ProductShowcase() {
 
   return (
     <section ref={sectionRef} className="product-showcase-scroll" id="products" aria-label="TinyFish APIs">
-      <div className="product-showcase" data-active={active} data-first-active={active === products[0].id || undefined} data-last-active={active === products[products.length - 1].id || undefined} data-switched={switched || undefined}>
+      <div ref={rowRef} className="product-showcase" data-active={active} data-switched={switched || undefined}>
         <div className="ps-main">
           <div ref={tabsRef} className="product-showcase-tabs" role="tablist" aria-label="APIs">
             <span ref={indicatorRef} className="ps-tab-indicator" aria-hidden />

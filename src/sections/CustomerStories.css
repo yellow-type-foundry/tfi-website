@@ -9,10 +9,11 @@
 .cs-pill { width: 100%; display: flex; flex-direction: column; align-items: center; filter: var(--depth-strong-filter); }
 .cs-pill__head {
   display: flex; flex-direction: column; align-items: center; gap: 4px;
-  padding: 32px 28px 24px; border-radius: 24px; background: var(--surface-secondary);
+  padding: 16px 28px 24px; border-radius: 24px; background: var(--surface-secondary);
 }
-.cs-pill__head h1 { max-width: 100%; text-align: center; font-size: clamp(20px, 4.5vw, 72px); }
-.cs-pill__head h1 span { display: block; white-space: nowrap; }
+.cs-pill__head { padding-bottom: 4px; }
+.cs-pill__title { text-align: center; white-space: nowrap; font-size: clamp(20px, 4.5vw, 72px); line-height: 1.05; }
+.cs-pill__tab.cs-pill__tab--title { padding: 0 32px 16px; border-radius: 0 0 24px 24px; }
 .cs-pill__tab-row { width: 100%; display: flex; align-items: flex-start; justify-content: center; padding: 0 80px; }
 .cs-pill__tab {
   display: flex; flex-direction: column; gap: 4px;
