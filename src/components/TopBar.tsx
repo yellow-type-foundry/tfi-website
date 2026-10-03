@@ -61,10 +61,10 @@ export function TopBar({ className = "", label = "Primary" }: { className?: stri
           <path className="topbar__toggle-line topbar__toggle-line--bottom" d="M4 18h16" />
         </svg>
       </button>
-      <nav id={menuId} className={`topbar__menu${open ? " is-open" : ""}`} aria-label={`${label} menu`} inert={!open} onClick={(event) => { if ((event.target as HTMLElement).closest("a")) setOpen(false); }}>
-        {NAV_LINKS.map((link) => <a key={link} className="t-h6" href={`#${link.toLowerCase()}`}>{link}</a>)}
-        <a className="t-h6" href="#contact">Contact</a>
-        <div className="topbar__menu-ctas">
+      <nav id={menuId} className={`topbar__menu${open ? " is-open" : ""}`} style={{ "--n": NAV_LINKS.length + 2 } as CSSProperties} aria-label={`${label} menu`} inert={!open} onClick={(event) => { if ((event.target as HTMLElement).closest("a")) setOpen(false); }}>
+        {/* --i orders the staggered entrance (and the reversed exit); see TopBar.css */}
+        {[...NAV_LINKS, "Contact"].map((link, i) => <a key={link} className="topbar__menu-item t-h6" style={{ "--i": i } as CSSProperties} href={`#${link.toLowerCase()}`}>{link}</a>)}
+        <div className="topbar__menu-item topbar__menu-ctas" style={{ "--i": NAV_LINKS.length + 1 } as CSSProperties}>
           <Button variant="outline" size="l" href="#login">Login</Button>
           <Button variant="black" size="l">Sign Up</Button>
         </div>
@@ -72,4 +72,4 @@ export function TopBar({ className = "", label = "Primary" }: { className?: stri
     </header>
   );
 }
-import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties } from "react";

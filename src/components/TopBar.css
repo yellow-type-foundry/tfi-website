@@ -27,11 +27,23 @@
     max-height: calc(100svh - var(--menu-top, 80px) - 8px - var(--menu-inset, 8px)); overflow-y: auto; /* hugs its links; scrolls only if the screen is too short (see TopBar.tsx) */
     border-radius: 24px; background: var(--surface-primary); filter: var(--depth-strong-filter);
     opacity: 0; visibility: hidden; transform: translateY(-12px); pointer-events: none;
-    transition: transform 240ms var(--ease-out), opacity 200ms var(--ease-out), visibility 0s 240ms;
+    /* Closing: the panel waits for its items to leave (reverse stagger below), then fades */
+    transition: transform 240ms var(--ease-out) 160ms, opacity 200ms var(--ease-out) 160ms, visibility 0s 360ms;
   }
   .topbar__menu.is-open {
     opacity: 1; visibility: visible; transform: translateY(0); pointer-events: auto;
-    transition-delay: 0s;
+    transition: transform 240ms var(--ease-out), opacity 200ms var(--ease-out), visibility 0s;
+  }
+  /* Items: staggered in from the top on open, out from the bottom on close */
+  .topbar__menu-item {
+    opacity: 0; transform: translateY(-8px);
+    transition: opacity 140ms var(--ease-out), transform 140ms var(--ease-out);
+    transition-delay: calc((var(--n) - 1 - var(--i)) * 25ms);
+  }
+  .topbar__menu.is-open .topbar__menu-item {
+    opacity: 1; transform: none;
+    transition: opacity 280ms var(--ease-out), transform 320ms var(--ease-out);
+    transition-delay: calc(80ms + var(--i) * 40ms);
   }
   .topbar__menu > a:not(.btn) { padding: 10px 12px; } /* Heading/H6 links */
   /* Login and Sign Up side by side, sharing the row */
@@ -48,5 +60,5 @@
 .topbar__toggle-icon.is-open .topbar__toggle-line--bottom { transform: rotate(-45deg) translateY(-6px); }
 @media (prefers-reduced-motion: reduce) {
   .topbar__menu { transition: none; transform: none; }
-  .topbar__toggle-line { transition: none; }
+  .topbar__toggle-line, .topbar__menu-item, .topbar__menu.is-open .topbar__menu-item { transition: none; }
 }
