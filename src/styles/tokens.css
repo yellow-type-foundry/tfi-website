@@ -3,13 +3,6 @@
   /* Colours, spacing, radius and text styles come from figma-tokens.css (generated from the
      Figma variables). This file only holds what the design system doesn't define. */
 
-  /* Fills used in the design that aren't bound to a Figma variable */
-  --surface-page: #f1f1e9; /* page background */
-  --surface-browser-chrome: #f2f2ee; /* mock browser windows */
-  --surface-showcase-search: #f7f7c1; /* Search API card */
-  --surface-showcase-landscape: #e8e9dd; /* Fetch / Browser / Search cards */
-  --surface-solutions-wash: #f8f7c3; /* behind the Solutions wave art */
-
   /* Figma effect styles Surface/Strong, Default, Subtle, composed from the Effect/Depth colours:
      outer = drop shadows, inner = inset overlay */
   --depth-strong-outer: 0 2px 4px var(--effect-depth-outer-shadow), 0 -2px 3px var(--effect-depth-outer-highlight), 0 -2px 4px var(--effect-depth-outer-highlight-soft);

@@ -1,5 +1,5 @@
 .pricing {
-  background: var(--surface-primary);
+  background: var(--background-primary);
   display: flex; flex-direction: column; align-items: center;
   padding: 80px var(--gutter);
 }
@@ -10,7 +10,7 @@
 .pricing-pill { width: 100%; display: flex; flex-direction: column; align-items: center; filter: var(--depth-strong-filter); }
 .pricing-pill__head, .pricing-pill__tab {
   display: flex; flex-direction: column; align-items: center; gap: 4px;
-  background: var(--surface-accent-neutral-subtle); color: var(--content-primary);
+  background: var(--surface-secondary); color: var(--content-primary);
   text-align: center; white-space: nowrap; line-height: 1.05;
 }
 .pricing-pill__head { padding: 16px 64px 4px; border-radius: 24px; }
@@ -29,7 +29,7 @@
 .pricing-api-list { width: 551px; /* matches the "real web work." row above */ max-width: 100%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 .pricing-api {
   display: flex; flex-direction: column; align-items: flex-start; gap: 4px; min-width: 0;
-  padding: 24px; border-radius: 24px; background: var(--surface-accent-neutral-subtle);
+  padding: 24px; border-radius: 24px; background: var(--surface-secondary);
 }
 .pricing-api__lead { width: 100%; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 16px; color: var(--content-primary); }
 .pricing-api__icon {

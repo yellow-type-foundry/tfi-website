@@ -1,4 +1,4 @@
-.final-cta { background: var(--surface-primary); padding: 16px; }
+.final-cta { background: var(--background-primary); padding: 16px; }
 .final-cta__card {
   position: relative; height: calc((100vh - 32px) * 0.95); height: calc((100svh - 32px) * 0.95);
   border-radius: 32px; overflow: hidden;
@@ -14,7 +14,7 @@
 
 /* Raised heading block: Surface/Strong outer shadow traced around the combined shape. */
 .final-cta__pill { width: 100%; display: flex; flex-direction: column; align-items: center; filter: var(--depth-strong-filter); }
-.final-cta__surface { position: relative; background: var(--surface-accent-neutral-subtle); color: var(--content-primary); text-align: center; white-space: nowrap; }
+.final-cta__surface { position: relative; background: var(--surface-secondary); color: var(--content-primary); text-align: center; white-space: nowrap; }
 .final-cta__surface::after {
   content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
   box-shadow: var(--depth-strong-inner), var(--depth-default-inner);

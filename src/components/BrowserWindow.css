@@ -1,10 +1,10 @@
 .browser {
   display: flex; flex-direction: column; width: 400px; max-width: 440px;
-  background: var(--surface-browser-chrome); border-radius: 18px; overflow: hidden;
+  background: var(--surface-tertiary); border-radius: 18px; overflow: hidden;
 }
 .browser__bar { display: flex; align-items: center; min-height: 45px; padding: 12px 16px; }
 .browser__dots { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-.browser__dots span { width: 8px; height: 8px; border-radius: 9999px; background: var(--surface-accent-neutral-default); }
+.browser__dots span { width: 8px; height: 8px; border-radius: 9999px; background: var(--surface-strong); }
 .browser__dots--hidden { opacity: 0; }
 .browser__url { flex: 1 0 0; min-width: 0; text-align: center; color: var(--content-tertiary); }
 .browser__body { padding: 0 8px 8px; }

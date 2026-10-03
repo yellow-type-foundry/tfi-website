@@ -1,5 +1,5 @@
 .solutions {
-  position: relative; background: var(--surface-page);
+  position: relative; background: var(--background-secondary);
   display: flex; flex-direction: column; align-items: center; gap: 80px;
   padding: 80px var(--gutter);
   height: 1537px; overflow: hidden; /* fixed frame height in Figma; clips the wave background */
@@ -67,7 +67,7 @@
   border-radius: 12px; background: var(--surface-primary); color: var(--content-tertiary); overflow: hidden;
 }
 .sol-plan__details { display: flex; flex-direction: column; gap: 8px; }
-.sol-bar { height: 8px; border-radius: 9999px; background: linear-gradient(to right, var(--surface-tertiary), var(--surface-accent-neutral-subtle)); }
+.sol-bar { height: 8px; border-radius: 9999px; background: linear-gradient(to right, var(--surface-tertiary), var(--surface-secondary)); }
 .sol-bar--full { width: 100%; }
 .sol-bar--short { width: 52px; }
 .sol-plan--active { background: var(--surface-accent-orange-subtle); color: var(--content-accent-orange-strong); }
@@ -207,7 +207,7 @@
 .sol-portal__next { animation: sol-next var(--sol-portal-duration) infinite alternate; animation-play-state: var(--sol-play); }
 @keyframes sol-next {
   0%, 81% { background: var(--surface-secondary); color: var(--content-tertiary); }
-  83%, 94% { background: var(--surface-accent-neutral-strong); color: var(--content-inverse); }
+  83%, 94% { background: var(--surface-inverse); color: var(--content-inverse); }
   98%, 100% { background: var(--surface-secondary); color: var(--content-tertiary); }
 }
 

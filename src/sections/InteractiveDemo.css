@@ -1,5 +1,5 @@
 .idemo {
-  background: var(--surface-primary);
+  background: var(--background-primary);
   display: flex; flex-direction: column; align-items: center; gap: 80px;
   padding: 0 16px 160px; /* the product showcase above sets the gap */
 }
@@ -9,13 +9,13 @@
 .idemo-pill { display: flex; flex-direction: column; align-items: center; filter: var(--depth-strong-filter); }
 .idemo-pill__head {
   display: flex; flex-direction: column; align-items: center; gap: 4px;
-  padding: 16px 28px 24px; border-radius: 24px; background: var(--surface-accent-neutral-subtle);
+  padding: 16px 28px 24px; border-radius: 24px; background: var(--surface-secondary);
 }
 .idemo-pill__head h2 { color: var(--content-primary); text-align: center; white-space: nowrap; }
 .idemo-pill__tab-row { display: flex; align-items: flex-start; justify-content: center; padding: 0 80px; }
 .idemo-pill__tab {
   display: flex; flex-direction: column; gap: 4px;
-  padding: 0 28px 12px; border-radius: 0 0 16px 16px; background: var(--surface-accent-neutral-subtle);
+  padding: 0 28px 12px; border-radius: 0 0 16px 16px; background: var(--surface-secondary);
   text-align: center; white-space: nowrap;
 }
 .idemo-pill__cutout--left { transform: scaleX(-1); }
@@ -46,7 +46,7 @@
 .idemo-window {
   position: relative; flex: 1 0 0; min-width: 0;
   display: flex; flex-direction: column; align-items: center;
-  border-radius: 24px; overflow: clip; background: var(--surface-accent-neutral-subtle);
+  border-radius: 24px; overflow: clip; background: var(--surface-secondary);
 }
 .idemo-window__head { width: 100%; display: flex; flex-direction: column; background: var(--surface-primary); }
 
@@ -59,7 +59,7 @@
 .idemo-step__badge {
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
   width: 24px; height: 24px; border-radius: 9999px;
-  background: var(--surface-accent-neutral-subtle); color: var(--content-tertiary);
+  background: var(--surface-secondary); color: var(--content-tertiary);
 }
 .idemo-step__label { color: rgba(0, 0, 0, 0.88); white-space: nowrap; }
 .idemo-step.is-active .idemo-step__badge { background: var(--surface-accent-orange-default); color: var(--content-inverse); }
@@ -71,7 +71,7 @@
 }
 .idemo-address__field {
   flex: 1 0 0; min-width: 0; padding: 8px; border-radius: 4px;
-  background: var(--surface-accent-neutral-subtle); color: var(--content-tertiary);
+  background: var(--surface-secondary); color: var(--content-tertiary);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 
@@ -86,7 +86,7 @@
 .idemo-card__submit { cursor: default; transition: background-color 250ms ease, color 250ms ease, transform 150ms ease; }
 .idemo-card__submit:hover { filter: none; }
 /* Sign-in loop: Continue turns active once both fields are filled, then is pressed */
-.idemo-card__submit.is-ready { background: var(--surface-accent-neutral-strong); color: var(--content-inverse); }
+.idemo-card__submit.is-ready { background: var(--surface-inverse); color: var(--content-inverse); }
 .idemo-card__submit.is-pressed { transform: scale(0.96); }
 .idemo-card .idemo-input__value { transition: opacity 250ms ease; }
 /* The agent's cursor (same pieces as the Solutions portal pointer); usePointer sets its position */
@@ -109,7 +109,7 @@
 .idemo-input { width: 100%; display: flex; flex-direction: column; gap: 8px; color: var(--content-primary); }
 .idemo-input__field {
   display: flex; align-items: center; overflow: clip;
-  border-radius: 8px; background: var(--surface-accent-neutral-subtle);
+  border-radius: 8px; background: var(--surface-secondary);
 }
 .idemo-input__value {
   display: flex; align-items: center; min-height: 48px; padding: 12px 12px 12px 16px;
@@ -132,7 +132,7 @@
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
   width: 24px; height: 24px; border-radius: 12px; overflow: clip;
   border: 0.2px solid var(--outline-accent-neutral);
-  background: var(--surface-accent-neutral-subtle); color: var(--content-tertiary);
+  background: var(--surface-secondary); color: var(--content-tertiary);
 }
 .idemo-status__timing { flex: 1 0 0; min-width: 0; text-align: right; color: var(--content-tertiary); }
 
@@ -185,7 +185,7 @@
   .idemo-feature {
     padding: 24px;
     border-radius: 24px;
-    background: var(--surface-accent-neutral-subtle);
+    background: var(--surface-secondary);
   }
 
 @media (max-width: 640px) {

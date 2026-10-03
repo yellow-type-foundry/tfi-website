@@ -1,5 +1,5 @@
 .customer-stories {
-  position: relative; background: var(--surface-primary);
+  position: relative; background: var(--background-primary);
   display: flex; flex-direction: column; align-items: center; gap: 80px;
   padding: 80px 0 160px; overflow: hidden;
 }

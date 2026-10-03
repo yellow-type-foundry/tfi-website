@@ -12,9 +12,9 @@
 .btn--s { padding: 8px 12px; font-size: 14px; line-height: 20px; font-weight: 600; gap: 2px; }
 .btn--l { padding: 12px 20px; font-size: 16px; line-height: 24px; font-weight: 600; gap: 8px; }
 
-.btn--black { background: var(--surface-accent-neutral-strong); color: var(--content-inverse); }
+.btn--black { background: var(--surface-inverse); color: var(--content-inverse); }
 .btn--accent { background: var(--surface-accent-orange-default); color: var(--content-inverse); }
-.btn--neutral { background: var(--surface-accent-neutral-default); color: var(--content-primary); }
+.btn--neutral { background: var(--surface-strong); color: var(--content-primary); }
 .btn--secondary { background: var(--surface-secondary); color: var(--content-tertiary); }
 .btn--outline { border: 1px solid var(--outline-static-black); color: var(--content-primary); padding-block: 11px; padding-inline: 19px; }
-.btn--outline:hover { filter: none; background: var(--surface-accent-neutral-strong); border-color: var(--surface-accent-neutral-strong); color: var(--content-inverse); } /* fills in like the black button */
+.btn--outline:hover { filter: none; background: var(--surface-inverse); border-color: var(--surface-inverse); color: var(--content-inverse); } /* fills in like the black button */

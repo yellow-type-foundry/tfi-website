@@ -1,7 +1,7 @@
 *, *::before, *::after { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
 body {
-  background: var(--surface-page);
+  background: var(--background-secondary);
   color: var(--content-primary);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;

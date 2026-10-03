@@ -1,4 +1,4 @@
-.use-with { background: var(--surface-primary); display: flex; flex-direction: column; align-items: center; padding: 200px var(--gutter) 0; } /* the product showcase below sets the gap */
+.use-with { background: var(--background-primary); display: flex; flex-direction: column; align-items: center; padding: 200px var(--gutter) 0; } /* the product showcase below sets the gap */
 .use-with__content { display: flex; flex-direction: column; align-items: center; gap: 28px; width: 100%; min-width: 0; container-type: inline-size; }
 /* Stepped heading pill (shared HeadingPill surfaces): wide line 1, narrower line-2 tab, subtitle tab */
 .use-with__pill { max-width: 100%; }

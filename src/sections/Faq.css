@@ -1,5 +1,5 @@
 .faq {
-  background: var(--surface-primary);
+  background: var(--background-primary);
   display: flex; flex-direction: column; align-items: center; gap: 60px;
   padding: 80px var(--gutter) 160px;
 }
@@ -20,7 +20,7 @@
   padding: 16px 16px; text-align: left; color: var(--content-primary); border-radius: 8px;
   transition: background-color 150ms ease;
 }
-.faq__trigger:hover { background: var(--surface-accent-neutral-subtle); }
+.faq__trigger:hover { background: var(--surface-secondary); }
 .faq__trigger:focus-visible { outline: 2px solid var(--surface-accent-orange-default); outline-offset: -2px; }
 .faq__question { flex: 1 1 auto; min-width: 0; text-wrap: balance; } /* two-line questions split evenly, no orphaned word */
 .faq__icon {

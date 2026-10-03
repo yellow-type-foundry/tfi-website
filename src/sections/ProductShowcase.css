@@ -1,4 +1,4 @@
-.product-showcase-scroll { width: 100%; padding-block: 200px; padding-inline: max(16px, calc((100% - 1122px) / 2)); background: var(--surface-primary); }
+.product-showcase-scroll { width: 100%; padding-block: 200px; padding-inline: max(16px, calc((100% - 1122px) / 2)); background: var(--background-primary); }
 .product-showcase-tabs { display: flex; align-items: flex-end; padding-inline: 40px; } /* equal tabs, inset to the card's copy line */
 .ps-tab { position: relative; display: inline-flex; align-items: center; gap: 12px; padding: 16px 20px; border: 0; border-radius: 16px 16px 0 0; background: transparent; color: var(--content-primary); font-family: var(--font-display); font-size: 20px; font-weight: 600; line-height: 24px; cursor: pointer; }
 /* One surface colour for the active tab and card; registered so it can animate between products */
@@ -149,14 +149,14 @@ canvas.ps-card__bg { opacity: 0; transition: opacity var(--ps-switch-dur) var(--
 .ps-msg { width: 100%; border-radius: 20px 20px 20px 4px; color: var(--content-primary); }
 .ps-msg > .ps-morph__inner { padding: 12px 20px 12px 16px; }
 .ps-msg { background: var(--surface-secondary); }
-.ps-link { color: var(--content-accent-teal-default); }
+.ps-link { color: var(--content-accent-teal-strong); } /* Teal/800: 8.8:1, links stay readable */
 
 .ps-chat__agent { width: 100%; display: flex; flex-direction: column; gap: 4px; }
 .ps-chat__caption { padding: 6px 0; color: var(--content-tertiary); }
 
 .ps-steps { border-radius: 16px; }
 .ps-steps > .ps-morph__inner { padding: 12px; }
-.ps-steps { background: var(--surface-accent-neutral-subtle); }
+.ps-steps { background: var(--surface-secondary); }
 .ps-steps__list { display: flex; flex-direction: column; gap: 4px; }
 
 .ps-step { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 0; }
@@ -173,7 +173,7 @@ canvas.ps-card__bg { opacity: 0; transition: opacity var(--ps-switch-dur) var(--
 .ps-step--block { flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 0; }
 .ps-badge {
   display: inline-flex; align-items: center; padding: 2px 8px; margin-bottom: 6px;
-  border-radius: 4px; background: var(--surface-accent-neutral-default); color: var(--content-primary); white-space: nowrap;
+  border-radius: 4px; background: var(--surface-strong); color: var(--content-primary); white-space: nowrap;
 }
 .ps-markdown { margin: 0; width: 100%; white-space: pre-wrap; color: var(--content-tertiary); }
 
@@ -295,12 +295,11 @@ canvas.ps-card__bg { opacity: 0; transition: opacity var(--ps-switch-dur) var(--
 .ps-window {
   --surface-primary: hsl(var(--ps-ui-hue) 35% 98%);
   --surface-secondary: hsl(var(--ps-ui-hue) 28% 94%);
-  --surface-accent-neutral-subtle: hsl(var(--ps-ui-hue) 24% 95%);
-  --surface-accent-neutral-default: hsl(var(--ps-ui-hue) 24% 76%);
-  --surface-browser-chrome: hsl(var(--ps-ui-hue) 30% 91%);
+  --surface-strong: hsl(var(--ps-ui-hue) 24% 76%);
+  --surface-tertiary: hsl(var(--ps-ui-hue) 30% 91%);
   --outline-default: hsl(var(--ps-ui-hue) 20% 85%);
   --content-secondary: hsl(var(--ps-ui-hue) 6% 27%);
-  --content-tertiary: hsl(var(--ps-ui-hue) 5% 60%);
+  --content-tertiary: hsl(var(--ps-ui-hue) 5% 44%); /* tinted Content/Tertiary, kept at AA contrast */
 }
 
 @media (min-width: 641px) and (max-width: 1100px) {
