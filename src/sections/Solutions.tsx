@@ -1,3 +1,4 @@
+import { MobileSteppedHeading } from "../components/MobileSteppedHeading";
 import { useEffect, useState, type ReactNode } from "react";
 import { DigitPop } from "../components/transitions/DigitPop";
 import { SpinningCounter } from "../components/transitions/SpinningCounter";
@@ -235,6 +236,7 @@ export function Solutions() {
       </div>
       <header className="solutions__header">
         <Eyebrow>SOLUTIONS</Eyebrow>
+        <MobileSteppedHeading as="h1" first="What TinyFish" second="can do" body="Four jobs people hand their agents every day, on the live web." />
         <h1 className="t-h1">What TinyFish<span className="solutions__title-break" /> can do</h1>
         <p className="t-body-xl">Four jobs people hand their agents<span className="solutions__body-break" /> every day, on the live web.</p>
       </header>

@@ -231,3 +231,8 @@
 .sol-research__by.t-stagger-line { display: flex; }
 .sol-research__by { --reel-cell: 20px; }
 .sol-research__headline { padding: 6px 0; }
+
+@media (max-width: 640px) {
+  .solutions__header { width: 100%; container-type: inline-size; white-space: normal; }
+  .solutions__header > h1, .solutions__header > p { display: none; }
+}

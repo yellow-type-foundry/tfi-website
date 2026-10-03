@@ -1,3 +1,4 @@
+import { MobileSteppedHeading } from "../components/MobileSteppedHeading";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { CSSProperties, KeyboardEvent, PointerEvent, ReactNode } from "react";
 import { Button } from "../components/Button";
@@ -214,6 +215,7 @@ export function CustomerStories() {
   return (
     <section className="customer-stories" id="customer-stories">
       <header className="customer-stories__header">
+        <MobileSteppedHeading as="h1" first="Trusted by 200K" second="developers and" third="the team behind them" body="Search, extract, browse, and act on the web with one platform." />
         <div className="cs-pill">
           {/* Stepped title: the longer first line in the block, the second in a tab with its own cutouts */}
           <h1 className="visually-hidden">Trusted by 200K developers and the team behind them</h1>

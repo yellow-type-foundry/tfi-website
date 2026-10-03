@@ -170,7 +170,7 @@
 }
 
 @media (max-width: 640px) {
-  .idemo-intro .mobile-stepped-heading__first { width: calc(100% + 24px); }
+  .idemo-intro .mobile-stepped-heading__first { width: 100%; }
 }
 
 @media (max-width: 640px) {

@@ -1,3 +1,4 @@
+import { Icon } from "../components/Icon";
 import { MobileSteppedHeading } from "../components/MobileSteppedHeading";
 import { Button } from "../components/Button";
 import { HeadingPill } from "../components/HeadingPill";
@@ -58,7 +59,7 @@ export function Hero() {
         <div className="hero__footer">
           <div className="hero__promo depth-default">
             <p className="t-body-m">Search and Fetch APIs free on every plan.</p>
-            <Button variant="neutral" size="s" className="hero__promo-btn">Get started</Button>
+            <Button variant="neutral" size="s" className="hero__promo-btn"><span className="hero__promo-label">Get started</span><span className="hero__promo-arrow" aria-hidden="true"><Icon name="arrow-right" size={20} /></span></Button>
           </div>
         </div>
       </div>
