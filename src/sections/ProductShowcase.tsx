@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactElement, ReactNode } from "react";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { BrowserWindow } from "../components/BrowserWindow";
 import { VectorLoop } from "../components/VectorLoop";
 import { Icon } from "../components/Icon";
@@ -214,17 +214,8 @@ function MorphCta({ label }: { label: string }) {
 
 /** The card title: "API" stays put while the product word in front of it swaps (Texts reveal) and
     its slot morphs to the new word's width, sliding "API" along. */
-function MorphTitle({ title }: { title: string }) {
-  const word = title.replace(/\s*API$/, "");
-  const slotRef = useRef<HTMLSpanElement>(null);
-  const wordRef = useRef<HTMLSpanElement>(null);
-  useWidthMorph(slotRef, wordRef, word);
-  return (
-    <h2 className="t-h4 ps-title" aria-label={title}>
-      <span ref={slotRef} className="ps-title__slot" aria-hidden><span ref={wordRef} key={word} className="ps-title__word">{word}</span></span>{" "}
-      <span aria-hidden>API</span>
-    </h2>
-  );
+function ProductTitle({ title }: { title: string }) {
+  return <h2 className="t-h4 ps-title"><span key={title} className="ps-title__word">{title}</span></h2>;
 }
 
 /** Wraps every character ("char") or word ("word") of an element's text in a span with `className`,
@@ -478,6 +469,14 @@ function useWindowHeight(rowRef: React.RefObject<HTMLDivElement | null>, active:
 }
 
 export function ProductShowcase() {
+  const [tablet, setTablet] = useState(() => window.matchMedia("(min-width: 641px) and (max-width: 1100px)").matches);
+  useEffect(() => {
+    const query = window.matchMedia("(min-width: 641px) and (max-width: 1100px)");
+    const update = () => setTablet(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
   const [active, setActiveState] = useState(products[0].id);
   const [sectionRef, inView] = useInView<HTMLElement>();
   const rowRef = useRef<HTMLDivElement>(null);
@@ -545,13 +544,13 @@ export function ProductShowcase() {
                 step with the card colour; only the selected one plays. */}
             {products.map((p) => (
               <div key={p.id} className={`ps-art${active === p.id ? " ps-art--active" : ""}`} data-product={p.id} aria-hidden>
-                <VectorLoop className="ps-card__bg" src={`/assets/product-showcase/vector/${p.vector.src}`} width={p.vector.width} height={p.vector.height} style={artStyle(p)} active={active === p.id} />
+                <VectorLoop className="ps-card__bg" src={`/assets/product-showcase/vector/${p.vector.src}`} width={p.vector.width} height={p.vector.height} style={artStyle(p)} active={!tablet && active === p.id} />
               </div>
             ))}
             <div className="ps-card__layout">
               <div className="ps-intro">
                 <div className="ps-intro__copy">
-                  <MorphTitle title={product.title} />
+                  <ProductTitle title={product.title} />
                   <p className="ps-intro__desc t-body-l" key={product.id}>{product.description}</p>
                 </div>
                 <MorphCta label={product.cta} />
@@ -561,6 +560,7 @@ export function ProductShowcase() {
         </div>
         {/* One UI window beside the card for every product. Hidden copies of every transcript share a grid
             cell with the live one, so the window is always as tall as the tallest; the live transcript morphs. */}
+        <div className="ps-window-surface">
         <BrowserWindow className="ps-window">
           <div className="ps-window__viewport">
             {products.map((p) => (
@@ -569,6 +569,7 @@ export function ProductShowcase() {
             <div className="ps-window__live"><AgentChat id={product.id} chat={product.chat} inView={inView} /></div>
           </div>
         </BrowserWindow>
+        </div>
       </div>
     </section>
   );

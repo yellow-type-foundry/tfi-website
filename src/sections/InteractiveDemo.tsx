@@ -182,7 +182,7 @@ export function InteractiveDemo() {
         <Eyebrow>IDENTITY</Eyebrow>
         <div className="idemo-pill">
           <div className="idemo-pill__head depth-inner-strong">
-            <h2 className="t-h1">Access the web behind the login</h2>
+            <h2 className="t-h1"><span>Access the web</span>{" "}<span>behind the login</span></h2>
           </div>
           <div className="idemo-pill__tab-row">
             <img className="idemo-pill__cutout idemo-pill__cutout--left" src="/assets/interactive-demo/cutout-left.svg" width={16} height={16} alt="" />

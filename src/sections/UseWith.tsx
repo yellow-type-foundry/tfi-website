@@ -25,7 +25,7 @@ export function UseWith() {
                 </span>
                 ChatGPT,
               </span>{" "}
-              <span className="use-with__brand">
+              <span className="use-with__brand use-with__claude-desktop">
                 <span className="use-with__claude">
                   <VectorLoop className="use-with__claude-animation" src="/assets/use-with/claude.tfv" width={1440} height={1440} excludeFramesWithLayer={0} />
                 </span>
@@ -37,14 +37,27 @@ export function UseWith() {
             <Cutout side="left" />
             <div className="heading-pill__tab use-with__title-tab depth-inner-strong depth-join">
               <p className="use-with__line t-h1">
+              <span className="use-with__brand use-with__claude-tablet">
+                <span className="use-with__claude">
+                  <VectorLoop className="use-with__claude-animation" src="/assets/use-with/claude.tfv" width={1440} height={1440} excludeFramesWithLayer={0} />
+                </span>
+                Claude,
+              </span>{" "}
                 <span className="use-with__brand">
                   <span className="use-with__hermes">
                     <VectorLoop className="use-with__hermes-animation" src="/assets/use-with/hermes.tfv" width={1440} height={1440} />
                   </span>
                   Hermes,
                 </span>{" "}
-                or in your code.
+                <span className="use-with__code">or in your code.</span>
               </p>
+            </div>
+            <Cutout side="right" />
+          </div>
+          <div className="heading-pill__tab-row use-with__row use-with__code-row" aria-hidden>
+            <Cutout side="left" />
+            <div className="heading-pill__tab use-with__title-tab depth-inner-strong depth-join">
+              <p className="use-with__line t-h1">or in your code.</p>
             </div>
             <Cutout side="right" />
           </div>

@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { DigitPop } from "../components/transitions/DigitPop";
 import { SpinningCounter } from "../components/transitions/SpinningCounter";
 import { useInView, useLoop } from "../hooks/useLoop";
@@ -27,9 +27,22 @@ const Divider = ({ src = "/assets/solutions/divider.svg", w = 344 }: { src?: str
    styles/transitions.css): useLoop flips their documented state classes on a timeline. When the
    loop isn't playing (off screen, reduced motion) each card renders its designed state. */
 
+function useSolutionLoop(active: boolean, duration: number, events: number[]) {
+  const [stacked, setStacked] = useState(() => window.matchMedia("(max-width: 1280px)").matches);
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 1280px)");
+    const update = () => setStacked(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
+  const scale = stacked ? 2 / 3 : 1;
+  return useLoop(active, duration * scale, events.map((time) => time * scale));
+}
+
 function MonitorPreview({ live }: { live: boolean }) {
   // 1.8s: the price changes (number pop-in) · 2.6s: the alert rises in (toast) · 6s: it closes.
-  const { playing, phase } = useLoop(live, 7000, [1800, 2600]);
+  const { playing, phase } = useSolutionLoop(live, 7000, [1800, 2600]);
   const changed = !playing || phase >= 1;
   const alertOpen = !playing || (phase >= 2 && phase < 3);
   const plans = [
@@ -89,7 +102,7 @@ function MonitorPreview({ live }: { live: boolean }) {
 function EnrichPreview({ live }: { live: boolean }) {
   // Cells pulse as skeletons, then reveal one by one (skeleton loader and reveal) while the
   // counter pops (number pop-in); at 6.6s they snap back to loading for the next loop.
-  const { playing, phase } = useLoop(live, 7200, [1500, 2700, 3900]);
+  const { playing, phase } = useSolutionLoop(live, 7200, [1500, 2700, 3900]);
   const resetting = playing && phase === 4;
   const revealed = (i: number) => playing && phase > i && phase < 4;
   const count = playing ? 2 + Math.min(phase, 3) * (phase < 4 ? 1 : 0) : 2;
@@ -144,7 +157,7 @@ function EnrichPreview({ live }: { live: boolean }) {
 function ResearchPreview({ live }: { live: boolean }) {
   // 0s: the question types out · 1.9s: "read 214 pages" (spinning counter) · 3.6s: answer and
   // sources rise in (texts reveal) · 7.2s: they fade out before the next loop.
-  const { playing, phase, cycle } = useLoop(live, 8000, [1900, 3600]);
+  const { playing, phase, cycle } = useSolutionLoop(live, 8000, [1900, 3600]);
   const byShown = !playing || (phase >= 1 && phase < 3);
   const answerShown = !playing || phase === 2;
   const answerHiding = playing && phase === 3;

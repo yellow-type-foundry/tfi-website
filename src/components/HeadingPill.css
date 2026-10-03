@@ -10,3 +10,15 @@
   text-align: center; white-space: nowrap;
 }
 .heading-pill__cutout--left { transform: scaleX(-1); }
+.heading-pill__cutout { flex: 0 0 16px; width: 16px; height: 16px; }
+
+/* Tablet cutout contract: fixed joins, wrapping body copy, and a 32px inset per side.
+   Each attached row must stay narrower than the surface directly above it. */
+@media (min-width: 641px) and (max-width: 1280px) {
+  .heading-pill { --pill-step: 32px; --pill-body-inset: 28px; }
+  .heading-pill__tab-row { max-width: 100%; }
+  .heading-pill__tab {
+    min-width: 0; white-space: normal;
+    padding-inline: var(--pill-body-inset); padding-bottom: 12px;
+  }
+}

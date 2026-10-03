@@ -23,6 +23,7 @@
 /* Figma: tabs + card on the left, the UI window standing beside them (top of tabs to bottom of card) */
 .product-showcase { display: flex; align-items: stretch; gap: 20px; }
 .ps-main { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; justify-content: flex-end; }
+.ps-window-surface { display: contents; }
 .ps-card { --ps-copy-inset: 40px; position: relative; overflow: hidden; flex: 1 0 526px; min-height: calc(var(--ps-full-h, 0px) - var(--ps-tabs-h, 0px)); /* tall enough for the longest transcript beside it */ border-radius: 16px; background: var(--ps-tab-bg); }
 /* Each product's art; all stay drawn and cross-fade, hidden once faded out */
 /* Each layer carries its animation's background colour across the whole card, so colour and art
@@ -60,8 +61,7 @@
   --stagger-blur: 3px;
   --stagger-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
-/* Title: only the product word swaps (its slot's width morphs so "API" slides along) */
-.ps-title__slot { display: inline-block; vertical-align: bottom; white-space: nowrap; clip-path: inset(-0.5em 0 -0.5em 0); /* clips sideways only, so a wider word never overlaps "API" mid-morph */ transition: width var(--ps-morph-dur) var(--ps-morph-ease); }
+/* The complete API title changes together when switching tabs. */
 .ps-title__word { display: inline-block; }
 .product-showcase[data-switched] .ps-title__word { animation: ps-heading-reveal var(--stagger-dur) var(--stagger-ease) both; }
 @keyframes ps-heading-reveal {
@@ -200,7 +200,28 @@ canvas.ps-card__bg { opacity: 0; transition: opacity var(--ps-switch-dur) var(--
 .ps-art[data-product="fetch-api"] { --ps-art-bg: #bdc7ad; }
 .ps-art[data-product="browser-api"] { --ps-art-bg: #f6f6f4; }
 .ps-art[data-product="agent-api"] { --ps-art-bg: #3196e9; }
+@media (min-width: 641px) and (max-width: 1100px) {
+  .product-showcase { gap: 0; }
+  .ps-art { display: none; }
+  .ps-card { flex: none; height: auto; min-height: 0; border-radius: 16px 16px 0 0; }
+  .ps-card__layout { display: flex; justify-content: center; padding: 40px 32px; }
+  .ps-intro { align-items: center; text-align: center; }
+  .ps-window-surface {
+    display: flex; justify-content: center; width: 100%; padding: 0 32px 64px;
+    border-radius: 0 0 16px 16px; overflow: hidden; background: var(--ps-tab-bg);
+    transition: background-color var(--ps-switch-dur) var(--ps-switch-ease);
+  }
+  .ps-window-surface .browser.ps-window { width: 100%; max-width: 560px; align-self: auto; }
+}
+
 .product-showcase-scroll:has([data-active="fetch-api"]) { --ps-tab-bg: #bdc7ad; }
 .product-showcase-scroll:has([data-active="browser-api"]) { --ps-tab-bg: #f6f6f4; }
 .product-showcase-scroll:has([data-active="agent-api"]) { --ps-tab-bg: #3196e9; }
 .product-showcase-scroll { overflow: hidden; }
+@media (min-width: 641px) and (max-width: 1100px) {
+  .product-showcase-scroll:has([data-active]) {
+    --ps-tab-bg: var(--brand-yellow-400);
+    transition: none;
+  }
+  .ps-window-surface { transition: none; }
+}

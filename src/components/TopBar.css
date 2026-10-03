@@ -9,3 +9,32 @@
 .topbar__signup { font-size: 16px; line-height: 24px; }
 .topbar__separator { transform: rotate(90deg); width: 20px; height: 1px; }
 .topbar a:not(.btn):hover { opacity: 0.65; }
+.topbar__toggle, .topbar__menu { display: none; }
+@media (max-width: 1280px) {
+  .topbar__logo { width: auto; margin-right: auto; }
+  .topbar__nav, .topbar__actions { display: none; }
+  .topbar__toggle {
+    display: flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; padding: 8px; border: 0; border-radius: 50%;
+    background: transparent; color: var(--content-static-black); cursor: pointer;
+  }
+  .topbar__toggle:hover { background: var(--surface-secondary); }
+  .topbar__menu {
+    position: absolute; top: calc(100% + 8px); right: 16px; z-index: 10;
+    width: min(280px, calc(100% - 32px));
+    display: flex; flex-direction: column; gap: 4px; padding: 16px;
+    max-height: calc(100svh - 120px); overflow-y: auto;
+    border-radius: 24px; background: var(--surface-primary); filter: var(--depth-strong-filter);
+    opacity: 0; visibility: hidden; transform: translateY(-12px); pointer-events: none;
+    transition: transform 240ms var(--ease-out), opacity 200ms var(--ease-out), visibility 0s 240ms;
+  }
+  .topbar__menu.is-open {
+    opacity: 1; visibility: visible; transform: translateY(0); pointer-events: auto;
+    transition-delay: 0s;
+  }
+  .topbar__menu > a:not(.btn) { padding: 10px 12px; }
+  .topbar__menu .btn { align-self: flex-start; margin: 8px 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .topbar__menu { transition: none; transform: none; }
+}

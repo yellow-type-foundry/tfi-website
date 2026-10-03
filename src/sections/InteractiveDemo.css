@@ -19,6 +19,15 @@
   text-align: center; white-space: nowrap;
 }
 .idemo-pill__cutout--left { transform: scaleX(-1); }
+.idemo-pill__cutout { flex: 0 0 16px; width: 16px; height: 16px; }
+@media (min-width: 641px) and (max-width: 1280px) {
+  .idemo-intro, .idemo-pill { max-width: 100%; }
+  .idemo-pill { display: grid; grid-template-columns: min-content; }
+  .idemo-pill__head h2 span { display: block; }
+  .idemo-pill__head h2 { font-size: 72px; line-height: 1.05; }
+  .idemo-pill__tab-row { width: 100%; min-width: 0; max-width: 100%; padding-inline: 32px; }
+  .idemo-pill__tab { min-width: 0; white-space: normal; }
+}
 
 .idemo-body { width: 100%; max-width: 1122px; /* same column as the product showcase cards */ display: flex; flex-direction: column; gap: 40px; }
 
@@ -129,6 +138,9 @@
 
 /* Feature highlights */
 .idemo-features { display: flex; align-items: flex-start; gap: 24px; padding: 0 40px; } /* lines up with the window */
+@media (min-width: 641px) and (max-width: 1280px) {
+  .idemo-features { width: 100%; padding: 0; }
+}
 .idemo-feature { flex: 1 0 0; min-width: 0; display: flex; align-items: flex-start; gap: 14px; }
 .idemo-feature__icon {
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
@@ -140,3 +152,9 @@
 .idemo-feature__content { flex: 1 0 0; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
 .idemo-feature__content h3 { color: rgba(0, 0, 0, 0.9); }
 .idemo-feature__content p { color: var(--content-secondary); }
+@media (min-width: 641px) and (max-width: 1280px) {
+  .idemo-feature { flex-direction: column; align-items: center; text-align: center; }
+  .idemo-feature__icon { width: 40px; height: 40px; border-radius: 22px; }
+  .idemo-feature__icon svg { width: 20px; height: 20px; }
+  .idemo-feature__content { flex: none; width: 100%; align-items: center; }
+}

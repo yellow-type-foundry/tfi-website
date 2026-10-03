@@ -25,6 +25,19 @@
 }
 .cs-pill__cutout { flex-shrink: 0; }
 .cs-pill__cutout--left { transform: scaleX(-1); }
+.cs-tablet-and { display: none; }
+@media (min-width: 641px) and (max-width: 1280px) {
+  .customer-stories__header { width: calc(100% - 32px); }
+  .cs-pill { container-type: inline-size; }
+  .cs-desktop-and { display: none; }
+  .cs-tablet-and { display: inline; }
+  .cs-pill__head { width: 100%; }
+  .cs-pill__title { font-size: min(72px, calc((100cqw - 96px) / 13.5)); line-height: 1.05; white-space: nowrap; }
+  .cs-pill__tab-row { width: calc(100% - 64px); padding: 0; }
+  .cs-pill__tab-row:last-child { width: calc(100% - 128px); }
+  .cs-pill__tab { flex: 1; min-width: 0; white-space: normal; }
+  .cs-pill__cutout { flex: 0 0 16px; width: 16px; height: 16px; }
+}
 
 /* Carousel: active card centred, neighbours peek in, outer slots off-screen */
 .story-carousel { position: relative; width: 100%; height: 632px; touch-action: pan-y; user-select: none; }

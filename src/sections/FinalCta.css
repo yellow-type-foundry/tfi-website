@@ -40,3 +40,7 @@
 
 .final-cta__note { display: flex; align-items: center; justify-content: center; gap: 13.333px; height: 24px; font-size: 16px; line-height: 1.5; color: var(--content-static-black); white-space: nowrap; }
 .final-cta__logos { display: flex; align-items: center; gap: 5px; }
+@media (min-width: 641px) and (max-width: 1280px) {
+  .final-cta__card { height: clamp(520px, 60svh, 640px); }
+  .final-cta__content { max-width: calc(100% - 32px); }
+}

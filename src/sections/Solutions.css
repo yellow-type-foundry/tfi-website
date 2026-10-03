@@ -5,7 +5,7 @@
   height: 1537px; overflow: hidden; /* fixed frame height in Figma; clips the wave background */
 }
 .solutions__bg {
-  position: absolute; left: calc(50% - 0.5px); top: 140px; transform: translateX(-50%);
+  position: absolute; left: calc(50% - 0.5px); bottom: -17px; transform: translateX(-50%);
   width: calc(100% + 191px); height: 1414px; background: var(--surface-solutions-wash); overflow: hidden; pointer-events: none;
 }
 .solutions__bg img { position: absolute; left: 0; top: -2.93%; width: 100%; height: 102.93%; max-width: none; object-fit: cover; object-position: center bottom; }
@@ -20,6 +20,18 @@
 }
 .feature-card__content h3 { width: 100%; }
 .feature-card__preview { position: relative; height: 400px; overflow: hidden; }
+
+@media (max-width: 1280px) {
+  .solutions { height: auto; padding: 112px 16px 80px; gap: 128px; } /* match top padding + 16px hero inset above */
+  .solutions__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .feature-card__content { padding: 40px 24px; min-height: 184px; }
+  .feature-card__content p { max-width: 100%; }
+  .feature-card__preview { height: 380px; }
+  .feature-card__preview .sol-window { top: 0; transform: translateX(-50%); }
+}
+@media (max-width: 879px) {
+  .solutions__grid { grid-template-columns: minmax(0, 1fr); max-width: 560px; }
+}
 
 /* Windows are centred in the preview and faded out at the bottom by the Figma mask gradient. */
 .sol-window {
@@ -144,7 +156,10 @@
 /* while the section is on screen (.is-live); with reduced motion the  */
 /* cards stay exactly as designed (the static styles are the design).  */
 /* ------------------------------------------------------------------ */
-.solutions { --sol-play: paused; }
+.solutions { --sol-play: paused; --sol-research-duration: 8s; --sol-portal-duration: 9s; }
+@media (max-width: 1280px) {
+  .solutions { --sol-research-duration: calc(8s * 2 / 3); --sol-portal-duration: 6s; }
+}
 .solutions.is-live { --sol-play: running; }
 
 
@@ -152,14 +167,14 @@
 .sol-typed { display: inline-block; white-space: nowrap; }
 
 /* Research: the question types out before the agent answers (the rest uses transitions.dev). */
-.sol-typed--query { animation: sol-type-query 8s infinite alternate; animation-play-state: var(--sol-play); }
+.sol-typed--query { animation: sol-type-query var(--sol-research-duration) infinite alternate; animation-play-state: var(--sol-play); }
 @keyframes sol-type-query {
   0% { clip-path: inset(0 100% 0 0); opacity: 1; animation-timing-function: steps(40, end); }
   24%, 94% { clip-path: inset(0 0 0 0); opacity: 1; }
   99%, 100% { clip-path: inset(0 0 0 0); opacity: 0; }
 }
 /* Portal (9s): the agent types into Contact email and Street address, then clicks Next. */
-.sol-typed--field1, .sol-typed--field2 { clip-path: inset(0 100% 0 0); animation-duration: 9s; animation-iteration-count: infinite alternate; animation-play-state: var(--sol-play); }
+.sol-typed--field1, .sol-typed--field2 { clip-path: inset(0 100% 0 0); animation-duration: var(--sol-portal-duration); animation-iteration-count: infinite alternate; animation-play-state: var(--sol-play); }
 .sol-typed--field1 { animation-name: sol-type-field1; }
 .sol-typed--field2 { animation-name: sol-type-field2; }
 @keyframes sol-type-field1 {
@@ -172,7 +187,7 @@
   66%, 94% { clip-path: inset(0 0 0 0); opacity: 1; }
   98%, 100% { clip-path: inset(0 0 0 0); opacity: 0; }
 }
-.sol-portal__pointer { animation: sol-pointer 9s infinite alternate; animation-play-state: var(--sol-play); }
+.sol-portal__pointer { animation: sol-pointer var(--sol-portal-duration) infinite alternate; animation-play-state: var(--sol-play); }
 @keyframes sol-pointer {
   0% { opacity: 0; translate: -24px -16px; }
   6%, 32% { opacity: 1; translate: 0 0; }
@@ -180,13 +195,13 @@
   76%, 90% { opacity: 1; translate: 178px 100px; }
   96%, 100% { opacity: 0; translate: 178px 100px; }
 }
-.sol-portal__agent { animation: sol-agent-tap 9s infinite alternate; animation-play-state: var(--sol-play); }
+.sol-portal__agent { animation: sol-agent-tap var(--sol-portal-duration) infinite alternate; animation-play-state: var(--sol-play); }
 @keyframes sol-agent-tap {
   0%, 78% { scale: 1; }
   81% { scale: 0.85; }
   85%, 100% { scale: 1; }
 }
-.sol-portal__next { animation: sol-next 9s infinite alternate; animation-play-state: var(--sol-play); }
+.sol-portal__next { animation: sol-next var(--sol-portal-duration) infinite alternate; animation-play-state: var(--sol-play); }
 @keyframes sol-next {
   0%, 81% { background: var(--surface-secondary); color: var(--content-tertiary); }
   83%, 94% { background: var(--surface-accent-neutral-strong); color: var(--content-inverse); }
