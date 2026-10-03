@@ -14,3 +14,6 @@
   background: var(--surface-primary); border: 0.6px solid var(--outline-default); border-radius: 100px;
 }
 @media (prefers-reduced-motion: reduce) { .sticky-nav { transition: none; } }
+@media (max-width: 1440px) {
+  .sticky-nav { width: calc(100% - 32px); }
+}

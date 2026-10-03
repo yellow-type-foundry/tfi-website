@@ -2,7 +2,7 @@
 .btn.hero__promo-btn { background: var(--brand-green-800); color: var(--content-inverse); }
 .hero__card {
   position: relative; border-radius: 32px; overflow: hidden;
-  height: calc(100vh - 32px); height: calc(100svh - 32px);
+  height: calc(85vh - 32px); height: calc(85svh - 32px);
   display: flex; flex-direction: column; align-items: center;
   background: var(--brand-yellow-400); /* the video sky renders as #f3f096 in browsers, i.e. this token */
 }
@@ -15,7 +15,7 @@
 .hero__card {
   container-type: inline-size;
   --hero-art-scale: 1;
-  --hero-land: calc(12.55cqw * var(--hero-art-scale));
+  --hero-land: calc(19.16cqw * var(--hero-art-scale));
 }
 .hero__bg {
   position: absolute; left: 50%; bottom: 0; transform: translateX(-50%);
@@ -24,6 +24,14 @@
 
 /* In-card nav: the shared TopBar with the hero's wider side padding */
 .hero__topbar { padding: 12px max(104px, calc((100% - 1200px) / 2)); } /* 120px on the 1440 frame, minus the 16px card inset */
+@media (max-width: 1440px) {
+  .hero__topbar { padding: 12px 16px; }
+  .hero .heading-pill__title span { display: block; }
+  .hero .heading-pill__title { font-size: clamp(32px, 6vw, 72px); line-height: 1.05; }
+  .hero .heading-pill { display: grid; grid-template-columns: min-content; }
+  .hero .heading-pill__tab-row { width: 100%; min-width: 0; padding: 0 32px; }
+  .hero .heading-pill__tab { min-width: 0; white-space: normal; }
+}
 
 /* Main content */
 /* The copy block is centred in the yellow sky: the band between the nav and where the land starts

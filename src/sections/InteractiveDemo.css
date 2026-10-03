@@ -1,7 +1,7 @@
 .idemo {
   background: var(--surface-primary);
   display: flex; flex-direction: column; align-items: center; gap: 80px;
-  padding: 160px 16px 80px;
+  padding: 160px 16px 160px;
 }
 
 /* Introduction: eyebrow + raised heading block with attached subtitle tab */
@@ -20,16 +20,14 @@
 }
 .idemo-pill__cutout--left { transform: scaleX(-1); }
 
-.idemo-body { width: 100%; max-width: var(--card-max); display: flex; flex-direction: column; gap: 40px; }
+.idemo-body { width: 100%; max-width: 1122px; /* same column as the product showcase cards */ display: flex; flex-direction: column; gap: 40px; }
 
 /* Demo frame */
-.idemo-frame {
-  display: flex; align-items: center; height: 692px;
-}
+.idemo-frame { display: flex; align-items: center; }
 .idemo-stage {
   position: relative; flex: 1 0 0; min-width: 0; align-self: stretch;
   display: flex; align-items: center; justify-content: center;
-  padding: 40px 160px; border-radius: 16px; overflow: clip;
+  padding: 40px; border-radius: 16px; overflow: clip; /* same inset on all sides of the window */
   background: var(--surface-accent-teal-subtle);
 }
 /* Fill the stage with the vector animation, preserving its export proportions. */
@@ -110,7 +108,7 @@
 .idemo-status__timing { flex: 1 0 0; min-width: 0; text-align: right; color: var(--content-tertiary); }
 
 /* Feature highlights */
-.idemo-features { display: flex; align-items: flex-start; gap: 24px; padding: 0 160px; }
+.idemo-features { display: flex; align-items: flex-start; gap: 24px; padding: 0 40px; } /* lines up with the window */
 .idemo-feature { flex: 1 0 0; min-width: 0; display: flex; align-items: flex-start; gap: 14px; }
 .idemo-feature__icon {
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;

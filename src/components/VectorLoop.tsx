@@ -48,15 +48,27 @@ export function VectorLoop({ src, width, height, className, style, recolor, excl
     if (!canvas) return;
     let player: TFVectorPlayer | undefined;
     let cancelled = false;
-    fetch(src)
+    let started = false;
+    let visible = false;
+    const start = () => {
+      if (started) return;
+      started = true;
+      fetch(src)
       .then((r) => r.arrayBuffer())
       .then((buf) => new Uint8Array(buf))
       .then((bytes) => (isTfz(bytes) ? unpackTfz(bytes) : window.TFVector.inflate(bytes)))
       .then((bytes) => (recolor ? recolorTfv(bytes, recolor) : bytes))
       .then((bytes) => (cancelled ? undefined : window.TFVector.play(canvas, bytes)))
-      .then((p) => { player = p; if (cancelled) p?.pause(); })
+      .then((p) => { player = p; if (cancelled || !visible) p?.pause(); })
       .catch((e) => console.error(e));
-    return () => { cancelled = true; player?.pause(); };
+    };
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting && entry.intersectionRatio >= 0.1;
+      if (visible) { start(); player?.play(); }
+      else player?.pause();
+    }, { threshold: [0, 0.1] });
+    observer.observe(canvas.closest(".ps-card, .hero__card, .final-cta__card, .idemo-stage") ?? canvas);
+    return () => { cancelled = true; observer.disconnect(); player?.pause(); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [src, recolorKey, excludeFramesWithLayer, noShadows, pixelRatio, renderFps, noEffects, hoverGridScale]);
 

@@ -1,43 +1,45 @@
-.product-showcase-scroll { position: relative; background: var(--surface-primary); }
-.product-showcase {
-  position: sticky; top: 97px;
-  display: flex; flex-direction: row; gap: 16px;
-  overflow: hidden;
-  align-items: flex-start; padding-bottom: 16px;
-  padding: 0 16px; background: var(--surface-primary);
+.product-showcase-scroll { width: 100%; padding-inline: max(16px, calc((100% - 1122px) / 2)); background: var(--surface-primary); }
+.product-showcase-tabs { display: flex; align-items: flex-end; justify-content: center; }
+.ps-tab { position: relative; display: inline-flex; align-items: center; gap: 12px; padding: 16px 20px; border: 0; border-radius: 16px 16px 0 0; background: transparent; color: var(--content-primary); font-family: var(--font-display); font-size: 20px; font-weight: 600; line-height: 24px; cursor: pointer; }
+.product-showcase-scroll { --ps-tab-bg: #f7f7c3; }
+.product-showcase-tabs { position: relative; }
+.ps-tab { z-index: 1; }
+/* The active tab's surface slides between tabs, with concave 16px corners where it meets the card */
+.ps-tab-indicator { position: absolute; left: 0; bottom: 0; border-radius: 16px 16px 0 0; background: var(--ps-tab-bg); pointer-events: none; }
+.ps-tab-indicator { transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1), width 420ms cubic-bezier(0.22, 1, 0.36, 1); }
+.ps-tab-indicator::before, .ps-tab-indicator::after { content: ""; position: absolute; bottom: 0; width: 16px; height: 16px; }
+.ps-tab-indicator::before { left: -16px; background: radial-gradient(circle at 0 0, transparent 15.5px, var(--ps-tab-bg) 16px); }
+.ps-tab-indicator::after { right: -16px; background: radial-gradient(circle at 100% 0, transparent 15.5px, var(--ps-tab-bg) 16px); }
+@media (prefers-reduced-motion: reduce) { .ps-tab-indicator { transition: none; } }
+.ps-tab:focus-visible { outline: 2px solid var(--surface-accent-orange-default); outline-offset: -4px; }
+.product-showcase { position: relative; }
+.ps-panel { display: none; }
+.product-showcase[data-active="search-api"] #search-api,
+.product-showcase[data-active="fetch-api"] #fetch-api,
+.product-showcase[data-active="browser-api"] #browser-api,
+.product-showcase[data-active="agent-api"] #agent-api { display: block; }
+.ps-card { --ps-copy-inset: 80px; position: relative; overflow: hidden; height: 720px; border-radius: 16px; background: #f7f7c3; }
+.ps-card__bg { position: absolute; top: auto !important; bottom: 0; clip-path: inset(6px 6px 0 6px); /* hide the dark frame line baked into the animation exports */ max-width: none; object-fit: cover; pointer-events: none; user-select: none; }
+.ps-card__layout { position: relative; height: 100%; width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 32px; padding: 60px 64px 60px 80px; }
+@media (max-width: 1000px) {
+  .ps-card { --ps-copy-inset: 32px; }
+  .ps-card__layout { padding: 40px 32px; gap: 24px; }
+  .ps-intro { width: 40% !important; }
+  .ps-intro__copy h2 { font-size: 40px; white-space: normal !important; }
+  .browser.ps-window { width: 50% !important; }
 }
-
-/* One coloured surface per showcase card. */
-.ps-panel { width: 100%; flex: 0 0 100%; margin-inline: 0; }
-.ps-card { position: relative; overflow: hidden; border-radius: 16px; }
-
-.ps-card--search { height: calc(100svh - 113px); background: var(--surface-showcase-search); }
-.ps-card--landscape { height: calc(100svh - 113px); background: var(--surface-showcase-landscape); }
-#fetch-api .ps-card { background: #bdc7ad; }
-#agent-api .ps-card { background: #f3f095; }
-#browser-api .ps-card { background: #f6f6f4; }
-#fetch-api .ps-card__bg { transform: scale(1.05); transform-origin: 50% 100%; clip-path: inset(1%); }
-.ps-card__bg { position: absolute; top: auto !important; bottom: 0; translate: var(--art-parallax, 0px) 0; max-width: none; object-fit: cover; pointer-events: none; user-select: none; }
-/* Cards run full width. The search card's laptop art keeps its designed size around the centred
-   content, so past the Figma frame its left/right edges fade into the card colour. */
-@media (min-width: 1441px) {
-  .ps-card--search .ps-card__bg {
-    -webkit-mask-image: linear-gradient(to right, transparent, #000 160px, #000 calc(100% - 160px), transparent);
-    mask-image: linear-gradient(to right, transparent, #000 160px, #000 calc(100% - 160px), transparent);
-  }
+@media (max-width: 640px) {
+  .product-showcase-tabs { overflow-x: auto; justify-content: safe center; padding-inline: 16px; }
+  .ps-tab { flex-shrink: 0; font-size: 16px; padding: 14px 12px; gap: 6px; }
+  .ps-card { height: 900px; --ps-copy-inset: 24px; }
+  .ps-card__layout { flex-direction: column; align-items: flex-start; justify-content: flex-start; padding: 28px 24px; }
+  .ps-intro, .browser.ps-window { width: 100% !important; }
+  .ps-intro { gap: 16px !important; }
+  .ps-intro__copy h2 { font-size: 32px; }
 }
-
-/* Figma: landscape layouts are 1408px wide inside a 1376px card, so the window sits 48px from the right edge. */
-.ps-card__layout {
-  position: relative; height: 100%; width: 100%; max-width: 1376px; margin-inline: auto; /* content stays at the Figma card width */
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 60px 80px;
-}
-.ps-card--landscape .ps-card__layout { padding-right: 48px; }
-.ps-card--search .ps-card__layout { padding-right: 48px; }
 
 /* Intro copy */
-.ps-intro { align-self: stretch; width: 445px; flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 28px; }
+.ps-intro { align-self: flex-start; width: 445px; flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 28px; }
 .ps-intro__copy { display: flex; flex-direction: column; gap: 12px; }
 .ps-intro__copy h2 { color: var(--content-primary); white-space: nowrap; }
 .ps-intro__desc { color: var(--content-static-black); } /* text style Body/L (.t-body-l) */
@@ -50,7 +52,7 @@
   transition: filter 120ms ease, background-color 120ms ease;
 }
 .ps-cta:hover { filter: brightness(1.25); }
-#search-api .ps-cta { background: var(--brand-orange-900); border-color: var(--brand-orange-900); }
+
 #browser-api .ps-cta { background: var(--surface-accent-orange-default); border-color: var(--surface-accent-orange-default); }
 #agent-api .ps-cta { background: #06283f; border-color: #06283f; }
 .ps-cta:active { filter: brightness(0.9); }
@@ -112,3 +114,13 @@
 .ps-result__body { flex: 1 0 0; min-width: 0; display: flex; flex-direction: column; gap: 2px; color: var(--content-primary); }
 .ps-result__source { color: var(--content-tertiary); }
 .ps-result__text { color: var(--content-secondary); }
+/* Search: laptop art a little smaller, scaled from the laptop's bottom-left corner so it stays on the
+   card floor and lined up with the copy (239px = SEARCH_LAPTOP_LEFT) */
+#search-api .ps-card__bg { transform: scale(0.82); transform-origin: 239px 100%; }
+#fetch-api .ps-card { background: #bdc7ad; }
+#browser-api .ps-card { background: #f6f6f4; }
+#agent-api .ps-card { background: #f3f095; }
+.product-showcase-scroll:has([data-active="fetch-api"]) { --ps-tab-bg: #bdc7ad; }
+.product-showcase-scroll:has([data-active="browser-api"]) { --ps-tab-bg: #f6f6f4; }
+.product-showcase-scroll:has([data-active="agent-api"]) { --ps-tab-bg: #f3f095; }
+.product-showcase-scroll { overflow: hidden; }

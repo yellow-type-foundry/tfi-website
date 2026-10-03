@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactElement, ReactNode } from "react";
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { BrowserWindow } from "../components/BrowserWindow";
 import { VectorLoop } from "../components/VectorLoop";
 import { Icon } from "../components/Icon";
@@ -156,16 +156,18 @@ type ProductCardProps = {
 };
 
 const FIGMA_CARD_WIDTH = 1376;
+/** Where the laptop starts inside the search art, in px from the art's left edge. */
+const SEARCH_LAPTOP_LEFT = 239;
 
 function ProductCard({ id, title, description, cta, tone, bg, vector, children }: ProductCardProps) {
-  // Offsets are from the 1376px-wide Figma card. The laptop art (search) keeps its size, centred
-  // with the content, so it never grows into the copy; the landscapes stretch with the card.
+  // Offsets are from the 1376px-wide Figma card. The laptop art (search) keeps its size, with the
+  // laptop's left edge on the copy's left edge; the landscapes stretch with the card.
   const bgStyle: CSSProperties =
     tone === "search"
-      ? { left: `calc(50% - ${FIGMA_CARD_WIDTH / 2 - bg.left}px)`, top: bg.top, width: bg.width, height: bg.height, objectPosition: bg.position }
+      ? { left: `calc(var(--ps-copy-inset) - ${SEARCH_LAPTOP_LEFT}px)`, top: bg.top, width: bg.width, height: bg.height, objectPosition: bg.position }
       : { left: bg.left, top: bg.top, width: `calc(100% + ${bg.width - FIGMA_CARD_WIDTH}px)`, height: bg.height, objectPosition: bg.position };
   return (
-    <article className="ps-panel" id={id} aria-labelledby={`${id}-title`}>
+    <article className="ps-panel" id={id} role="tabpanel" aria-labelledby={`${id}-tab`}>
       <div className={`ps-card ps-card--${tone}`}>
         {vector ? (
           <VectorLoop className="ps-card__bg" src={`/assets/product-showcase/vector/${vector.src}`} width={vector.width} height={vector.height} style={bgStyle} />
@@ -196,46 +198,43 @@ function ProductCard({ id, title, description, cta, tone, bg, vector, children }
 }
 
 export function ProductShowcase() {
-  const scrollRef = useRef<HTMLElement>(null);
-  useEffect(() => {
-    const section = scrollRef.current;
-    const track = section?.querySelector<HTMLElement>(".product-showcase");
-    if (!section || !track) return;
-    let raf = 0;
-    let distance = 0;
-    const panels = Array.from(track.querySelectorAll<HTMLElement>(".ps-panel"));
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => {
-      raf = 0;
-      const top = parseFloat(getComputedStyle(track).top) || 0;
-      const progress = Math.max(0, Math.min(distance, top - section.getBoundingClientRect().top));
-      track.scrollLeft = progress;
-      panels.forEach((panel) => {
-        const offset = progress - panel.offsetLeft + 16;
-        const shift = reducedMotion.matches ? 0 : Math.max(-100, Math.min(100, offset * 0.2));
-        panel.style.setProperty("--art-parallax", `${shift}px`);
-      });
-    };
-    const measure = () => {
-      distance = Math.max(0, track.scrollWidth - track.clientWidth);
-      section.style.height = `${track.offsetHeight + distance}px`;
-      update();
-    };
-    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
-    const observer = new ResizeObserver(measure);
-    observer.observe(track);
-    measure();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", measure);
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", measure);
-      cancelAnimationFrame(raf);
-      section.style.removeProperty("height");
-      panels.forEach((panel) => panel.style.removeProperty("--art-parallax"));
-    };
+  const [active, setActive] = useState("search-api");
+  const tabsRef = useRef<HTMLDivElement>(null);
+  const indicatorRef = useRef<HTMLSpanElement>(null);
+  // Slide the active tab's surface under whichever tab is selected
+  const placeIndicator = (animate: boolean) => {
+    const indicator = indicatorRef.current;
+    const tab = tabsRef.current?.querySelector<HTMLElement>(".ps-tab--active");
+    if (!indicator || !tab) return;
+    if (!animate) indicator.style.transition = "none";
+    indicator.style.transform = `translateX(${tab.offsetLeft}px)`;
+    indicator.style.width = `${tab.offsetWidth}px`;
+    indicator.style.height = `${tab.offsetHeight}px`;
+    if (!animate) { void indicator.offsetWidth; indicator.style.transition = ""; }
+  };
+  // Snap into place on first paint and on resize; only tab switches slide
+  useLayoutEffect(() => {
+    const tabs = tabsRef.current;
+    if (!tabs) return;
+    placeIndicator(false);
+    const observer = new ResizeObserver(() => placeIndicator(false));
+    observer.observe(tabs);
+    tabs.querySelectorAll(".ps-tab").forEach((tab) => observer.observe(tab)); // tab widths change when web fonts load
+    return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  const firstRender = useRef(true);
+  useLayoutEffect(() => {
+    if (firstRender.current) { firstRender.current = false; return; }
+    placeIndicator(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active]);
+  const products = [
+    { id: "search-api", title: "Search API" },
+    { id: "fetch-api", title: "Fetch API" },
+    { id: "browser-api", title: "Browser API" },
+    { id: "agent-api", title: "Agent API" },
+  ];
   const quoteList = (
     <ol className="ps-steps__list">
       {quoteSteps.map((s, i) => <StepRow key={i} {...s} />)}
@@ -243,8 +242,24 @@ export function ProductShowcase() {
   );
 
   return (
-    <section ref={scrollRef} className="product-showcase-scroll" id="products" aria-label="TinyFish APIs">
-      <div className="product-showcase">
+    <section className="product-showcase-scroll" id="products" aria-label="TinyFish APIs">
+      <div ref={tabsRef} className="product-showcase-tabs" role="tablist" aria-label="APIs">
+        <span ref={indicatorRef} className="ps-tab-indicator" aria-hidden />
+        {products.map((product) => (
+          <button key={product.id} id={`${product.id}-tab`} role="tab" aria-selected={active === product.id}
+            aria-controls={product.id} tabIndex={active === product.id ? 0 : -1}
+            className={`ps-tab${active === product.id ? " ps-tab--active" : ""}`}
+            onClick={() => setActive(product.id)}
+            onKeyDown={(event) => {
+              const index = products.findIndex((item) => item.id === active);
+              const next = event.key === "ArrowRight" ? (index + 1) % products.length : event.key === "ArrowLeft" ? (index + products.length - 1) % products.length : event.key === "Home" ? 0 : event.key === "End" ? products.length - 1 : -1;
+              if (next >= 0) { event.preventDefault(); setActive(products[next].id); document.getElementById(`${products[next].id}-tab`)?.focus(); }
+            }}>
+            {product.title}
+          </button>
+        ))}
+      </div>
+      <div className="product-showcase" data-active={active}>
       <ProductCard
         id="search-api"
         title="Search API"

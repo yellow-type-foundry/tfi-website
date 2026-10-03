@@ -21,12 +21,12 @@ export function Hero() {
     <section className="hero">
       <div className="hero__card depth-default">
         {/* Vector loop with push-on-hover; its sky is already the card's Brand/Yellow/400. */}
-        <VectorLoop className="hero__bg" src="/assets/hero/vector/hero-v35.tfv" width={1920} height={1211} />
+        <VectorLoop className="hero__bg" src="/assets/hero/vector/hero-v36.tfv" width={1920} height={1211} />
 
         <TopBar className="hero__topbar" />
 
         <div className="hero__main">
-          <HeadingPill as="h1" heading="The web stack for AI agents" body="Search, extract, browse, and act on the web with one platform." />
+          <HeadingPill as="h1" heading={<><span>The web stack</span>{" "}<span>for AI agents</span></>} body="Search, extract, browse, and act on the web with one platform." />
           <Button variant="accent" size="l">Connect TinyFish</Button>
           <div className="hero__tagline">
             <p>Works with any AI</p>

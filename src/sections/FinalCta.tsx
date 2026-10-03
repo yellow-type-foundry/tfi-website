@@ -25,10 +25,13 @@ export function FinalCta() {
         <div className="final-cta__content">
           <div className="final-cta__pill">
             <h2 className="visually-hidden">Give your agent the real world.</h2>
-            <div className="final-cta__head final-cta__surface" aria-hidden>
+            <div className="final-cta__head final-cta__surface final-cta__heading-wide" aria-hidden>
+              <p className="t-h1">Give your agent the real world.</p>
+            </div>
+            <div className="final-cta__head final-cta__surface final-cta__heading-narrow" aria-hidden>
               <p className="t-h1">Give your agent</p>
             </div>
-            <div className="final-cta__row" aria-hidden>
+            <div className="final-cta__row final-cta__heading-narrow" aria-hidden>
               <Cutout side="left" />
               <div className="final-cta__tab final-cta__tab--title final-cta__surface depth-join">
                 <p className="t-h1">the real world.</p>
