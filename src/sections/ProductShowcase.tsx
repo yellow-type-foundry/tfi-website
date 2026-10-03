@@ -541,11 +541,12 @@ export function ProductShowcase() {
             ))}
           </div>
           <div className="ps-card" id="products-panel" role="tabpanel" aria-labelledby={`${active}-tab`}>
-            {/* Every product's art loads with the card and stays drawn, so switching is a plain cross-fade in
-                step with the card colour; only the selected one plays. */}
-            {products.map((p) => (
+            {/* Desktop: every product's art loads with the card and stays drawn, so switching is a plain
+                cross-fade in step with the card colour; only the selected one plays. Tablet and mobile skip
+                these entirely (they'd download and decode four hidden loops) and use the one below the window. */}
+            {!tablet && products.map((p) => (
               <div key={p.id} className={`ps-art${active === p.id ? " ps-art--active" : ""}`} data-product={p.id} aria-hidden>
-                <VectorLoop className="ps-card__bg" src={`/assets/product-showcase/vector/${p.vector.src}`} width={p.vector.width} height={p.vector.height} style={artStyle(p)} active={!tablet && active === p.id} />
+                <VectorLoop className="ps-card__bg" src={`/assets/product-showcase/vector/${p.vector.src}`} width={p.vector.width} height={p.vector.height} style={artStyle(p)} active={active === p.id} />
               </div>
             ))}
             <div className="ps-card__layout">
@@ -572,7 +573,7 @@ export function ProductShowcase() {
         </BrowserWindow>
         </div>
         {tablet && <div className="ps-mobile-art" data-product={product.id} aria-hidden>
-          <VectorLoop key={product.id} className="ps-mobile-art__canvas" src={`/assets/product-showcase/vector/${product.vector.src}`} width={product.vector.width} height={product.vector.height} active={inView} />
+          <VectorLoop key={product.id} className="ps-mobile-art__canvas" src={`/assets/product-showcase/vector/${product.vector.src}`} width={product.vector.width} height={product.vector.height} pixelRatio={2} />
         </div>}
       </div>
     </section>

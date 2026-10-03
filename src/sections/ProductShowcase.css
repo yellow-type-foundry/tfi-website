@@ -324,7 +324,9 @@ canvas.ps-card__bg { opacity: 0; transition: opacity var(--ps-switch-dur) var(--
    right. Tabs keep the width they had beside the window. */
 @media (min-width: 1101px) {
   .product-showcase { display: block; position: relative; }
-  .product-showcase-tabs { max-width: calc(100% - 460px); }
+  /* Tabs hug their short labels and sit centred over the card */
+  .product-showcase-tabs { justify-content: center; padding-inline: 0; }
+  .ps-tab { flex: 0 0 auto; padding-inline: 32px; }
   /* Landscapes fill the card's width from its left edge, keeping their 1573×674 crop; overrides
      artStyle's inline centring and size. Overscanned 6px each side so the frame-line clip falls outside the card. */
   .ps-art:not([data-product="search-api"]) .ps-card__bg {
