@@ -5,14 +5,17 @@
 :root {
   /* Color Primitives */
   --neutral-0: #ffffff;
-  --neutral-50: #fafafa;
-  --neutral-100: #f5f5f5;
-  --neutral-200: #e2e4e2;
-  --neutral-300: #b5b7b5;
-  --neutral-400: #999999;
-  --neutral-500: #777e77;
-  --neutral-600: #5b625b;
-  --neutral-700: #404840;
+  --neutral-100: #f9f9f6;
+  --neutral-150: #f1f1e9;
+  --neutral-200: #eeeee7;
+  --neutral-300: #e0e0d4;
+  --neutral-400: #cdcdb9;
+  --neutral-500: #b2b296;
+  --neutral-600: #939488;
+  --neutral-700: #75756b;
+  --neutral-800: #42433c;
+  --neutral-900: #1e1e1a;
+  --neutral-1000: #000000;
   --brand-orange-100: #fef4e6;
   --brand-orange-200: #ffd5b3;
   --brand-orange-300: #ffbe94;
@@ -40,15 +43,6 @@
   --brand-green-700: #056117;
   --brand-green-800: #004d0f;
   --brand-green-900: #002908;
-  --brand-neutral-100: #f9f9f6;
-  --brand-neutral-200: #eeeee7;
-  --brand-neutral-300: #e6e6da;
-  --brand-neutral-400: #dbdbc7;
-  --brand-neutral-500: #ceceb1;
-  --brand-neutral-600: #a5a697;
-  --brand-neutral-700: #75756b;
-  --brand-neutral-800: #42433c;
-  --brand-neutral-900: #1e1e1a;
   --brand-teal-100: #d6f2fa;
   --brand-teal-200: #afe4f3;
   --brand-teal-300: #93dcf0;
@@ -58,23 +52,19 @@
   --brand-teal-700: #348d9d;
   --brand-teal-800: #10525b;
   --brand-teal-900: #033235;
-  --neutral-800: #2a302a;
-  --neutral-900: #1b1d1b;
   --opacity-40: 0.4;
-  --brand-neutral-150: #f1f1e9;
-  --neutral-1000: #000000;
 
   /* Color Semantic (Light) */
   --content-primary: var(--neutral-900);
-  --content-secondary: var(--brand-neutral-800);
+  --content-secondary: var(--neutral-800);
   --content-accent-orange-subtle: var(--brand-orange-200);
-  --content-tertiary: var(--brand-neutral-700);
+  --content-tertiary: var(--neutral-700);
   --content-accent-orange-default: var(--brand-orange-500);
   --surface-primary: var(--neutral-0);
-  --surface-secondary: var(--brand-neutral-100);
-  --surface-tertiary: var(--brand-neutral-200);
-  --surface-strong: var(--brand-neutral-500);
-  --surface-inverse: var(--brand-neutral-900);
+  --surface-secondary: var(--neutral-100);
+  --surface-tertiary: var(--neutral-200);
+  --surface-strong: var(--neutral-500);
+  --surface-inverse: var(--neutral-900);
   --surface-accent-orange-subtle: var(--brand-orange-100);
   --surface-accent-orange-default: var(--brand-orange-600);
   --surface-accent-orange-strong: var(--brand-orange-900);
@@ -85,8 +75,8 @@
   --surface-accent-yellow-default: var(--brand-yellow-500);
   --surface-accent-yellow-strong: var(--brand-yellow-900);
   --surface-accent-teal-subtle: var(--brand-teal-100);
-  --outline-default: var(--brand-neutral-300);
-  --outline-strong: var(--brand-neutral-500);
+  --outline-default: var(--neutral-300);
+  --outline-strong: var(--neutral-500);
   --surface-accent-teal-default: var(--brand-teal-500);
   --effect-depth-inner-highlight-top: #ffffff;
   --effect-depth-inner-glow-top: rgba(255, 255, 255, 0.5);
@@ -99,7 +89,7 @@
   --outline-accent-teal: var(--brand-teal-300);
   --outline-accent-yellow: var(--brand-yellow-300);
   --outline-accent-green: var(--brand-green-400);
-  --outline-accent-neutral: var(--brand-neutral-300);
+  --outline-accent-neutral: var(--neutral-300);
   --content-accent-teal-subtle: var(--brand-teal-200);
   --content-accent-yellow-subtle: var(--brand-yellow-200);
   --content-accent-teal-default: var(--brand-teal-500);
@@ -118,7 +108,7 @@
   --content-inverse: var(--content-static-white);
   --background-overlay-dimmed: rgba(255, 255, 255, 0.4);
   --background-primary: var(--neutral-0);
-  --background-secondary: var(--brand-neutral-150);
+  --background-secondary: var(--neutral-150);
 
   /* Spacing */
   --space-0: 0px;
@@ -159,14 +149,14 @@
 :root[data-theme="dark"] {
   /* Color Semantic (Dark) */
   --content-primary: var(--neutral-0);
-  --content-secondary: var(--brand-neutral-300);
+  --content-secondary: var(--neutral-300);
   --content-accent-orange-subtle: var(--brand-orange-700);
-  --content-tertiary: var(--brand-neutral-600);
+  --content-tertiary: var(--neutral-600);
   --content-accent-orange-default: var(--brand-orange-500);
-  --surface-primary: var(--brand-neutral-900);
-  --surface-secondary: var(--brand-neutral-800);
-  --surface-tertiary: var(--brand-neutral-700);
-  --surface-strong: var(--brand-neutral-600);
+  --surface-primary: var(--neutral-900);
+  --surface-secondary: var(--neutral-800);
+  --surface-tertiary: var(--neutral-700);
+  --surface-strong: var(--neutral-600);
   --surface-inverse: var(--neutral-0);
   --surface-accent-orange-subtle: var(--brand-orange-900);
   --surface-accent-orange-default: var(--brand-orange-600);
@@ -178,8 +168,8 @@
   --surface-accent-yellow-default: var(--brand-yellow-500);
   --surface-accent-yellow-strong: var(--brand-yellow-900);
   --surface-accent-teal-subtle: var(--brand-teal-900);
-  --outline-default: var(--brand-neutral-800);
-  --outline-strong: var(--brand-neutral-700);
+  --outline-default: var(--neutral-800);
+  --outline-strong: var(--neutral-700);
   --surface-accent-teal-default: var(--brand-teal-500);
   --effect-depth-inner-highlight-top: rgba(255, 255, 255, 0.35);
   --effect-depth-inner-glow-top: rgba(255, 255, 255, 0.25);
@@ -192,7 +182,7 @@
   --outline-accent-teal: var(--brand-teal-900);
   --outline-accent-yellow: var(--brand-yellow-900);
   --outline-accent-green: var(--brand-green-700);
-  --outline-accent-neutral: var(--brand-neutral-700);
+  --outline-accent-neutral: var(--neutral-700);
   --content-accent-teal-subtle: var(--brand-teal-700);
   --content-accent-yellow-subtle: var(--brand-yellow-700);
   --content-accent-teal-default: var(--brand-teal-500);
@@ -210,8 +200,8 @@
   --outline-static-black: var(--neutral-1000);
   --content-inverse: var(--content-static-black);
   --background-overlay-dimmed: rgba(0, 0, 0, 0.4);
-  --background-primary: var(--brand-neutral-900);
-  --background-secondary: var(--brand-neutral-800);
+  --background-primary: var(--neutral-900);
+  --background-secondary: var(--neutral-800);
 }
 
 /* Text styles */
