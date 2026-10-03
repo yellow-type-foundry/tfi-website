@@ -236,7 +236,7 @@ export function Solutions() {
       <header className="solutions__header">
         <Eyebrow>SOLUTIONS</Eyebrow>
         <h1 className="t-h1">What TinyFish<span className="solutions__title-break" /> can do</h1>
-        <p className="t-body-xl">Four jobs people hand their agents every day, on the live web.</p>
+        <p className="t-body-xl">Four jobs people hand their agents<span className="solutions__body-break" /> every day, on the live web.</p>
       </header>
       <div className="solutions__grid">
         <FeatureCard title="Monitor web pages" description={<>Get an alert when a page or topic changes.<br />Prices, filings, job posts.</>}>

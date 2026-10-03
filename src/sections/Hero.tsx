@@ -1,3 +1,4 @@
+import { MobileSteppedHeading } from "../components/MobileSteppedHeading";
 import { Button } from "../components/Button";
 import { HeadingPill } from "../components/HeadingPill";
 import { TopBar } from "../components/TopBar";
@@ -26,21 +27,7 @@ export function Hero() {
         <TopBar className="hero__topbar" />
 
         <div className="hero__main">
-          <div className="hero-mobile-heading">
-            <h1 className="hero-mobile-heading__title t-h1">
-              <span className="hero-mobile-heading__first">The web stack</span>
-              <span className="hero-mobile-heading__row">
-                <img src="/assets/hero/cutout-left.svg" width={16} height={16} alt="" />
-                <span className="hero-mobile-heading__second">for AI agents</span>
-                <img src="/assets/hero/cutout-right.svg" width={16} height={16} alt="" />
-              </span>
-            </h1>
-            <div className="hero-mobile-heading__body-row">
-              <img src="/assets/hero/cutout-left.svg" width={16} height={16} alt="" />
-              <p>Search, extract, browse, and act on the web with one platform.</p>
-              <img src="/assets/hero/cutout-right.svg" width={16} height={16} alt="" />
-            </div>
-          </div>
+          <MobileSteppedHeading as="h1" first="The web stack" second="for AI agents" body="Search, extract, browse, and act on the web with one platform." />
           <HeadingPill as="h1" heading={<><span>The web stack</span>{" "}<span>for AI agents</span></>} body="Search, extract, browse, and act on the web with one platform." />
           <Button variant="accent" size="l">Connect TinyFish</Button>
           <div className="hero__tagline">

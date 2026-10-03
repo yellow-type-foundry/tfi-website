@@ -1,3 +1,4 @@
+import { MobileSteppedHeading } from "../components/MobileSteppedHeading";
 import type { ReactElement } from "react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useInView } from "../hooks/useLoop";
@@ -180,6 +181,7 @@ export function InteractiveDemo() {
     <section className="idemo" id="identity">
       <header className="idemo-intro">
         <Eyebrow>IDENTITY</Eyebrow>
+        <MobileSteppedHeading first="Access the web" second="behind the login" body="Your agent signs in with your own logins, does the work, and records every step." />
         <div className="idemo-pill">
           <div className="idemo-pill__head depth-inner-strong">
             <h2 className="t-h1"><span>Access the web</span>{" "}<span>behind the login</span></h2>

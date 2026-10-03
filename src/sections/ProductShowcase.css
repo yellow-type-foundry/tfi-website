@@ -41,8 +41,8 @@
   .browser.ps-window { width: 100%; max-width: 560px; align-self: center; }
 }
 @media (max-width: 640px) {
-  .product-showcase-tabs { overflow-x: auto; padding-inline: 16px; }
-  .ps-tab { flex-shrink: 0; font-size: 16px; padding: 14px 12px; gap: 6px; }
+  .product-showcase-tabs { overflow-x: auto; padding-inline: 32px; }
+  .ps-tab { flex-shrink: 0; font-size: 16px; padding: 14px 8px; gap: 6px; }
   .ps-card { --ps-copy-inset: 24px; }
   .ps-card__layout { padding: 28px 24px; }
   .ps-intro__desc br { display: none; } /* desktop line breaks keep every card at 3 lines */
@@ -200,7 +200,7 @@ canvas.ps-card__bg { opacity: 0; transition: opacity var(--ps-switch-dur) var(--
 .ps-art[data-product="fetch-api"] { --ps-art-bg: #bdc7ad; }
 .ps-art[data-product="browser-api"] { --ps-art-bg: #f6f6f4; }
 .ps-art[data-product="agent-api"] { --ps-art-bg: #3196e9; }
-@media (min-width: 641px) and (max-width: 1100px) {
+@media (max-width: 1100px) {
   .product-showcase { gap: 0; }
   .ps-art { display: none; }
   .ps-card { flex: none; height: auto; min-height: 0; border-radius: 16px 16px 0 0; }
@@ -218,7 +218,7 @@ canvas.ps-card__bg { opacity: 0; transition: opacity var(--ps-switch-dur) var(--
 .product-showcase-scroll:has([data-active="browser-api"]) { --ps-tab-bg: #f6f6f4; }
 .product-showcase-scroll:has([data-active="agent-api"]) { --ps-tab-bg: #3196e9; }
 .product-showcase-scroll { overflow: hidden; }
-@media (min-width: 641px) and (max-width: 1100px) {
+@media (max-width: 1100px) {
   .product-showcase-scroll:has([data-active]) {
     --ps-tab-bg: var(--brand-yellow-400);
     transition: none;

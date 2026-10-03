@@ -469,9 +469,9 @@ function useWindowHeight(rowRef: React.RefObject<HTMLDivElement | null>, active:
 }
 
 export function ProductShowcase() {
-  const [tablet, setTablet] = useState(() => window.matchMedia("(min-width: 641px) and (max-width: 1100px)").matches);
+  const [tablet, setTablet] = useState(() => window.matchMedia("(max-width: 1100px)").matches);
   useEffect(() => {
-    const query = window.matchMedia("(min-width: 641px) and (max-width: 1100px)");
+    const query = window.matchMedia("(max-width: 1100px)");
     const update = () => setTablet(query.matches);
     update();
     query.addEventListener("change", update);

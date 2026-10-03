@@ -43,3 +43,21 @@
   .use-with .heading-pill__tab { flex: none; min-width: 0; white-space: normal; }
   .use-with .heading-pill__tab-row:last-child .heading-pill__tab { flex: 1; }
 }
+
+@media (max-width: 640px) {
+  .use-with { padding-top: 112px; }
+  .use-with__pill { width: 100%; }
+  .use-with .heading-pill__head { width: 100%; padding-inline: 16px; }
+  .use-with__line { font-size: min(44px, calc((100cqw - 64px) / 10.5)); line-height: 1.1; white-space: nowrap; }
+  .use-with__claude-desktop, .use-with__code { display: none; }
+  .use-with__claude-tablet { display: inline; }
+  .use-with__code-row { display: flex; }
+  .use-with .heading-pill__tab-row { padding: 0; width: calc(100% - 32px); }
+  .use-with .heading-pill__tab { flex: 1; min-width: 0; padding-inline: 8px; }
+  .use-with .use-with__code-row { width: calc(100% - 112px); }
+  .use-with .heading-pill__tab-row:nth-child(3) .use-with__title-tab { padding-bottom: 0; }
+  .use-with .use-with__code-row .use-with__title-tab { padding-top: 0; padding-bottom: 8px; }
+  .use-with .heading-pill__tab-row:last-child { width: calc(100% - 160px); }
+  .use-with .heading-pill__tab-row:last-child p { font-size: 16px; line-height: 1.4; text-wrap: balance; }
+  .use-with__actions { flex-wrap: wrap; justify-content: center; }
+}

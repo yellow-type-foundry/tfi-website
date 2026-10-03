@@ -163,3 +163,12 @@
   .idemo-features { width: 100%; flex-direction: column; padding: 0 24px; }
   .idemo-feature { flex: none; width: 100%; }
 }
+
+@media (max-width: 640px) {
+  .idemo-intro { width: 100%; container-type: inline-size; }
+  .idemo-intro > .idemo-pill { display: none; }
+}
+
+@media (max-width: 640px) {
+  .idemo-intro .mobile-stepped-heading__first { width: calc(100% + 24px); }
+}
