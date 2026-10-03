@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/react";
 import { CustomerStories } from "./sections/CustomerStories";
 import { Faq } from "./sections/Faq";
 import { FinalCta } from "./sections/FinalCta";
@@ -28,6 +29,7 @@ export default function App() {
         <FinalCta />
         <Footer />
       </div>
+      <Analytics />
     </main>
   );
 }
