@@ -19,7 +19,7 @@
 }
 .hero__bg {
   position: absolute; left: 50%; bottom: 0; transform: translateX(-50%);
-  width: calc(100% * var(--hero-art-scale)); max-width: none; height: auto; aspect-ratio: 2880 / 1166;
+  width: calc(100% * var(--hero-art-scale)); max-width: none; height: auto; aspect-ratio: 1920 / 1211;
 }
 
 /* In-card nav: the shared TopBar with the hero's wider side padding */
@@ -55,7 +55,7 @@
 }
 
 /* Promo pill */
-.hero__footer { position: relative; width: 100%; display: flex; justify-content: center; padding: 40px 0; margin-top: auto; }
+.hero__footer { position: relative; width: 100%; display: flex; justify-content: center; padding: 40px 0 24px; margin-top: auto; }
 .hero__promo {
   display: flex; align-items: center; justify-content: space-between;
   width: 460px; padding: 8px 8px 8px 20px; border-radius: 100px; background: var(--surface-primary);

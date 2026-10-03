@@ -21,7 +21,7 @@ export function Hero() {
     <section className="hero">
       <div className="hero__card depth-default">
         {/* Vector loop with push-on-hover; its sky is already the card's Brand/Yellow/400. */}
-        <VectorLoop className="hero__bg" src="/assets/hero/vector/hero-v19.tfv" width={2880} height={1166} />
+        <VectorLoop className="hero__bg" src="/assets/hero/vector/hero-v35.tfv" width={1920} height={1211} />
 
         <TopBar className="hero__topbar" />
 
