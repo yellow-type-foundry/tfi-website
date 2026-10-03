@@ -14,7 +14,9 @@
   --neutral-600: #939488;
   --neutral-700: #75756b;
   --neutral-800: #42433c;
+  --neutral-850: #2f2e29;
   --neutral-900: #1e1e1a;
+  --neutral-950: #13120d;
   --neutral-1000: #000000;
   --brand-orange-100: #fef4e6;
   --brand-orange-200: #ffd5b3;
@@ -148,25 +150,25 @@
 /* Dark mode is imported but off: add data-theme="dark" to <html> to switch it on. */
 :root[data-theme="dark"] {
   /* Color Semantic (Dark) */
-  --content-primary: var(--neutral-0);
+  --content-primary: var(--neutral-100);
   --content-secondary: var(--neutral-300);
   --content-accent-orange-subtle: var(--brand-orange-700);
-  --content-tertiary: var(--neutral-600);
+  --content-tertiary: var(--neutral-500);
   --content-accent-orange-default: var(--brand-orange-500);
   --surface-primary: var(--neutral-900);
-  --surface-secondary: var(--neutral-800);
-  --surface-tertiary: var(--neutral-700);
-  --surface-strong: var(--neutral-600);
-  --surface-inverse: var(--neutral-0);
+  --surface-secondary: var(--neutral-850);
+  --surface-tertiary: var(--neutral-800);
+  --surface-strong: var(--neutral-700);
+  --surface-inverse: var(--neutral-100);
   --surface-accent-orange-subtle: var(--brand-orange-900);
   --surface-accent-orange-default: var(--brand-orange-600);
-  --surface-accent-orange-strong: var(--brand-orange-900);
+  --surface-accent-orange-strong: var(--brand-orange-700);
   --surface-accent-green-subtle: var(--brand-green-900);
   --surface-accent-green-default: var(--brand-green-500);
-  --surface-accent-green-strong: var(--brand-green-900);
+  --surface-accent-green-strong: var(--brand-green-600);
   --surface-accent-yellow-subtle: var(--brand-yellow-900);
   --surface-accent-yellow-default: var(--brand-yellow-500);
-  --surface-accent-yellow-strong: var(--brand-yellow-900);
+  --surface-accent-yellow-strong: var(--brand-yellow-800);
   --surface-accent-teal-subtle: var(--brand-teal-900);
   --outline-default: var(--neutral-800);
   --outline-strong: var(--neutral-700);
@@ -179,21 +181,21 @@
   --effect-depth-inner-shadow: rgba(0, 0, 0, 0.34);
   --effect-depth-inner-highlight-bottom: rgba(255, 255, 255, 0.26);
   --outline-accent-orange: var(--brand-orange-700);
-  --outline-accent-teal: var(--brand-teal-900);
-  --outline-accent-yellow: var(--brand-yellow-900);
+  --outline-accent-teal: var(--brand-teal-700);
+  --outline-accent-yellow: var(--brand-yellow-700);
   --outline-accent-green: var(--brand-green-700);
   --outline-accent-neutral: var(--neutral-700);
   --content-accent-teal-subtle: var(--brand-teal-700);
   --content-accent-yellow-subtle: var(--brand-yellow-700);
   --content-accent-teal-default: var(--brand-teal-500);
-  --content-accent-teal-strong: var(--brand-teal-500);
+  --content-accent-teal-strong: var(--brand-teal-300);
   --content-accent-yellow-default: var(--brand-yellow-500);
   --content-accent-green-subtle: var(--brand-green-700);
-  --content-accent-yellow-strong: var(--brand-yellow-500);
-  --content-accent-green-default: var(--brand-green-500);
-  --content-accent-green-strong: var(--brand-green-500);
-  --surface-accent-teal-strong: var(--brand-teal-900);
-  --content-accent-orange-strong: var(--brand-orange-500);
+  --content-accent-yellow-strong: var(--brand-yellow-300);
+  --content-accent-green-default: var(--brand-green-400);
+  --content-accent-green-strong: var(--brand-green-300);
+  --surface-accent-teal-strong: var(--brand-teal-800);
+  --content-accent-orange-strong: var(--brand-orange-300);
   --content-static-white: var(--neutral-0);
   --content-static-black: var(--neutral-1000);
   --outline-static-white: var(--neutral-0);
@@ -201,7 +203,7 @@
   --content-inverse: var(--content-static-black);
   --background-overlay-dimmed: rgba(0, 0, 0, 0.4);
   --background-primary: var(--neutral-900);
-  --background-secondary: var(--neutral-800);
+  --background-secondary: var(--neutral-950);
 }
 
 /* Text styles */
