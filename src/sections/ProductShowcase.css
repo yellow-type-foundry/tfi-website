@@ -319,3 +319,24 @@ canvas.ps-card__bg { opacity: 0; transition: opacity var(--ps-switch-dur) var(--
 @media (max-width: 1100px) {
   .ps-window-surface { margin-top: -1px; }
 }
+
+/* Desktop: the UI window sits inside the card, over the animation, centred in the card's height on the
+   right. Tabs keep the width they had beside the window. */
+@media (min-width: 1101px) {
+  .product-showcase { display: block; position: relative; }
+  .product-showcase-tabs { max-width: calc(100% - 460px); }
+  /* Landscapes fill the card's width from its left edge, keeping their 1573×674 crop; overrides
+     artStyle's inline centring and size. Overscanned 6px each side so the frame-line clip falls outside the card. */
+  .ps-art:not([data-product="search-api"]) .ps-card__bg {
+    left: -6px !important; width: calc(100% + 12px) !important; height: auto !important; aspect-ratio: 1573 / 674; transform: none;
+  }
+  .ps-art[data-product="search-api"] .ps-card__bg { --art-scale: 0.66; } /* laptop a bit larger beside the window */
+  .ps-card { min-height: max(526px, calc(var(--ps-max-h, 0px) + 80px)); }
+  .browser.ps-window {
+    position: absolute; z-index: 3; right: 40px; top: var(--ps-tabs-h, 0px); bottom: 0; margin-block: auto;
+    height: var(--ps-max-h, auto);
+  }
+}
+
+/* Agent's blue card: light ink for the copy and the active tab label, at every breakpoint */
+.product-showcase[data-active="agent-api"] :is(.ps-intro__copy h2, .ps-intro__desc, .ps-tab--active) { color: var(--content-static-white); }

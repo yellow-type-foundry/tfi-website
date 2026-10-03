@@ -458,6 +458,7 @@ function useWindowHeight(rowRef: React.RefObject<HTMLDivElement | null>, active:
       const card = full - tabsH;
       row.style.setProperty("--ps-tabs-h", `${tabsH}px`);
       row.style.setProperty("--ps-full-h", `${full}px`);
+      row.style.setProperty("--ps-max-h", `${Math.max(...Object.values(natural))}px`); // desktop: window inside the card
       row.style.setProperty("--ps-window-h", `${(natural[active] ?? full) > card ? full : card}px`);
     };
     measure();
