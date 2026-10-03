@@ -31,6 +31,8 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .depth-default::after, .depth-inner-default::after { box-shadow: var(--depth-default-inner); }
 .depth-subtle::after, .depth-inner-subtle::after { box-shadow: var(--depth-subtle-inner); }
 .depth-inner-strong, .depth-inner-default, .depth-inner-subtle { position: relative; }
+/* Embossed: outer shadow only (a filter, so it follows shapes built from several boxes) */
+.depth-embossed { filter: var(--depth-embossed-filter); }
 
 /* Tab attached under a raised block (heading pills, quote bylines): drop the tab's top-edge inner
    shadow and paint over the block's bottom highlight where they meet, so the two read as one shape.

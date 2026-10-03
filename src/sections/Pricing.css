@@ -64,6 +64,7 @@
   .pricing-api__lead > .t-h6, .pricing-api__free { font-size: 16px; line-height: 22px; }
   .pricing-api__price { flex: none; width: 100%; text-align: left; white-space: normal; }
   .pricing-api__rate { font-size: 16px; line-height: 22px; }
+  .pricing-api__free { color: var(--content-tertiary); font-family: var(--font-sans); font-weight: 400; } /* body style, like the rates */
 }
 
 .pricing-api-list.is-entering .pricing-api { opacity: 0; translate: 0 20px; }

@@ -128,3 +128,17 @@
   .btn.hero__promo-btn { width: 40px; height: 40px; flex: 0 0 40px; padding: 0; }
   .hero__promo-btn .btn__label { width: auto; }
 }
+
+/* Small phones (iPhone SE): a shorter promo line that fits on one line beside the arrow */
+.hero__promo-text--short { display: none; }
+@media (max-width: 400px) {
+  .hero__promo-text { display: none; }
+  .hero__promo-text--short { display: inline; }
+}
+
+/* Mobile: the promo pill sits an equal 8px from the frame's left, right and bottom edges, with its
+   text 8px further in than before */
+@media (max-width: 640px) {
+  .hero__footer { padding-bottom: 8px; }
+  .hero__promo { padding-left: 20px; }
+}

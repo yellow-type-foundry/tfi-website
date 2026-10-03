@@ -58,7 +58,7 @@ export function Hero() {
 
         <div className="hero__footer">
           <div className="hero__promo depth-default">
-            <p className="t-body-m">Search and Fetch APIs free on every plan.</p>
+            <p className="t-body-m"><span className="hero__promo-text">Search and Fetch APIs free on every plan.</span><span className="hero__promo-text--short">Search &amp; Fetch are free.</span></p>
             <Button variant="neutral" size="s" className="hero__promo-btn"><span className="hero__promo-label">Get started</span><span className="hero__promo-arrow" aria-hidden="true"><Icon name="arrow-right" size={20} /></span></Button>
           </div>
         </div>

@@ -23,6 +23,9 @@
   /* Same outer shadows as filter chains, for shapes built from several boxes (drop-shadow blur = radius / 2) */
   --depth-strong-filter: drop-shadow(0 2px 2px var(--effect-depth-outer-shadow)) drop-shadow(0 -2px 1.5px var(--effect-depth-outer-highlight)) drop-shadow(0 -2px 2px var(--effect-depth-outer-highlight-soft));
   --depth-default-filter: drop-shadow(0 1px 1px var(--effect-depth-outer-shadow)) drop-shadow(0 -1px 0.75px var(--effect-depth-outer-highlight)) drop-shadow(0 -1px 1px var(--effect-depth-outer-highlight-soft));
+  /* Embossed: the strong outer shadow alone, with no inner shadows, so the shape reads as a soft
+     raised edge rather than a lit surface */
+  --depth-embossed-filter: var(--depth-strong-filter);
 
   /* Typography */
   --font-sans: "ABC Solar", system-ui, sans-serif;

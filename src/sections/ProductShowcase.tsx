@@ -252,6 +252,9 @@ function wrapText(el: Element | null, unit: "char" | "word", className: string):
  * A new `key` (another product) restarts it on the new contents.
  */
 function useTranscriptPlayer(rootRef: React.RefObject<HTMLDivElement | null>, inView: boolean, key: string) {
+  // Once a transcript has played, leaving the frame freezes it where it is rather than snapping to the
+  // full transcript: on mobile the window grows with it, and a jump while it's off screen would shift the page
+  const playedRef = useRef<string | null>(null);
   useLayoutEffect(() => {
     const root = rootRef.current;
     if (!root || key === "static") return; // the hidden sizing copies just show their text
@@ -272,7 +275,12 @@ function useTranscriptPlayer(rootRef: React.RefObject<HTMLDivElement | null>, in
       items.forEach((li) => { li.classList.remove("is-pending"); li.classList.add("is-shown"); });
       shimmer(false);
     };
-    if (!playing) { showAll(); return; }
+    if (!playing) {
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduced || playedRef.current !== key) showAll();
+      return;
+    }
+    playedRef.current = key;
 
     const timers: number[] = [];
     const at = (t: number, fn: () => void) => timers.push(window.setTimeout(fn, t * 1.25));
@@ -305,7 +313,7 @@ function useTranscriptPlayer(rootRef: React.RefObject<HTMLDivElement | null>, in
       at(t + 3300, run);
     };
     run();
-    return () => { timers.forEach(clearTimeout); showAll(); };
+    return () => { timers.forEach(clearTimeout); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView, key]);
 }
@@ -479,7 +487,8 @@ export function ProductShowcase() {
     return () => query.removeEventListener("change", update);
   }, []);
   const [active, setActiveState] = useState(products[0].id);
-  const [sectionRef, inView] = useInView<HTMLElement>();
+  // The transcript only plays while the window itself is in frame; off screen it freezes on its full state
+  const [windowRef, inView] = useInView<HTMLDivElement>(0.2);
   const rowRef = useRef<HTMLDivElement>(null);
   useWindowHeight(rowRef, active);
   const [switched, setSwitched] = useState(false); // headings only animate once the visitor switches tabs
@@ -521,7 +530,7 @@ export function ProductShowcase() {
   }, [active]);
 
   return (
-    <section ref={sectionRef} className="product-showcase-scroll" id="products" aria-label="TinyFish APIs">
+    <section className="product-showcase-scroll" id="products" aria-label="TinyFish APIs">
       <div ref={rowRef} className="product-showcase" data-active={active} data-switched={switched || undefined}>
         <div className="ps-main">
           <div ref={tabsRef} className="product-showcase-tabs" role="tablist" aria-label="APIs">
@@ -564,7 +573,7 @@ export function ProductShowcase() {
             cell with the live one, so the window is always as tall as the tallest; the live transcript morphs. */}
         <div className="ps-window-surface">
         <BrowserWindow className="ps-window">
-          <div className="ps-window__viewport">
+          <div ref={windowRef} className="ps-window__viewport">
             {products.map((p) => (
               <div key={p.id} className="ps-window__sizer" aria-hidden><AgentChat id={p.id} chat={p.chat} /></div>
             ))}

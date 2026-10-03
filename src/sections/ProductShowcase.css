@@ -248,7 +248,7 @@ canvas.ps-card__bg { opacity: 0; transition: opacity var(--ps-switch-dur) var(--
 }
 
 @media (max-width: 640px) {
-  .browser.ps-window { height: auto; }
+  .browser.ps-window { height: auto; } /* grows with the transcript as it plays */
   .ps-window__live,
   .ps-window__live > .ps-chat,
   .ps-window__live .ps-chat__answer { flex: none; }
