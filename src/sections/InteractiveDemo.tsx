@@ -1,4 +1,6 @@
 import type { ReactElement } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useInView } from "../hooks/useLoop";
 import { Eyebrow } from "../components/Eyebrow";
 import { Icon } from "../components/Icon";
 import { VectorLoop } from "../components/VectorLoop";
@@ -29,14 +31,88 @@ const LocalIcon = ({ name, size }: { name: LocalIconName; size: number }) => (
   </svg>
 );
 
-/* Static illustration of an agent run (the Figma "Interactive Demo" frame): step 1 of 3, signing in.
+/* Illustration of an agent run (the Figma "Interactive Demo" frame): step 1 of 3, signing in.
    Nothing here is interactive; the window is a picture of the product, hidden from assistive tech
    and described by the section heading instead. */
 const STEPS = ["Log in", "Navigate", "Complete"];
+const EMAIL = "johnapple@acme.com";
+const PASSWORD_LENGTH = 10;
+
+/**
+ * The sign-in plays on a quiet loop while on screen: the email types out, the caret moves on and the
+ * password fills, Continue turns active and is pressed, then it holds and clears. Off screen or with
+ * reduced motion it shows the designed still (email part-typed, caret blinking).
+ */
+function useSignIn(inView: boolean) {
+  const playing = inView && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const [typed, setTyped] = useState(0); // characters of email, then password
+  const [stage, setStage] = useState<"typing" | "ready" | "pressed" | "clearing">("typing");
+  const [cycle, setCycle] = useState(0);
+  useEffect(() => {
+    if (!playing) return;
+    setTyped(0);
+    setStage("typing");
+    const timers: number[] = [];
+    const at = (t: number, fn: () => void) => timers.push(window.setTimeout(fn, t));
+    let t = 500;
+    for (let i = 1; i <= EMAIL.length; i++) at((t += 55), () => setTyped(i));
+    t += 350; // the agent moves to the password field
+    for (let i = 1; i <= PASSWORD_LENGTH; i++) at((t += 60), () => setTyped(EMAIL.length + i));
+    at((t += 300), () => setStage("ready"));
+    at((t += 450), () => setStage("pressed"));
+    at((t += 180), () => setStage("ready"));
+    at((t += 1800), () => setStage("clearing"));
+    at((t += 300), () => setCycle((c) => c + 1));
+    return () => timers.forEach(clearTimeout);
+  }, [playing, cycle]);
+  if (!playing) return { email: "johnapple", password: 0, caret: "email" as const, stage: "typing" as const, pointer: "email" as const };
+  const email = EMAIL.slice(0, Math.min(typed, EMAIL.length));
+  const password = Math.max(0, typed - EMAIL.length);
+  const caret = stage !== "typing" ? null : typed < EMAIL.length ? ("email" as const) : ("password" as const);
+  // The agent's cursor gets to each field just before it types there, then onto Continue
+  const pointer =
+    stage === "clearing" ? ("rest" as const)
+    : typed < EMAIL.length ? ("email" as const)
+    : typed < EMAIL.length + PASSWORD_LENGTH ? ("password" as const)
+    : ("submit" as const);
+  return { email, password, caret, stage, pointer };
+}
+
+type PointerTarget = "email" | "password" | "submit" | "rest";
+
+/** Places the agent cursor (the Solutions portal pointer) over its target inside the sign-in card,
+    measured from the real fields; CSS transitions the move. */
+function usePointer(cardRef: React.RefObject<HTMLDivElement | null>, pointerRef: React.RefObject<HTMLSpanElement | null>, target: PointerTarget) {
+  useLayoutEffect(() => {
+    const card = cardRef.current;
+    const pointer = pointerRef.current;
+    if (!card || !pointer) return;
+    const place = () => {
+      const box = card.getBoundingClientRect();
+      const el =
+        target === "email" ? card.querySelectorAll(".idemo-input__field")[0]
+        : target === "password" ? card.querySelectorAll(".idemo-input__field")[1]
+        : card.querySelector(".idemo-card__submit");
+      const r = (el ?? card).getBoundingClientRect();
+      const x = target === "rest" ? box.width - 56 : r.left - box.left + r.width * (target === "submit" ? 0.62 : 0.55);
+      const y = target === "rest" ? box.height - 24 : r.top - box.top + r.height * 0.62;
+      pointer.style.transform = `translate(${x}px, ${y}px)`;
+    };
+    place();
+    const observer = new ResizeObserver(place);
+    observer.observe(card);
+    return () => observer.disconnect();
+  }, [cardRef, pointerRef, target]);
+}
 
 function Demo() {
+  const [ref, inView] = useInView<HTMLDivElement>();
+  const { email, password, caret, stage, pointer } = useSignIn(inView);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const pointerRef = useRef<HTMLSpanElement>(null);
+  usePointer(cardRef, pointerRef, pointer);
   return (
-    <div className="idemo-frame">
+    <div ref={ref} className="idemo-frame">
       <div className="idemo-stage">
         <div className="idemo-stage__bg" aria-hidden>
           <VectorLoop src="/assets/interactive-demo/identity.tfv" width={3072} height={1875} />
@@ -56,19 +132,28 @@ function Demo() {
             </div>
           </div>
           <div className="idemo-window__body">
-            <div className="idemo-card depth-default">
+            <div ref={cardRef} className={`idemo-card depth-default${stage === "clearing" ? " is-clearing" : ""}`}>
               <p className="idemo-card__title t-h5">Sign In</p>
               <div className="idemo-input">
                 <span className="t-label-m">Email</span>
                 <span className="idemo-input__field depth-subtle">
-                  <span className="idemo-input__value t-body-m">johnapple<span className="idemo-input__caret" /></span>
+                  <span className="idemo-input__value t-body-m">{email}{caret === "email" && <span className="idemo-input__caret" />}</span>
                 </span>
               </div>
               <div className="idemo-input">
                 <span className="t-label-m">Password</span>
-                <span className="idemo-input__field depth-subtle"><span className="idemo-input__value t-body-m" /></span>
+                <span className="idemo-input__field depth-subtle">
+                  <span className="idemo-input__value t-body-m">{"•".repeat(password)}{caret === "password" && <span className="idemo-input__caret" />}</span>
+                </span>
               </div>
-              <span className="btn btn--l btn--secondary idemo-card__submit"><span className="btn__label">Continue</span></span>
+              {/* The agent's cursor, as on the Solutions portal card */}
+              <span ref={pointerRef} className={`idemo-pointer${pointer === "rest" ? " is-resting" : ""}${stage === "pressed" ? " is-tapping" : ""}`} aria-hidden>
+                <img className="idemo-pointer__cursor" src="/assets/solutions/cursor.svg" width={14} height={16} alt="" />
+                <span className="idemo-pointer__agent depth-strong"><Icon name="fish" size={15} /></span>
+              </span>
+              <span className={`btn btn--l btn--secondary idemo-card__submit${stage === "ready" || stage === "pressed" ? " is-ready" : ""}${stage === "pressed" ? " is-pressed" : ""}`}>
+                <span className="btn__label">Continue</span>
+              </span>
             </div>
           </div>
           <div className="idemo-status">

@@ -36,11 +36,12 @@ export function Hero() {
               ))}
             </div>
           </div>
-          {/* Auto-scrolling logo carousel: two identical sets scroll left; the second is decorative. */}
+          {/* Auto-scrolling logo carousel: three identical sets (one set is narrower than the window, so two
+              would leave a gap) scroll left by one set and loop; only the first is announced. */}
           <div className="hero__logos">
             <div className="hero__logos-track">
-              {[0, 1].map((copy) => (
-                <ul key={copy} className="hero__logos-set" aria-label={copy === 0 ? "Trusted by" : undefined} aria-hidden={copy === 1 || undefined}>
+              {[0, 1, 2].map((copy) => (
+                <ul key={copy} className="hero__logos-set" aria-label={copy === 0 ? "Trusted by" : undefined} aria-hidden={copy > 0 || undefined}>
                   {customerLogos.map((l) => (
                     <li key={l.file}>
                       <img src={`/assets/hero/${l.file}.svg`} width={l.w} height={l.h} alt={copy === 0 ? l.name : ""} />

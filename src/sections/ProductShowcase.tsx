@@ -172,37 +172,59 @@ function Morph({ id, className, innerClassName = "", children }: { id: string; c
   );
 }
 
-/** The card's call to action: one button for every product whose width morphs to fit the next label
-    (same timing as the window), while the new label fades in. */
+/** Morphs `box`'s width to fit its contents whenever `key` changes (same timing as the window morph,
+    via the box's CSS width transition); snaps when web fonts change the contents' size. */
+function useWidthMorph(boxRef: React.RefObject<HTMLElement | null>, contentRef: React.RefObject<HTMLElement | null>, key: string) {
+  useLayoutEffect(() => {
+    const box = boxRef.current;
+    const content = contentRef.current;
+    if (!box || !content) return;
+    const fit = (animate: boolean) => {
+      const from = box.getBoundingClientRect().width;
+      box.style.transition = "none";
+      box.style.width = "";
+      const to = box.getBoundingClientRect().width; // natural width for these contents
+      if (animate) box.style.width = `${from}px`;
+      void box.offsetWidth;
+      box.style.transition = "";
+      box.style.width = `${to}px`;
+    };
+    fit(box.style.width !== "");
+    let contentWidth = content.offsetWidth;
+    const observer = new ResizeObserver(() => {
+      if (content.offsetWidth !== contentWidth) { contentWidth = content.offsetWidth; fit(false); }
+    });
+    observer.observe(content);
+    return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key]);
+}
+
+/** The card's call to action: one button for every product whose width morphs to fit the next label,
+    while the new label fades in. */
 function MorphCta({ label }: { label: string }) {
   const buttonRef = useRef<HTMLAnchorElement>(null);
   const labelRef = useRef<HTMLSpanElement>(null);
-  useLayoutEffect(() => {
-    const button = buttonRef.current;
-    const text = labelRef.current;
-    if (!button || !text) return;
-    const fit = (animate: boolean) => {
-      const from = button.getBoundingClientRect().width;
-      button.style.transition = "none";
-      button.style.width = "";
-      const to = button.getBoundingClientRect().width; // natural width for this label
-      if (animate) button.style.width = `${from}px`;
-      void button.offsetWidth;
-      button.style.transition = "";
-      button.style.width = `${to}px`;
-    };
-    fit(button.style.width !== "");
-    let textWidth = text.offsetWidth;
-    const observer = new ResizeObserver(() => { // web fonts loading: snap to the new natural width
-      if (text.offsetWidth !== textWidth) { textWidth = text.offsetWidth; fit(false); }
-    });
-    observer.observe(text);
-    return () => observer.disconnect();
-  }, [label]);
+  useWidthMorph(buttonRef, labelRef, label);
   return (
     <a ref={buttonRef} className="ps-cta" href="#">
       <span ref={labelRef} key={label} className="ps-cta__label">{label}</span>
     </a>
+  );
+}
+
+/** The card title: "API" stays put while the product word in front of it swaps (Texts reveal) and
+    its slot morphs to the new word's width, sliding "API" along. */
+function MorphTitle({ title }: { title: string }) {
+  const word = title.replace(/\s*API$/, "");
+  const slotRef = useRef<HTMLSpanElement>(null);
+  const wordRef = useRef<HTMLSpanElement>(null);
+  useWidthMorph(slotRef, wordRef, word);
+  return (
+    <h2 className="t-h4 ps-title" aria-label={title}>
+      <span ref={slotRef} className="ps-title__slot" aria-hidden><span ref={wordRef} key={word} className="ps-title__word">{word}</span></span>{" "}
+      <span aria-hidden>API</span>
+    </h2>
   );
 }
 
@@ -405,7 +427,7 @@ const products: Product[] = [
     cta: "Try Agent",
     tone: "landscape",
     bg: { left: -83, top: -19, width: 1573, height: 674 },
-    vector: { src: "agent-v28.tfv", width: 3880, height: 1663 },
+    vector: { src: "agent-v38.tfv", width: 3880, height: 1663 },
     chat: {
       prompt: quotePrompt,
       steps: <ol className="ps-steps__list">{quoteSteps.map((s, i) => <StepRow key={i} {...s} />)}</ol>,
@@ -418,8 +440,8 @@ const products: Product[] = [
     copy's left edge; the landscapes are centred. Both are scaled down to the card in CSS. */
 function artStyle({ tone, bg }: Product): CSSProperties {
   return tone === "search"
-    ? { left: `calc(var(--ps-copy-inset) - ${SEARCH_LAPTOP_LEFT}px)`, top: bg.top, width: bg.width, height: bg.height, objectPosition: bg.position }
-    : { left: "50%", top: bg.top, width: bg.width, height: bg.height, objectPosition: bg.position };
+    ? { left: `calc(var(--ps-copy-inset) - ${SEARCH_LAPTOP_LEFT}px)`, width: bg.width, height: bg.height }
+    : { left: "50%", width: bg.width, height: bg.height };
 }
 
 export function ProductShowcase() {
@@ -434,11 +456,15 @@ export function ProductShowcase() {
   const placeIndicator = (animate: boolean) => {
     const indicator = indicatorRef.current;
     const tab = tabsRef.current?.querySelector<HTMLElement>(".ps-tab--active");
-    if (!indicator || !tab) return;
+    const tabs = tabsRef.current;
+    if (!indicator || !tab || !tabs) return;
     if (!animate) indicator.style.transition = "none";
-    indicator.style.transform = `translateX(${tab.offsetLeft}px)`;
-    indicator.style.width = `${tab.offsetWidth}px`;
-    indicator.style.height = `${tab.offsetHeight}px`;
+    // Fractional geometry: equal-width tabs aren't whole pixels, and rounding would overhang the card
+    const box = tab.getBoundingClientRect();
+    const left = box.left - tabs.getBoundingClientRect().left + tabs.scrollLeft;
+    indicator.style.transform = `translateX(${left}px)`;
+    indicator.style.width = `${box.width}px`;
+    indicator.style.height = `${box.height}px`;
     if (!animate) { void indicator.offsetWidth; indicator.style.transition = ""; }
   };
   // Snap into place on first paint and on resize; only tab switches slide
@@ -489,9 +515,9 @@ export function ProductShowcase() {
             ))}
             <div className="ps-card__layout">
               <div className="ps-intro">
-                <div className="ps-intro__copy" key={product.id}>
-                  <h2 className="t-h4">{product.title}</h2>
-                  <p className="ps-intro__desc t-body-l">{product.description}</p>
+                <div className="ps-intro__copy">
+                  <MorphTitle title={product.title} />
+                  <p className="ps-intro__desc t-body-l" key={product.id}>{product.description}</p>
                 </div>
                 <MorphCta label={product.cta} />
               </div>

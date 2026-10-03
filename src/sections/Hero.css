@@ -45,7 +45,7 @@
 .hero__tagline { display: flex; align-items: center; gap: 13.333px; height: 24px; font-size: 16px; line-height: 1.5; color: var(--content-static-black); }
 .hero__ai-logos { display: flex; align-items: center; gap: 5px; }
 /* Logo carousel: the Figma row (945px, faded at both ends by its mask) scrolls continuously.
-   Each set carries a trailing 40px gap so the two sets join seamlessly at -50%. */
+   Each set carries a trailing 40px gap so the sets join seamlessly; the track moves one set (a third). */
 .hero__logos {
   width: 945px; height: 56.667px; overflow: hidden;
   -webkit-mask-image: url("/assets/hero/logos-mask.svg"); mask-image: url("/assets/hero/logos-mask.svg");
@@ -55,7 +55,7 @@
 .hero__logos:hover .hero__logos-track { animation-play-state: paused; }
 .hero__logos-set { display: flex; align-items: center; gap: 40px; padding: 16px 40px 16px 0; flex-shrink: 0; }
 .hero__logos-set img { flex-shrink: 0; }
-@keyframes hero-logos { to { transform: translateX(-50%); } }
+@keyframes hero-logos { to { transform: translateX(calc(-100% / 3)); } }
 @media (prefers-reduced-motion: reduce) {
   .hero__logos-track { animation: none; }
   .hero__logos-set[aria-hidden] { display: none; }

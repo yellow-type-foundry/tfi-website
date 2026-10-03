@@ -204,7 +204,7 @@ function PortalPreview() {
           <Field label="Street address" typed={{ text: "500 Howard St, San Francisco", step: 2 }} />
           <span className="sol-portal__pointer" aria-hidden>
             <img className="sol-portal__cursor" src="/assets/solutions/cursor.svg" width={14} height={16} alt="" />
-            <span className="sol-portal__agent depth-strong"><Icon name="fish" size={12} /></span>
+            <span className="sol-portal__agent depth-strong"><Icon name="fish" size={15} /></span>
           </span>
         </div>
         <span className="btn btn--secondary btn--xs sol-portal__next"><span className="btn__label">Next</span></span>

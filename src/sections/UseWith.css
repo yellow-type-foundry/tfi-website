@@ -8,7 +8,7 @@
   .use-with__line { white-space: normal; font-size: 36px; }
   .use-with .heading-pill__tab { white-space: normal; max-width: 100%; }
 }
-.use-with .heading-pill__head { padding-bottom: 8px; }
+.use-with .heading-pill__head { padding-top: 16px; padding-bottom: 8px; }
 .use-with__row { padding: 0; }
 .use-with__title-tab { padding: 0 32px 24px; border-radius: 0 0 24px 24px; }
 .use-with__brand { white-space: nowrap; }

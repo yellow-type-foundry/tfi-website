@@ -30,10 +30,14 @@
 .product-showcase[data-first-active] .ps-card { border-top-left-radius: 0; }
 .product-showcase[data-last-active] .ps-card { border-top-right-radius: 0; }
 /* Each product's art; all stay drawn and cross-fade, hidden once faded out */
-.ps-art { opacity: 0; visibility: hidden; transition: opacity var(--ps-switch-dur) var(--ps-switch-ease), visibility 0s linear var(--ps-switch-dur); }
-.ps-art--active { opacity: 1; visibility: visible; transition: opacity var(--ps-switch-dur) var(--ps-switch-ease), visibility 0s; }
-.ps-card__bg { position: absolute; top: auto !important; bottom: 0; clip-path: inset(6px 6px 0 6px); /* hide the dark frame line baked into the animation exports */ max-width: none; object-fit: cover; pointer-events: none; user-select: none; }
-.ps-card__layout { position: relative; height: 100%; width: 100%; padding: 40px 40px 40px var(--ps-copy-inset); }
+/* Each layer carries its animation's background colour across the whole card, so colour and art
+   cross-fade together as one layer and never drift from the card colour */
+.ps-art { position: absolute; inset: 0; background: var(--ps-art-bg); opacity: 0; visibility: hidden; transition: opacity 0s linear var(--ps-switch-dur), visibility 0s linear var(--ps-switch-dur); }
+/* The incoming layer fades in on top while the outgoing one stays fully opaque beneath it (it hides
+   once the fade is done), so the card colour never shows through mid-switch */
+.ps-art--active { z-index: 1; opacity: 1; visibility: visible; transition: opacity var(--ps-switch-dur) var(--ps-switch-ease), visibility 0s; }
+.ps-card__bg { --art-scale: 1; position: absolute; top: auto !important; bottom: 0; clip-path: inset(6px 6px 0 6px); /* hide the dark frame line baked into the animation exports */ max-width: none; object-fit: cover; pointer-events: none; user-select: none; }
+.ps-card__layout { position: relative; z-index: 2; height: 100%; width: 100%; padding: 40px 40px 40px var(--ps-copy-inset); }
 /* Narrower screens: the window drops below the card */
 @media (max-width: 1100px) {
   .product-showcase { flex-direction: column; align-items: center; }
@@ -61,7 +65,10 @@
   --stagger-blur: 3px;
   --stagger-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
-.product-showcase[data-switched] .ps-intro__copy h2 { animation: ps-heading-reveal var(--stagger-dur) var(--stagger-ease) both; }
+/* Title: only the product word swaps (its slot's width morphs so "API" slides along) */
+.ps-title__slot { display: inline-block; vertical-align: bottom; white-space: nowrap; clip-path: inset(-0.5em 0 -0.5em 0); /* clips sideways only, so a wider word never overlaps "API" mid-morph */ transition: width var(--ps-morph-dur) var(--ps-morph-ease); }
+.ps-title__word { display: inline-block; }
+.product-showcase[data-switched] .ps-title__word { animation: ps-heading-reveal var(--stagger-dur) var(--stagger-ease) both; }
 @keyframes ps-heading-reveal {
   from { opacity: 0; transform: translateY(var(--stagger-distance)); filter: blur(var(--stagger-blur)); }
   to { opacity: 1; transform: translateY(0); filter: blur(0); }
@@ -71,7 +78,8 @@ canvas.ps-card__bg { opacity: 0; transition: opacity var(--ps-switch-dur) var(--
 .ps-card__bg[data-ready] { opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
-  .product-showcase[data-switched] .ps-intro__copy h2 { animation: none; }
+  .product-showcase[data-switched] .ps-title__word { animation: none; }
+  .ps-title__slot { transition: none; }
   .ps-art, .ps-art--active { transition: none; }
   canvas.ps-card__bg { transition: none; }
 }
@@ -170,6 +178,8 @@ canvas.ps-card__bg { opacity: 0; transition: opacity var(--ps-switch-dur) var(--
 .ps-markdown { margin: 0; width: 100%; white-space: pre-wrap; color: var(--content-tertiary); }
 
 .ps-chat__answer { width: 100%; padding: 18px 0; text-align: center; color: var(--content-secondary); }
+/* The answer fills the space left under the steps and sits centred in it */
+.ps-window__live .ps-chat__answer { flex: 1 0 auto; display: flex; flex-direction: column; justify-content: center; }
 .ps-chat--compact .ps-chat__answer { padding: 6px 0 18px; }
 .ps-chat[data-product="browser-api"] .ps-msg { width: 364px; } /* Figma fixes this bubble at 364px (Search's is full width) */
 
@@ -182,11 +192,15 @@ canvas.ps-card__bg { opacity: 0; transition: opacity var(--ps-switch-dur) var(--
 /* Search: laptop art a little smaller, scaled from the laptop's bottom-left corner so it stays on the
    card floor and lined up with the copy (239px = SEARCH_LAPTOP_LEFT) */
 /* Landscapes: centred and scaled from the card floor so the scenery sits below the copy */
-.ps-art:not([data-product="search-api"]) .ps-card__bg { transform: translateX(-50%) scale(0.6); transform-origin: 50% 100%; }
-.ps-art[data-product="browser-api"] .ps-card__bg { transform: translateX(calc(-50% + 130px)) scale(0.6); } /* monitor clear of the copy; 130px keeps the left edge covered */
-.ps-art[data-product="agent-api"] .ps-card__bg { transform: translateX(-50%) scale(0.46); } /* its figures stand taller */
-.ps-art[data-product="search-api"] .ps-card__bg { transform: translateY(25px) scale(0.56); transform-origin: 239px 100%; } /* Figma: 864px wide, 25px below the card */
+.ps-art:not([data-product="search-api"]) .ps-card__bg { --art-scale: 0.6; transform: translate(calc(-50% + var(--art-shift, 0px)), var(--art-lift, 0px)) scale(var(--art-scale)); transform-origin: 50% 100%; }
+.ps-art[data-product="browser-api"] .ps-card__bg { --art-shift: 130px; } /* monitor clear of the copy; 130px keeps the left edge covered */
+.ps-art[data-product="agent-api"] .ps-card__bg { --art-scale: 0.52; --art-shift: 63px; } /* left circle's edge (6.8% into the art) on the copy's 40px line */
+.ps-art[data-product="search-api"] .ps-card__bg { --art-scale: 0.56; transform: translateY(25px) scale(var(--art-scale)); transform-origin: 239px 100%; } /* Figma: 864px wide, 25px below the card */
+.ps-art[data-product="search-api"] { --ps-art-bg: #f7f7c3; }
+.ps-art[data-product="fetch-api"] { --ps-art-bg: #bdc7ad; }
+.ps-art[data-product="browser-api"] { --ps-art-bg: #f6f6f4; }
+.ps-art[data-product="agent-api"] { --ps-art-bg: #3196e9; }
 .product-showcase-scroll:has([data-active="fetch-api"]) { --ps-tab-bg: #bdc7ad; }
 .product-showcase-scroll:has([data-active="browser-api"]) { --ps-tab-bg: #f6f6f4; }
-.product-showcase-scroll:has([data-active="agent-api"]) { --ps-tab-bg: #f3f095; }
+.product-showcase-scroll:has([data-active="agent-api"]) { --ps-tab-bg: #3196e9; }
 .product-showcase-scroll { overflow: hidden; }
