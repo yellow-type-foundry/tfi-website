@@ -59,14 +59,14 @@ export function Pricing() {
     <section className="pricing" id="pricing">
       <div className="pricing__content">
         <header className="pricing__header">
-          <h2 className="pricing-pill">
-            <span className="pricing-pill__head depth-inner-strong t-h2">Simple pricing for</span>
+          <h1 className="pricing-pill">
+            <span className="pricing-pill__head depth-inner-strong t-h1">Simple pricing for</span>
             <span className="pricing-pill__tab-row">
               <img className="pricing-pill__cutout pricing-pill__cutout--left" src="/assets/pricing/cutout-left.svg" width={16} height={16} alt="" />
-              <span className="pricing-pill__tab depth-inner-strong depth-join t-h2">real web work.</span>
+              <span className="pricing-pill__tab depth-inner-strong depth-join t-h1">real web work.</span>
               <img className="pricing-pill__cutout" src="/assets/pricing/cutout-right.svg" width={16} height={16} alt="" />
             </span>
-          </h2>
+          </h1>
           <div className="pricing__actions">
             <Button size="l" href="#get-started" className="pricing__cta-free">Get $8 free</Button>
             <Button variant="outline" size="l" href="#pricing-details">See full pricing</Button>
@@ -76,7 +76,7 @@ export function Pricing() {
           {apis.map((api) => (
             <li key={api.name} className="pricing-api depth-default">
               <div className="pricing-api__lead">
-                <span className="pricing-api__icon depth-default">{api.icon}</span>
+                <span className="pricing-api__icon depth-subtle">{api.icon}</span>
                 <span className="t-h6">{api.name}</span>
               </div>
               <span className="pricing-api__price">{api.price}</span>

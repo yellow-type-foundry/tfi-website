@@ -3,16 +3,16 @@ import { TopBar } from "./TopBar";
 import "./StickyNav.css";
 
 /**
- * Floating top bar (Figma "TopBar" 2283:18264) that slides in once the hero has scrolled out of
- * view and tucks away again when the hero comes back. The hero keeps its own in-card nav.
+ * Floating top bar that slides in after the hero's black nav scrolls out of view.
+ * The hero keeps its own black in-card nav.
  */
-export function StickyNav({ after = ".hero" }: { after?: string }) {
+export function StickyNav({ after = ".hero .topbar" }: { after?: string }) {
   const [shown, setShown] = useState(false);
   useEffect(() => {
-    const hero = document.querySelector(after);
-    if (!hero) return;
-    const io = new IntersectionObserver(([entry]) => setShown(!entry.isIntersecting));
-    io.observe(hero);
+    const section = document.querySelector(after);
+    if (!section) return;
+    const io = new IntersectionObserver(([entry]) => setShown(entry.boundingClientRect.bottom <= 0));
+    io.observe(section);
     return () => io.disconnect();
   }, [after]);
   return (

@@ -14,8 +14,10 @@ export default function App() {
   return (
     <main className="page">
       <StickyNav />
-      <Hero />
-      <Solutions />
+      <div className="hero-reveal">
+        <Hero />
+        <Solutions />
+      </div>
       <UseWith />
       <ProductShowcase />
       <InteractiveDemo />

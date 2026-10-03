@@ -2,10 +2,7 @@
 .btn.hero__promo-btn { background: var(--brand-green-800); color: var(--content-inverse); }
 .hero__card {
   position: relative; border-radius: 32px; overflow: hidden;
-  /* 85% of the screen height (minus the 16px inset). The floor keeps the copy clear of the land strip:
-     nav (64) + copy block band (434) + land (12.55% × 1.4 of the card width = (100vw − 32px) × 0.1757). */
-  height: calc((100vh - 32px) * 0.85); height: calc((100svh - 32px) * 0.85);
-  min-height: calc(498px + (100vw - 32px) * 0.1757);
+  height: calc(100vh - 32px); height: calc(100svh - 32px);
   display: flex; flex-direction: column; align-items: center;
   background: var(--brand-yellow-400); /* the video sky renders as #f3f096 in browsers, i.e. this token */
 }
@@ -37,7 +34,7 @@
   min-height: 434px; /* the block itself plus the Figma 40px top gap */
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px;
 }
-.hero__tagline { display: flex; align-items: center; gap: 13.333px; height: 21px; font-size: 14px; line-height: 1.5; color: var(--content-static-black); }
+.hero__tagline { display: flex; align-items: center; gap: 13.333px; height: 24px; font-size: 16px; line-height: 1.5; color: var(--content-static-black); }
 .hero__ai-logos { display: flex; align-items: center; gap: 5px; }
 /* Logo carousel: the Figma row (945px, faded at both ends by its mask) scrolls continuously.
    Each set carries a trailing 40px gap so the two sets join seamlessly at -50%. */

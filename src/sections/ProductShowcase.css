@@ -14,7 +14,7 @@
 .ps-card--search { height: calc(100svh - 113px); background: var(--surface-showcase-search); }
 .ps-card--landscape { height: calc(100svh - 113px); background: var(--surface-showcase-landscape); }
 #fetch-api .ps-card { background: #bdc7ad; }
-#agent-api .ps-card { background: #e9e9dc; }
+#agent-api .ps-card { background: #f3f095; }
 #browser-api .ps-card { background: #f6f6f4; }
 #fetch-api .ps-card__bg { transform: scale(1.05); transform-origin: 50% 100%; clip-path: inset(1%); }
 .ps-card__bg { position: absolute; top: auto !important; bottom: 0; translate: var(--art-parallax, 0px) 0; max-width: none; object-fit: cover; pointer-events: none; user-select: none; }

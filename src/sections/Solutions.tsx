@@ -222,7 +222,7 @@ export function Solutions() {
       </div>
       <header className="solutions__header">
         <Eyebrow>SOLUTIONS</Eyebrow>
-        <h2 className="t-h2">What TinyFish can do</h2>
+        <h1 className="t-h1">What TinyFish can do</h1>
         <p className="t-body-xl">Four jobs people hand their agents every day, on the live web.</p>
       </header>
       <div className="solutions__grid">

@@ -17,9 +17,9 @@ const Cutout = ({ side }: { side: "left" | "right" }) => (
 export function FinalCta() {
   return (
     <section className="final-cta">
-      <div className="final-cta__card">
+      <div className="final-cta__card depth-default">
         <div className="final-cta__background">
-          <VectorLoop className="final-cta__bg" src="/assets/final-cta/background-v13.tfv" width={3880} height={3166} />
+          <VectorLoop className="final-cta__bg" src="/assets/final-cta/background-v32.tfv" width={1440} height={1175} />
         </div>
 
         <div className="final-cta__content">

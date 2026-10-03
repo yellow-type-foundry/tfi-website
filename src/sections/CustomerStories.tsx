@@ -23,7 +23,7 @@ const classpassLogo = { src: "/assets/customer-stories/logo-classpass.svg", widt
 const stories: Story[] = [
   {
     id: "classpass",
-    art: "/assets/customer-stories/classpass-bg-new.png",
+    art: "/assets/customer-stories/classpass-bg-v33.png",
     quote: "“TinyFish builds AI agent solutions that deliver real results.”",
     name: "Jonathan Lam",
     role: "Senior Program Manager",
@@ -216,7 +216,7 @@ export function CustomerStories() {
       <header className="customer-stories__header">
         <div className="cs-pill">
           <div className="cs-pill__head depth-inner-strong">
-            <h2 className="t-h2">Trusted by 200K developers and the team behind them</h2>
+            <h1 className="t-h1"><span>Trusted by 200K developers</span><span>and the team behind them</span></h1>
           </div>
           <div className="cs-pill__tab-row">
             <img className="cs-pill__cutout cs-pill__cutout--left" src="/assets/customer-stories/cutout-left.svg" width={16} height={16} alt="" />

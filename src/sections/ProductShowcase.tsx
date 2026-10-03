@@ -316,7 +316,7 @@ export function ProductShowcase() {
         cta="Try Agent"
         tone="landscape"
         bg={{ left: -83, top: -19, width: 1573, height: 674 }}
-        vector={{ src: "search-v23.tfv", width: 3880, height: 1663 }}
+        vector={{ src: "agent-v28.tfv", width: 3880, height: 1663 }}
       >
         <AgentChat prompt={quotePrompt} steps={quoteList} answer={quoteAnswer} />
       </ProductCard>

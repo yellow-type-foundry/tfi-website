@@ -1,8 +1,7 @@
-/* Pinned 16px from the top and lined up with the product showcase's outer white panels:
-   16px from the screen edges, stopping at the same width they do on very wide screens. */
+/* Match the hero nav's 1200px content width and 120px minimum content inset. */
 .sticky-nav {
   position: fixed; top: 16px; left: 50%; z-index: 100;
-  width: min(calc(100% - 32px), calc(var(--showcase-max) - 32px));
+  width: min(calc(100% - 208px), 1232px);
   transform: translate(-50%, calc(-100% - 24px)); opacity: 0;
   transition: transform var(--duration-medium) var(--ease-smooth-out), opacity var(--duration-quick) var(--ease-out);
   pointer-events: none;
