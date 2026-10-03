@@ -17,13 +17,14 @@
     display: flex; align-items: center; justify-content: center;
     width: 40px; height: 40px; padding: 8px; border: 0; border-radius: 50%;
     background: transparent; color: var(--content-static-black); cursor: pointer;
+    -webkit-tap-highlight-color: transparent; /* no tap flash on touch */
   }
-  .topbar__toggle:hover { background: var(--surface-secondary); }
+  /* Hover circle only with a real pointer, so it doesn't stick after a tap on touch screens */
+  @media (hover: hover) { .topbar__toggle:hover { background: var(--surface-secondary); } }
   .topbar__menu {
-    position: absolute; top: calc(100% + 8px); right: 16px; z-index: 10;
-    width: min(280px, calc(100% - 32px));
+    position: absolute; top: calc(100% + 8px); left: 0; right: 0; z-index: 10; /* full width of the nav bar */
     display: flex; flex-direction: column; gap: 4px; padding: 16px;
-    max-height: calc(100svh - 120px); overflow-y: auto;
+    max-height: calc(100svh - var(--menu-top, 80px) - 8px - var(--menu-inset, 8px)); overflow-y: auto; /* hugs its links; scrolls only if the screen is too short (see TopBar.tsx) */
     border-radius: 24px; background: var(--surface-primary); filter: var(--depth-strong-filter);
     opacity: 0; visibility: hidden; transform: translateY(-12px); pointer-events: none;
     transition: transform 240ms var(--ease-out), opacity 200ms var(--ease-out), visibility 0s 240ms;
@@ -32,9 +33,20 @@
     opacity: 1; visibility: visible; transform: translateY(0); pointer-events: auto;
     transition-delay: 0s;
   }
-  .topbar__menu > a:not(.btn) { padding: 10px 12px; }
-  .topbar__menu .btn { align-self: flex-start; margin: 8px 12px; }
+  .topbar__menu > a:not(.btn) { padding: 10px 12px; } /* Heading/H6 links */
+  /* Login and Sign Up side by side, sharing the row */
+  .topbar__menu-ctas { display: flex; gap: 8px; margin-top: 12px; }
+  .topbar__menu-ctas .btn { flex: 1 1 0; min-width: 0; justify-content: center; }
 }
+/* Burger ↔ close morph: lines turn about the icon's centre (rotate after moving to the middle) */
+.topbar__toggle-line {
+  transform-box: view-box; transform-origin: 12px 12px;
+  transition: transform 320ms var(--ease-out), opacity 200ms var(--ease-out);
+}
+.topbar__toggle-icon.is-open .topbar__toggle-line--top { transform: rotate(45deg) translateY(6px); }
+.topbar__toggle-icon.is-open .topbar__toggle-line--mid { transform: scaleX(0.2); opacity: 0; }
+.topbar__toggle-icon.is-open .topbar__toggle-line--bottom { transform: rotate(-45deg) translateY(-6px); }
 @media (prefers-reduced-motion: reduce) {
   .topbar__menu { transition: none; transform: none; }
+  .topbar__toggle-line { transition: none; }
 }
