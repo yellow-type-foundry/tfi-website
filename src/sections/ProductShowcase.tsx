@@ -469,6 +469,13 @@ function useWindowHeight(rowRef: React.RefObject<HTMLDivElement | null>, active:
 }
 
 export function ProductShowcase() {
+  const [mobile, setMobile] = useState(() => window.matchMedia("(max-width: 640px)").matches);
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 640px)");
+    const update = () => setMobile(query.matches);
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
   const [tablet, setTablet] = useState(() => window.matchMedia("(max-width: 1100px)").matches);
   useEffect(() => {
     const query = window.matchMedia("(max-width: 1100px)");
@@ -570,6 +577,9 @@ export function ProductShowcase() {
           </div>
         </BrowserWindow>
         </div>
+        {mobile && <div className="ps-mobile-art" data-product={product.id} aria-hidden>
+          <VectorLoop key={product.id} className="ps-mobile-art__canvas" src={`/assets/product-showcase/vector/${product.vector.src}`} width={product.vector.width} height={product.vector.height} active={inView} />
+        </div>}
       </div>
     </section>
   );
