@@ -23,14 +23,14 @@
 .btn.pricing__cta-free { width: 160px; background: var(--surface-accent-orange-default); color: var(--content-inverse); }
 
 /* API list: one vertical stack */
-.pricing-api-list { width: 480px; max-width: 100%; display: grid; grid-template-columns: 1fr; gap: 8px; }
+.pricing-api-list { width: 551px; /* matches the "real web work." row above */ max-width: 100%; display: grid; grid-template-columns: 1fr; gap: 8px; }
 .pricing-api {
   display: flex; align-items: center; justify-content: space-between; min-width: 0;
-  padding: 16px 24px 16px 16px; border-radius: 9999px; background: var(--surface-accent-neutral-subtle);
+  padding: 12px 24px 12px 12px; border-radius: 9999px; background: var(--surface-accent-neutral-subtle); /* the icon sits 12px from the edge */
 }
 .pricing-api__lead { flex: 1 0 0; min-width: 0; display: flex; align-items: center; gap: 12px; color: var(--content-primary); }
 .pricing-api__icon {
-  flex-shrink: 0; width: 40px; height: 40px; border-radius: 22px; overflow: clip;
+  flex-shrink: 0; width: 48px; height: 48px; border-radius: 24px; overflow: clip;
   display: flex; align-items: center; justify-content: center;
   border: 0.267px solid var(--outline-accent-orange); background: var(--brand-orange-200); color: var(--surface-accent-orange-default);
 }

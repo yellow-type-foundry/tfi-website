@@ -1,5 +1,6 @@
 import { Fragment, useId, useState } from "react";
 import { Icon } from "../components/Icon";
+import "../components/HeadingPill.css";
 import "./Faq.css";
 
 // Questions come from the Figma "FAQ List"; the answers are placeholder copy (not in the design).
@@ -32,7 +33,12 @@ export function Faq() {
 
   return (
     <section className="faq">
-      <h2 className="faq__title t-h2">Common questions.</h2>
+      {/* Raised heading block (the shared HeadingPill surface), single row with no subtitle tab */}
+      <div className="heading-pill">
+        <div className="heading-pill__head faq__title-pill depth-inner-strong">
+          <h2 className="faq__title t-h1">Common questions.</h2>
+        </div>
+      </div>
       <div className="faq__list">
         {faqs.map((item, i) => {
           const isOpen = open === i;

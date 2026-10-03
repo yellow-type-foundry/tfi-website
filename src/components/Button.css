@@ -1,7 +1,7 @@
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
   border-radius: 9999px; white-space: nowrap; flex-shrink: 0;
-  transition: filter 120ms ease, background-color 120ms ease;
+  transition: filter 120ms ease, background-color 120ms ease, color 120ms ease, border-color 120ms ease;
 }
 .btn__label { padding: 0 2px; }
 .btn:hover { filter: brightness(1.08); }
@@ -17,4 +17,4 @@
 .btn--neutral { background: var(--surface-accent-neutral-default); color: var(--content-primary); }
 .btn--secondary { background: var(--surface-secondary); color: var(--content-tertiary); }
 .btn--outline { border: 1px solid var(--outline-static-black); color: var(--content-primary); padding-block: 11px; padding-inline: 19px; }
-.btn--outline:hover { filter: none; background: rgba(0, 0, 0, 0.04); }
+.btn--outline:hover { filter: none; background: var(--surface-accent-neutral-strong); border-color: var(--surface-accent-neutral-strong); color: var(--content-inverse); } /* fills in like the black button */
