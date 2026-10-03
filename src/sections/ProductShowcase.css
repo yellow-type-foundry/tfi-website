@@ -49,7 +49,7 @@
 }
 
 /* Intro copy */
-.ps-intro { width: 445px; max-width: 100%; display: flex; flex-direction: column; align-items: flex-start; gap: 28px; }
+.ps-intro { width: 545px; max-width: 100%; /* every body fits on 2 lines (Agent needs 535px) */ display: flex; flex-direction: column; align-items: flex-start; gap: 28px; }
 .ps-intro__copy { display: flex; flex-direction: column; gap: 12px; }
 .ps-intro__copy h2 { color: var(--content-primary); white-space: nowrap; }
 /* Transitions.dev "Texts reveal": the new card's heading rises out of a blur when switching tabs */
@@ -77,15 +77,13 @@ canvas.ps-card__bg { opacity: 0; transition: opacity var(--ps-switch-dur) var(--
 
 .ps-cta {
   display: inline-flex; align-items: center; justify-content: center;
-  padding: 12px 20px; border: 1px solid var(--surface-accent-teal-strong); border-radius: 100px;
-  background: var(--surface-accent-teal-strong); color: var(--content-inverse);
+  padding: 12px 20px; border: 1px solid var(--surface-accent-orange-default); border-radius: 100px;
+  background: var(--surface-accent-orange-default); color: var(--content-inverse);
   font-size: 16px; line-height: 1.25; font-weight: 500; white-space: nowrap;
   transition: filter 120ms ease, background-color 120ms ease;
 }
 .ps-cta:hover { filter: brightness(1.25); }
 
-.product-showcase[data-active="browser-api"] .ps-cta { background: var(--surface-accent-orange-default); border-color: var(--surface-accent-orange-default); }
-.product-showcase[data-active="agent-api"] .ps-cta { background: #06283f; border-color: #06283f; }
 .ps-cta:active { filter: brightness(0.9); }
 .ps-cta:focus-visible { outline: 2px solid var(--surface-accent-orange-default); outline-offset: 2px; }
 

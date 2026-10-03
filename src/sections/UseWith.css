@@ -1,9 +1,17 @@
 .use-with { background: var(--surface-primary); display: flex; flex-direction: column; align-items: center; padding: 200px var(--gutter) 0; } /* the product showcase below sets the gap */
-.use-with__content { display: flex; flex-direction: column; align-items: center; gap: 28px; width: 100%; min-width: 0; }
-.use-with__intro { display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center; width: 100%; }
-.use-with__heading { width: 100%; text-align: center; text-wrap: balance; word-spacing: -0.04em; }
-.use-with__phrase { white-space: nowrap; }
+.use-with__content { display: flex; flex-direction: column; align-items: center; gap: 28px; width: 100%; min-width: 0; container-type: inline-size; }
+/* Stepped heading pill (shared HeadingPill surfaces): wide line 1, narrower line-2 tab, subtitle tab */
+.use-with__pill { max-width: 100%; }
+.use-with__line { text-align: center; white-space: nowrap; word-spacing: -0.04em; font-size: min(72px, calc((100cqw - 56px) / 14.4)); } /* line 1 is ~14.3em wide plus 56px padding: scale it to fit the column */
+@media (max-width: 640px) {
+  .use-with { padding-inline: 16px; }
+  .use-with__line { white-space: normal; font-size: 36px; }
+  .use-with .heading-pill__tab { white-space: normal; max-width: 100%; }
+}
+.use-with .heading-pill__head { padding-bottom: 8px; }
+.use-with__row { padding: 0; }
+.use-with__title-tab { padding: 0 32px 24px; border-radius: 0 0 24px 24px; }
 .use-with__brand { white-space: nowrap; }
-.use-with__chatgpt, .use-with__claude, .use-with__hermes { display: inline-block; position: relative; width: 96px; height: 96px; margin-right: 6px; vertical-align: -0.25em; overflow: hidden; border-radius: 50%; }
+.use-with__chatgpt, .use-with__claude, .use-with__hermes { display: inline-block; position: relative; width: 1.333em; height: 1.333em; margin-right: 0.083em; /* 96px at the 72px heading size */ vertical-align: -0.25em; overflow: hidden; border-radius: 50%; mix-blend-mode: multiply; } /* the animations have white grounds; multiply drops them onto the grey pill */
 .use-with__chatgpt-animation, .use-with__claude-animation, .use-with__hermes-animation { position: absolute; width: 125%; height: 125%; left: -12.5%; top: -12.5%; }
 .use-with__actions { display: flex; gap: 12px; }

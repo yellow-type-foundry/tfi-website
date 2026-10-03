@@ -211,7 +211,7 @@ const products: Product[] = [
   {
     id: "search-api",
     title: "Search API",
-    description: <>Fresh results from the live web.<br />Never cached. Real browser-rendered search<br />that returns structured JSON.</>,
+    description: "Fresh results from the live web. Never cached. Real browser-rendered search that returns structured JSON.",
     cta: "Try Search for Free",
     tone: "search",
     bg: { left: -165, top: 92, width: 1541, height: 703, position: "center bottom" },
@@ -232,7 +232,7 @@ const products: Product[] = [
   {
     id: "fetch-api",
     title: "Fetch API",
-    description: <>From rendered page to clean data<br />in one call. Markdown, JSON<br />or HTML, token-efficient.</>,
+    description: "From rendered page to clean data in one call. Markdown, JSON or HTML, token-efficient.",
     cta: "Try Fetch for Free",
     tone: "landscape",
     bg: { left: -83, top: 86, width: 1573, height: 674 },

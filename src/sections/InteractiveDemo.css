@@ -27,7 +27,7 @@
 .idemo-stage {
   position: relative; flex: 1 0 0; min-width: 0; align-self: stretch;
   display: flex; align-items: center; justify-content: center;
-  padding: 40px; border-radius: 16px; overflow: clip; /* same inset on all sides of the window */
+  padding: 40px; border-radius: 64px; overflow: clip; /* same inset on all sides of the window; radius = window 24px + 40px inset, so the corners run parallel */
   background: var(--surface-accent-teal-subtle);
 }
 /* Fill the stage with the vector animation, preserving its export proportions. */
