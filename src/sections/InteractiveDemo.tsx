@@ -170,8 +170,8 @@ function Demo() {
   );
 }
 
-const FEATURES: { icon: LocalIconName; title: string; body: string; large?: boolean }[] = [
-  { icon: "lock", title: "Vault", body: "Connect 1Password or Bitwarden. Each run gets only the logins you pick, and the model never sees them.", large: true },
+const FEATURES: { icon: LocalIconName; title: string; body: string }[] = [
+  { icon: "lock", title: "Vault", body: "Connect 1Password or Bitwarden. Each run gets only the logins you pick, and the model never sees them." },
   { icon: "person", title: "Profiles", body: "Save a signed-in session once. Later runs start logged in, and sign back in from Vault when it expires." },
   { icon: "refresh", title: "Replay", body: "Every run is recorded step by step, so you can see exactly what your agent did." },
 ];
@@ -201,8 +201,8 @@ export function InteractiveDemo() {
         <ul className="idemo-features">
           {FEATURES.map((f) => (
             <li key={f.title} className="idemo-feature">
-              <span className={`idemo-feature__icon depth-default${f.large ? " idemo-feature__icon--l" : ""}`}>
-                <LocalIcon name={f.icon} size={f.large ? 18 : 14} />
+              <span className="idemo-feature__icon depth-default">
+                <LocalIcon name={f.icon} size={20} />
               </span>
               <div className="idemo-feature__content">
                 <h3 className="t-h6">{f.title}</h3>

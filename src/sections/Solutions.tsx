@@ -231,7 +231,7 @@ export function Solutions() {
   return (
     <section ref={ref} className={`solutions${live ? " is-live" : ""}`} id="solutions">
       <div className="solutions__bg" aria-hidden>
-        <img src="/assets/solutions/bg.png" alt="" />
+        <img className="solutions__bg-art" src="/assets/solutions/footer.webp" srcSet="/assets/solutions/footer-1632.webp 1632w, /assets/solutions/footer.webp 3264w" sizes="calc(100vw + 191px)" width={3264} height={2075} alt="" />
       </div>
       <header className="solutions__header">
         <Eyebrow>SOLUTIONS</Eyebrow>

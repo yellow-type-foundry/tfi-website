@@ -215,7 +215,7 @@ export function CustomerStories() {
     <section className="customer-stories" id="customer-stories">
       <header className="customer-stories__header">
         <div className="cs-mobile-heading">
-          <h1 className="t-h1">Trusted by 200K developers and the team behind them</h1>
+          <h1 className="t-h1">Trusted by 200K<span className="cs-line-break" /> developers and the<span className="cs-line-break" /> team behind them</h1>
           <p className="t-body-xl">Search, extract, browse, and act on the web with one platform.</p>
         </div>
         <div className="cs-pill">

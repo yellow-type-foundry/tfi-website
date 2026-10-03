@@ -106,8 +106,10 @@
 @media (max-width: 640px) {
   .customer-stories__header { container-type: inline-size; }
   .customer-stories__header > .cs-pill { display: none; }
-  .cs-mobile-heading { display: flex; flex-direction: column; gap: 20px; width: 100%; padding-inline: 16px; text-align: center; }
-  .cs-mobile-heading h1 { font-size: clamp(36px, 10cqw, 48px); line-height: 1.05; text-wrap: balance; }
+  .cs-mobile-heading { display: flex; flex-direction: column; gap: 20px; width: 100%; padding-inline: 16px; text-align: center; container-type: inline-size; }
+  /* Three set lines; the widest ("developers and the") is 8.8em, so the size fills the width without wrapping */
+  .cs-mobile-heading h1 { font-size: min(48px, calc(100cqw / 8.9)); line-height: 1.05; white-space: nowrap; }
+  .cs-line-break { display: block; }
   .cs-mobile-heading p { font-size: 16px; line-height: 1.5; text-wrap: balance; }
 }
 

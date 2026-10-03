@@ -17,3 +17,7 @@
 @media (max-width: 1440px) {
   .sticky-nav { width: calc(100% - 32px); }
 }
+/* Mobile: the floating bar is Embossed (outer shadow only) instead of outlined */
+@media (max-width: 640px) {
+  .sticky-nav__bar { border-color: transparent; filter: var(--depth-embossed-filter); }
+}

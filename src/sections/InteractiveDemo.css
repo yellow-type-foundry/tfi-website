@@ -141,14 +141,13 @@
 @media (min-width: 641px) and (max-width: 1280px) {
   .idemo-features { width: 100%; padding: 0; }
 }
-.idemo-feature { flex: 1 0 0; min-width: 0; display: flex; align-items: flex-start; gap: 14px; }
+.idemo-feature { flex: 1 0 0; min-width: 0; display: flex; flex-direction: row-reverse; align-items: flex-start; gap: 14px; } /* desktop: text on the left, icon at the top right */
 .idemo-feature__icon {
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  width: 32px; height: 32px; border-radius: 16px; overflow: clip;
+  width: 40px; height: 40px; border-radius: 22px; overflow: clip; /* one size for every feature */
   border: 0.267px solid var(--outline-accent-neutral);
   background: var(--surface-accent-orange-subtle); color: var(--content-accent-orange-default); /* orange, like the agent cursor badge */
 }
-.idemo-feature__icon--l { width: 40px; height: 40px; border-radius: 22px; }
 .idemo-feature__content { flex: 1 0 0; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
 .idemo-feature__content h3 { color: rgba(0, 0, 0, 0.9); }
 .idemo-feature__content p { color: var(--content-secondary); }
@@ -157,6 +156,7 @@
   .idemo-feature__icon { width: 40px; height: 40px; border-radius: 22px; }
   .idemo-feature__icon svg { width: 20px; height: 20px; }
   .idemo-feature__content { flex: none; width: 100%; align-items: center; }
+  .idemo-feature__content p { font-size: 16px; line-height: 1.5; }
 }
 
 @media (max-width: 640px) {
@@ -212,8 +212,7 @@
 
 @media (max-width: 640px) {
   .idemo-feature { flex-direction: column; align-items: flex-start; }
-  .idemo-feature__icon,
-  .idemo-feature__icon--l { width: 40px; height: 40px; border-radius: 20px; }
+  .idemo-feature__icon { width: 40px; height: 40px; border-radius: 20px; }
   .idemo-feature__icon svg { width: 20px; height: 20px; }
   .idemo-feature__content { flex: none; width: 100%; }
 }
