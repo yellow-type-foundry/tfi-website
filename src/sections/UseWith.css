@@ -1,4 +1,4 @@
-.use-with { background: var(--surface-primary); display: flex; flex-direction: column; align-items: center; padding: 200px var(--gutter); }
+.use-with { background: var(--surface-primary); display: flex; flex-direction: column; align-items: center; padding: 200px var(--gutter) 0; } /* the product showcase below sets the gap */
 .use-with__content { display: flex; flex-direction: column; align-items: center; gap: 28px; width: 100%; min-width: 0; }
 .use-with__intro { display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center; width: 100%; }
 .use-with__heading { width: 100%; text-align: center; text-wrap: balance; word-spacing: -0.04em; }

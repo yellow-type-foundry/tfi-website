@@ -122,83 +122,179 @@ function ResultRow({ source, title, text }: { source: string; title: string; tex
   );
 }
 
-/** Chat transcript inside the mock browser: user prompt, the agent's steps, and the final answer. */
-function AgentChat({ prompt, steps, answer, compact }: { prompt: ReactNode; steps: ReactNode; answer: ReactNode; compact?: boolean }) {
-  // compact: the updated Figma transcripts (Search, Browser) with a 364px bubble and a tighter answer.
+type ChatContent = { prompt: ReactNode; steps: ReactNode; answer: ReactNode; compact?: boolean };
+
+/** A box that stays mounted while its contents change: it reshapes (width and height) from its current
+    size to fit the new contents, which fade in. The contents are laid out at the final width straight
+    away, so text never re-wraps mid-morph. `id` names the contents, so a new id swaps them. */
+function Morph({ id, className, innerClassName = "", children }: { id: string; className: string; innerClassName?: string; children: ReactNode }) {
+  const outerRef = useRef<HTMLDivElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const outer = outerRef.current;
+    const inner = innerRef.current;
+    if (!outer || !inner) return;
+    const container = outer.parentElement ?? outer;
+    let measured = { container: 0, inner: 0 };
+    const fit = (animate: boolean) => {
+      const from = outer.getBoundingClientRect(); // current, possibly mid-morph, size
+      outer.style.transition = "none";
+      outer.style.width = "";
+      const width = outer.offsetWidth; // the width the stylesheet asks for
+      inner.style.width = `${width}px`;
+      const height = inner.offsetHeight;
+      if (animate) {
+        outer.style.width = `${from.width}px`;
+        outer.style.height = `${from.height}px`;
+      }
+      void outer.offsetWidth;
+      outer.style.transition = "";
+      outer.style.width = `${width}px`;
+      outer.style.height = `${height}px`;
+      measured = { container: container.clientWidth, inner: height };
+    };
+    fit(outer.style.height !== ""); // morph when the contents change, snap on first paint
+    // Re-fit (snapping) only when the layout really changed: fonts loading, responsive reflow
+    const observer = new ResizeObserver(() => {
+      if (container.clientWidth !== measured.container || inner.offsetHeight !== measured.inner) fit(false);
+    });
+    observer.observe(container);
+    observer.observe(inner);
+    return () => observer.disconnect();
+  }, [id]);
   return (
-    <div className={`ps-chat${compact ? " ps-chat--compact" : ""}`}>
+    <div ref={outerRef} className={`ps-morph ${className}`}>
+      <div ref={innerRef} key={id} className={`ps-morph__inner ${innerClassName}`.trim()}>{children}</div>
+    </div>
+  );
+}
+
+/** Chat transcript inside the mock browser: user prompt, the agent's steps, and the final answer.
+    Each part is a Morph, so switching products reshapes the same bubble, panel and answer. */
+function AgentChat({ id, chat }: { id: string; chat: ChatContent }) {
+  // compact: the updated Figma transcripts (Search, Browser) with a tighter answer.
+  return (
+    <div className={`ps-chat${chat.compact ? " ps-chat--compact" : ""}`} data-product={id}>
       <div className="ps-chat__prompt">
-        <p className="ps-msg t-body-s">{prompt}</p>
+        <Morph id={id} className="ps-msg" innerClassName="t-body-s">{chat.prompt}</Morph>
       </div>
       <div className="ps-chat__agent">
         <p className="ps-chat__caption t-body-s">Your agent</p>
-        <div className="ps-steps depth-default">{steps}</div>
+        <Morph id={id} className="ps-steps depth-default">{chat.steps}</Morph>
       </div>
       <div className="ps-chat__answer">
-        <p className="t-h6">{answer}</p>
+        <Morph id={id} className="ps-answer"><p className="t-h6">{chat.answer}</p></Morph>
       </div>
     </div>
   );
 }
 
-type ProductCardProps = {
+type Product = {
   id: string;
   title: string;
   description: ReactNode;
   cta: string;
-  /** "search" = the tall yellow first card; "landscape" = the green landscape cards. */
+  /** "search" = the laptop art pinned to the copy; "landscape" = art that stretches with the card. */
   tone: "search" | "landscape";
-  /** Shader image box, relative to the card (Figma frame offsets). */
+  /** Art box, relative to the card (Figma frame offsets). */
   bg: { left: number; top: number; width: number; height: number; position?: string };
-  /** Vector shader loop (.tfv/.tfz in /assets/product-showcase/vector) replacing the still background. */
-  vector?: { src: string; width: number; height: number };
-  children: ReactNode;
+  /** Vector shader loop (.tfv/.tfz in /assets/product-showcase/vector). */
+  vector: { src: string; width: number; height: number };
+  /** Contents of the shared UI window. */
+  chat: ChatContent;
 };
 
-const FIGMA_CARD_WIDTH = 1376;
 /** Where the laptop starts inside the search art, in px from the art's left edge. */
 const SEARCH_LAPTOP_LEFT = 239;
 
-function ProductCard({ id, title, description, cta, tone, bg, vector, children }: ProductCardProps) {
-  // Offsets are from the 1376px-wide Figma card. The laptop art (search) keeps its size, with the
-  // laptop's left edge on the copy's left edge; the landscapes stretch with the card.
-  const bgStyle: CSSProperties =
-    tone === "search"
-      ? { left: `calc(var(--ps-copy-inset) - ${SEARCH_LAPTOP_LEFT}px)`, top: bg.top, width: bg.width, height: bg.height, objectPosition: bg.position }
-      : { left: bg.left, top: bg.top, width: `calc(100% + ${bg.width - FIGMA_CARD_WIDTH}px)`, height: bg.height, objectPosition: bg.position };
-  return (
-    <article className="ps-panel" id={id} role="tabpanel" aria-labelledby={`${id}-tab`}>
-      <div className={`ps-card ps-card--${tone}`}>
-        {vector ? (
-          <VectorLoop className="ps-card__bg" src={`/assets/product-showcase/vector/${vector.src}`} width={vector.width} height={vector.height} style={bgStyle} />
-        ) : (
-          <img
-            className="ps-card__bg"
-            src={`/assets/product-showcase/shader-${tone}.png`}
-            width={bg.width}
-            height={bg.height}
-            style={bgStyle}
-            alt=""
-            loading="lazy"
-          />
-        )}
-        <div className="ps-card__layout">
-          <div className="ps-intro">
-            <div className="ps-intro__copy">
-              <h2 className="t-h2" id={`${id}-title`}>{title}</h2>
-              <p className="ps-intro__desc t-body-l">{description}</p>
-            </div>
-            <a className="ps-cta" href="#">{cta}</a>
-          </div>
-          <BrowserWindow className="ps-window">{children}</BrowserWindow>
-        </div>
-      </div>
-    </article>
-  );
+const products: Product[] = [
+  {
+    id: "search-api",
+    title: "Search API",
+    description: <>Fresh results from the live web.<br />Never cached. Real browser-rendered search<br />that returns structured JSON.</>,
+    cta: "Try Search for Free",
+    tone: "search",
+    bg: { left: -165, top: 92, width: 1541, height: 703, position: "center bottom" },
+    vector: { src: "search.tfz", width: 5833, height: 2755 },
+    chat: {
+      compact: true,
+      prompt: searchPrompt,
+      steps: (
+        <ol className="ps-steps__list">
+          <StepRow icon="fish" accent label="Search · “aurora 14 laptop price”" />
+          {searchResults.map((r) => <ResultRow key={r.source} {...r} />)}
+          <StepRow icon="ellipsis" label="+ 7 more results" detail="556ms" />
+        </ol>
+      ),
+      answer: searchAnswer,
+    },
+  },
+  {
+    id: "fetch-api",
+    title: "Fetch API",
+    description: <>From rendered page to clean data<br />in one call. Markdown, JSON<br />or HTML, token-efficient.</>,
+    cta: "Try Fetch for Free",
+    tone: "landscape",
+    bg: { left: -83, top: 86, width: 1573, height: 674 },
+    vector: { src: "fetch-v16.tfv", width: 3444, height: 1698 },
+    chat: {
+      prompt: <>Read <span className="ps-link">docs.acme.com/api/rate-limits</span> and tell me the enterprise limit.</>,
+      steps: (
+        <ol className="ps-steps__list">
+          <StepRow icon="fish" accent label={<><strong>Fetch</strong> · docs.acme.com/api/rate-limits</>} />
+          <li className="ps-step ps-step--block">
+            <span className="ps-badge t-label-xs">Rate Limit</span>
+            <pre className="ps-markdown t-mono-s">{rateLimitTable}</pre>
+          </li>
+        </ol>
+      ),
+      answer: "6,000 requests a minute on enterprise, bursting to 10,000.",
+    },
+  },
+  {
+    id: "browser-api",
+    title: "Browser API",
+    description: "Access the web that search can't reach. A real cloud browser you drive with Playwright, Puppeteer or CDP, with persistent state.",
+    cta: "Try Browser",
+    tone: "landscape",
+    bg: { left: -83, top: 52, width: 1573, height: 674 },
+    vector: { src: "browser-v22.tfv", width: 1916, height: 821 },
+    chat: {
+      compact: true,
+      prompt: "Log into the carrier portal and pull our active quotes.",
+      steps: <ol className="ps-steps__list">{browserSteps.map((st, i) => <StepRow key={i} {...st} />)}</ol>,
+      answer: "Three active quotes: Northwind at $1,284 and Cardinal at $1,410 are approved; Beacon is still pending.",
+    },
+  },
+  {
+    id: "agent-api",
+    title: "Agent API",
+    description: "Navigate, fill forms, authenticate, return structured results. Give it a goal in plain English. It works the live site and brings back the data.",
+    cta: "Try Agent",
+    tone: "landscape",
+    bg: { left: -83, top: -19, width: 1573, height: 674 },
+    vector: { src: "agent-v28.tfv", width: 3880, height: 1663 },
+    chat: {
+      prompt: quotePrompt,
+      steps: <ol className="ps-steps__list">{quoteSteps.map((s, i) => <StepRow key={i} {...s} />)}</ol>,
+      answer: quoteAnswer,
+    },
+  },
+];
+
+/** Art box for a product, at its Figma size. The laptop art (search) has the laptop's left edge on the
+    copy's left edge; the landscapes are centred. Both are scaled down to the card in CSS. */
+function artStyle({ tone, bg }: Product): CSSProperties {
+  return tone === "search"
+    ? { left: `calc(var(--ps-copy-inset) - ${SEARCH_LAPTOP_LEFT}px)`, top: bg.top, width: bg.width, height: bg.height, objectPosition: bg.position }
+    : { left: "50%", top: bg.top, width: bg.width, height: bg.height, objectPosition: bg.position };
 }
 
 export function ProductShowcase() {
-  const [active, setActive] = useState("search-api");
+  const [active, setActiveState] = useState(products[0].id);
+  const [switched, setSwitched] = useState(false); // headings only animate once the visitor switches tabs
+  const setActive = (id: string) => { setActiveState(id); setSwitched(true); };
+  const product = products.find((p) => p.id === active) ?? products[0];
   const tabsRef = useRef<HTMLDivElement>(null);
   const indicatorRef = useRef<HTMLSpanElement>(null);
   // Slide the active tab's surface under whichever tab is selected
@@ -229,112 +325,56 @@ export function ProductShowcase() {
     placeIndicator(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active]);
-  const products = [
-    { id: "search-api", title: "Search API" },
-    { id: "fetch-api", title: "Fetch API" },
-    { id: "browser-api", title: "Browser API" },
-    { id: "agent-api", title: "Agent API" },
-  ];
-  const quoteList = (
-    <ol className="ps-steps__list">
-      {quoteSteps.map((s, i) => <StepRow key={i} {...s} />)}
-    </ol>
-  );
 
   return (
     <section className="product-showcase-scroll" id="products" aria-label="TinyFish APIs">
-      <div ref={tabsRef} className="product-showcase-tabs" role="tablist" aria-label="APIs">
-        <span ref={indicatorRef} className="ps-tab-indicator" aria-hidden />
-        {products.map((product) => (
-          <button key={product.id} id={`${product.id}-tab`} role="tab" aria-selected={active === product.id}
-            aria-controls={product.id} tabIndex={active === product.id ? 0 : -1}
-            className={`ps-tab${active === product.id ? " ps-tab--active" : ""}`}
-            onClick={() => setActive(product.id)}
-            onKeyDown={(event) => {
-              const index = products.findIndex((item) => item.id === active);
-              const next = event.key === "ArrowRight" ? (index + 1) % products.length : event.key === "ArrowLeft" ? (index + products.length - 1) % products.length : event.key === "Home" ? 0 : event.key === "End" ? products.length - 1 : -1;
-              if (next >= 0) { event.preventDefault(); setActive(products[next].id); document.getElementById(`${products[next].id}-tab`)?.focus(); }
-            }}>
-            {product.title}
-          </button>
-        ))}
-      </div>
-      <div className="product-showcase" data-active={active}>
-      <ProductCard
-        id="search-api"
-        title="Search API"
-        description="Fresh results from the live web. Never cached. Real browser-rendered search that returns structured JSON."
-        cta="Try Search for Free"
-        tone="search"
-        bg={{ left: -165, top: 92, width: 1541, height: 703, position: "center bottom" }}
-        vector={{ src: "search.tfz", width: 5833, height: 2755 }}
-      >
-        <AgentChat
-          compact
-          prompt={searchPrompt}
-          steps={
-            <ol className="ps-steps__list">
-              <StepRow icon="fish" accent label="Search · “aurora 14 laptop price”" />
-              {searchResults.map((r) => <ResultRow key={r.source} {...r} />)}
-              <StepRow icon="ellipsis" label="+ 7 more results" detail="556ms" />
-            </ol>
-          }
-          answer={searchAnswer}
-        />
-      </ProductCard>
-
-      <ProductCard
-        id="fetch-api"
-        title="Fetch API"
-        description={<>From rendered page to clean data in one call.<br />Markdown, JSON or HTML, token-efficient.</>}
-        cta="Try Fetch for Free"
-        tone="landscape"
-        bg={{ left: -83, top: 86, width: 1573, height: 674 }}
-        vector={{ src: "fetch-v16.tfv", width: 3444, height: 1698 }}
-      >
-        <AgentChat
-          prompt={<>Read <span className="ps-link">docs.acme.com/api/rate-limits</span> and tell me the enterprise limit.</>}
-          steps={
-            <ol className="ps-steps__list">
-              <StepRow icon="fish" accent label={<><strong>Fetch</strong> · docs.acme.com/api/rate-limits</>} />
-              <li className="ps-step ps-step--block">
-                <span className="ps-badge t-label-xs">Rate Limit</span>
-                <pre className="ps-markdown t-mono-s">{rateLimitTable}</pre>
-              </li>
-            </ol>
-          }
-          answer="6,000 requests a minute on enterprise, bursting to 10,000."
-        />
-      </ProductCard>
-
-      <ProductCard
-        id="browser-api"
-        title="Browser API"
-        description="Access the web that search can't reach. A real cloud browser you drive with Playwright, Puppeteer or CDP, with persistent state."
-        cta="Try Browser"
-        tone="landscape"
-        bg={{ left: -83, top: 52, width: 1573, height: 674 }}
-        vector={{ src: "browser-v22.tfv", width: 1916, height: 821 }}
-      >
-        <AgentChat
-          compact
-          prompt="Log into the carrier portal and pull our active quotes."
-          steps={<ol className="ps-steps__list">{browserSteps.map((st, i) => <StepRow key={i} {...st} />)}</ol>}
-          answer="Three active quotes: Northwind at $1,284 and Cardinal at $1,410 are approved; Beacon is still pending."
-        />
-      </ProductCard>
-
-      <ProductCard
-        id="agent-api"
-        title="Agent API"
-        description="Navigate, fill forms, authenticate, return structured results. Give it a goal in plain English. It works the live site and brings back the data."
-        cta="Try Agent"
-        tone="landscape"
-        bg={{ left: -83, top: -19, width: 1573, height: 674 }}
-        vector={{ src: "agent-v28.tfv", width: 3880, height: 1663 }}
-      >
-        <AgentChat prompt={quotePrompt} steps={quoteList} answer={quoteAnswer} />
-      </ProductCard>
+      <div className="product-showcase" data-active={active} data-first-active={active === products[0].id || undefined} data-switched={switched || undefined}>
+        <div className="ps-main">
+          <div ref={tabsRef} className="product-showcase-tabs" role="tablist" aria-label="APIs">
+            <span ref={indicatorRef} className="ps-tab-indicator" aria-hidden />
+            {products.map((p) => (
+              <button key={p.id} id={`${p.id}-tab`} role="tab" aria-selected={active === p.id}
+                aria-controls="products-panel" tabIndex={active === p.id ? 0 : -1}
+                className={`ps-tab${active === p.id ? " ps-tab--active" : ""}`}
+                onClick={() => setActive(p.id)}
+                onKeyDown={(event) => {
+                  const index = products.findIndex((item) => item.id === active);
+                  const next = event.key === "ArrowRight" ? (index + 1) % products.length : event.key === "ArrowLeft" ? (index + products.length - 1) % products.length : event.key === "Home" ? 0 : event.key === "End" ? products.length - 1 : -1;
+                  if (next >= 0) { event.preventDefault(); setActive(products[next].id); document.getElementById(`${products[next].id}-tab`)?.focus(); }
+                }}>
+                {p.title}
+              </button>
+            ))}
+          </div>
+          <div className="ps-card" id="products-panel" role="tabpanel" aria-labelledby={`${active}-tab`}>
+            {/* Every product's art loads with the card and stays drawn, so switching is a plain cross-fade in
+                step with the card colour; only the selected one plays. */}
+            {products.map((p) => (
+              <div key={p.id} className={`ps-art${active === p.id ? " ps-art--active" : ""}`} data-product={p.id} aria-hidden>
+                <VectorLoop className="ps-card__bg" src={`/assets/product-showcase/vector/${p.vector.src}`} width={p.vector.width} height={p.vector.height} style={artStyle(p)} active={active === p.id} />
+              </div>
+            ))}
+            <div className="ps-card__layout">
+              <div className="ps-intro" key={product.id}>
+                <div className="ps-intro__copy">
+                  <h2 className="t-h4">{product.title}</h2>
+                  <p className="ps-intro__desc t-body-l">{product.description}</p>
+                </div>
+                <a className="ps-cta" href="#">{product.cta}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* One UI window beside the card for every product. Hidden copies of every transcript share a grid
+            cell with the live one, so the window is always as tall as the tallest; the live transcript morphs. */}
+        <BrowserWindow className="ps-window">
+          <div className="ps-window__viewport">
+            {products.map((p) => (
+              <div key={p.id} className="ps-window__sizer" aria-hidden><AgentChat id={p.id} chat={p.chat} /></div>
+            ))}
+            <div className="ps-window__live"><AgentChat id={product.id} chat={product.chat} /></div>
+          </div>
+        </BrowserWindow>
       </div>
     </section>
   );

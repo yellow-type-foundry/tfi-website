@@ -18,6 +18,8 @@ type VectorLoopProps = {
   renderFps?: number;
   noEffects?: boolean;
   hoverGridScale?: number;
+  /** When false the loop still loads (and stays drawn) but is paused, e.g. a showcase tab that isn't selected. */
+  active?: boolean;
 };
 
 /** Rewrites palette colours in a TFV1 file's JSON header and returns new (uncompressed) bytes. */
@@ -39,8 +41,11 @@ function recolorTfv(bytes: Uint8Array, map: Record<string, string>) {
  * The player pauses off screen, shows the first frame for reduced motion, and handles any
  * hover-reveal layers in the file (pointer brush; touch follows a held finger).
  */
-export function VectorLoop({ src, width, height, className, style, recolor, excludeFramesWithLayer, noShadows, pixelRatio, renderFps, noEffects, hoverGridScale }: VectorLoopProps) {
+export function VectorLoop({ src, width, height, className, style, recolor, excludeFramesWithLayer, noShadows, pixelRatio, renderFps, noEffects, hoverGridScale, active = true }: VectorLoopProps) {
   const ref = useRef<HTMLCanvasElement>(null);
+  const activeRef = useRef(active);
+  const syncRef = useRef<() => void>(() => {});
+  useEffect(() => { activeRef.current = active; syncRef.current(); }, [active]);
   const recolorKey = JSON.stringify(recolor ?? {});
 
   useEffect(() => {
@@ -59,14 +64,15 @@ export function VectorLoop({ src, width, height, className, style, recolor, excl
       .then((bytes) => (isTfz(bytes) ? unpackTfz(bytes) : window.TFVector.inflate(bytes)))
       .then((bytes) => (recolor ? recolorTfv(bytes, recolor) : bytes))
       .then((bytes) => (cancelled ? undefined : window.TFVector.play(canvas, bytes)))
-      .then((p) => { player = p; if (cancelled || !visible) p?.pause(); })
+      .then((p) => { player = p; canvas.dataset.ready = ""; if (cancelled || !visible || !activeRef.current) p?.pause(); })
       .catch((e) => console.error(e));
     };
     const observer = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting && entry.intersectionRatio >= 0.1;
-      if (visible) { start(); player?.play(); }
-      else player?.pause();
+      if (visible) start();
+      syncRef.current();
     }, { threshold: [0, 0.1] });
+    syncRef.current = () => { if (visible && activeRef.current) player?.play(); else player?.pause(); };
     observer.observe(canvas.closest(".ps-card, .hero__card, .final-cta__card, .idemo-stage") ?? canvas);
     return () => { cancelled = true; observer.disconnect(); player?.pause(); };
     // eslint-disable-next-line react-hooks/exhaustive-deps

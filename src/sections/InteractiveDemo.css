@@ -1,7 +1,7 @@
 .idemo {
   background: var(--surface-primary);
   display: flex; flex-direction: column; align-items: center; gap: 80px;
-  padding: 160px 16px 160px;
+  padding: 0 16px 160px; /* the product showcase above sets the gap */
 }
 
 /* Introduction: eyebrow + raised heading block with attached subtitle tab */
