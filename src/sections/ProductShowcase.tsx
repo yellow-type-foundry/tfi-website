@@ -275,7 +275,7 @@ function useTranscriptPlayer(rootRef: React.RefObject<HTMLDivElement | null>, in
     if (!playing) { showAll(); return; }
 
     const timers: number[] = [];
-    const at = (t: number, fn: () => void) => timers.push(window.setTimeout(fn, t));
+    const at = (t: number, fn: () => void) => timers.push(window.setTimeout(fn, t * 1.25));
     const run = () => {
       // Wipe without transitions (Streaming text's replay note), then play forward
       words.forEach((w) => { w.style.transition = "none"; w.classList.remove("is-in"); });
@@ -469,13 +469,6 @@ function useWindowHeight(rowRef: React.RefObject<HTMLDivElement | null>, active:
 }
 
 export function ProductShowcase() {
-  const [mobile, setMobile] = useState(() => window.matchMedia("(max-width: 640px)").matches);
-  useEffect(() => {
-    const query = window.matchMedia("(max-width: 640px)");
-    const update = () => setMobile(query.matches);
-    query.addEventListener("change", update);
-    return () => query.removeEventListener("change", update);
-  }, []);
   const [tablet, setTablet] = useState(() => window.matchMedia("(max-width: 1100px)").matches);
   useEffect(() => {
     const query = window.matchMedia("(max-width: 1100px)");
@@ -542,7 +535,7 @@ export function ProductShowcase() {
                   const next = event.key === "ArrowRight" ? (index + 1) % products.length : event.key === "ArrowLeft" ? (index + products.length - 1) % products.length : event.key === "Home" ? 0 : event.key === "End" ? products.length - 1 : -1;
                   if (next >= 0) { event.preventDefault(); setActive(products[next].id); document.getElementById(`${products[next].id}-tab`)?.focus(); }
                 }}>
-                {p.title}
+                {p.title.replace(/ API$/, "")}
               </button>
             ))}
           </div>
@@ -577,7 +570,7 @@ export function ProductShowcase() {
           </div>
         </BrowserWindow>
         </div>
-        {mobile && <div className="ps-mobile-art" data-product={product.id} aria-hidden>
+        {tablet && <div className="ps-mobile-art" data-product={product.id} aria-hidden>
           <VectorLoop key={product.id} className="ps-mobile-art__canvas" src={`/assets/product-showcase/vector/${product.vector.src}`} width={product.vector.width} height={product.vector.height} active={inView} />
         </div>}
       </div>
