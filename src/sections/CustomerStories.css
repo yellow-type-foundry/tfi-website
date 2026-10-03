@@ -88,3 +88,15 @@
 }
 .story-quote__role--muted { color: var(--content-tertiary); }
 .story-quote__cutout { flex-shrink: 0; }
+
+.cs-mobile-break { display: none; }
+@media (max-width: 640px) {
+  .customer-stories__header { width: calc(100% - 32px); }
+  .cs-mobile-break { display: block; }
+  .cs-pill__head { width: 100%; padding-inline: 12px; }
+  .cs-pill__title { font-size: clamp(24px, 6.5vw, 40px); line-height: 1.1; }
+  .cs-pill__tab-row { padding: 0; }
+  .cs-pill__tab.cs-pill__tab--title { padding: 0 12px 16px; }
+  .cs-pill__tab-row:last-child { width: calc(100% - 32px); }
+  .cs-pill__tab-row:last-child .cs-pill__tab { min-width: 0; white-space: normal; padding-inline: 12px; }
+}
