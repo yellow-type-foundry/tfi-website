@@ -34,6 +34,18 @@
 .faq__panel-inner { min-height: 0; }
 .faq__answer { padding: 0 64px 16px 16px; color: var(--content-secondary); }
 
+@media (max-width: 640px) {
+  .faq { padding: 48px 16px 64px; gap: 24px; }
+  .faq > .heading-pill { width: 100%; min-width: 0; }
+  .heading-pill__head.faq__title-pill { width: 100%; padding: 16px; }
+  .faq__title { font-size: clamp(32px, 8vw, 40px); line-height: 1.1; white-space: normal; text-wrap: balance; }
+  .faq__list { width: 100%; min-width: 0; }
+  .faq__trigger { padding: 14px 12px; gap: 12px; }
+  .faq__question { font-size: 16px; line-height: 22px; text-wrap: pretty; }
+  .faq__icon { width: 24px; height: 24px; }
+  .faq__answer { padding: 0 48px 16px 12px; font-size: 14px; line-height: 21px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .faq__icon, .faq__trigger { transition: none; }
 }

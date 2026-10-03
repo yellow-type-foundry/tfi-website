@@ -43,6 +43,29 @@
 .pricing-api__rate span { color: var(--content-tertiary); }
 .pricing-api__lead > .t-h6, .pricing-api__price > span { display: block; }
 
+@media (max-width: 640px) {
+  .pricing { padding: 48px 16px; }
+  .pricing__content { width: 100%; min-width: 0; gap: 24px; container-type: inline-size; }
+  .pricing__header { width: 100%; min-width: 0; gap: 24px; }
+  .pricing-pill__head, .pricing-pill__tab {
+    font-size: min(40px, calc((100cqw - 32px) / 8.2));
+    line-height: 1.1;
+  }
+  .pricing-pill__head { width: 100%; padding: 16px 16px 4px; }
+  .pricing-pill__tab-row { width: calc(100% - 24px); padding: 0; }
+  .pricing-pill__tab { flex: 1; min-width: 0; padding: 0 8px 16px; }
+  .pricing__actions { width: 100%; gap: 8px; }
+  .pricing__actions .btn { flex: 1; width: auto; min-width: 0; padding: 11px 8px; font-size: 14px; line-height: 20px; }
+  .pricing-api-list { width: 100%; }
+  .pricing-api { padding: 10px 14px 10px 10px; gap: 8px; }
+  .pricing-api__lead { flex: 1 1 auto; gap: 8px; }
+  .pricing-api__icon { width: 32px; height: 32px; }
+  .pricing-api__icon svg { width: 18px; height: 18px; }
+  .pricing-api__lead > .t-h6, .pricing-api__free { font-size: 16px; line-height: 22px; }
+  .pricing-api__price { flex: 0 0 auto; }
+  .pricing-api__rate { font-size: 14px; line-height: 22px; }
+}
+
 .pricing-api-list.is-entering .pricing-api { opacity: 0; translate: 0 20px; }
 .pricing-api-list.is-visible .pricing-api { animation: pricing-row-enter 450ms cubic-bezier(0.22, 1, 0.36, 1) both; }
 .pricing-api-list.is-visible .pricing-api:nth-child(2) { animation-delay: 70ms; }

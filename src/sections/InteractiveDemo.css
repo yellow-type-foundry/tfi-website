@@ -187,3 +187,33 @@
     border-radius: 24px;
     background: var(--surface-accent-neutral-subtle);
   }
+
+@media (max-width: 640px) {
+  .idemo-stage { padding: 8px; }
+  .idemo-steps { padding: 12px 8px; gap: 6px; }
+  .idemo-step { gap: 4px; }
+  .idemo-step__badge { width: 20px; height: 20px; font-size: 12px; }
+  .idemo-step__label { font-size: 12px; line-height: 16px; }
+  .idemo-address { padding-inline: 8px; }
+  .idemo-window__body { min-height: 0; padding: 20px 12px; }
+  .idemo-card { width: 100%; max-width: 336px; padding: 20px; gap: 16px; border-radius: 24px; }
+  .idemo-input__value { padding: 10px 12px; min-height: 44px; font-size: 14px; }
+  .idemo-status { padding: 12px 8px; }
+  .idemo-status__lead { gap: 6px; }
+  .idemo-status :is(.t-label-m, .t-label-s, .t-body-s) { font-size: 12px; line-height: 16px; }
+  .idemo-status__timing { flex: 0 0 auto; white-space: nowrap; }
+}
+
+@media (max-width: 640px) {
+  .idemo-window { border-radius: 16px; }
+  .idemo-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .idemo-step { justify-content: center; }
+}
+
+@media (max-width: 640px) {
+  .idemo-feature { flex-direction: column; align-items: flex-start; }
+  .idemo-feature__icon,
+  .idemo-feature__icon--l { width: 40px; height: 40px; border-radius: 20px; }
+  .idemo-feature__icon svg { width: 20px; height: 20px; }
+  .idemo-feature__content { flex: none; width: 100%; }
+}
