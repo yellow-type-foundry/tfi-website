@@ -1,0 +1,18 @@
+/* Badge/Text */
+.badge { display: inline-flex; align-items: center; justify-content: center; gap: 4px; flex-shrink: 0; white-space: nowrap; }
+.badge--s { min-height: 20px; padding: 2px 8px; border-radius: 4px; }
+.badge--l { min-height: 24px; padding: 4px 12px; border-radius: 6px; }
+.badge--pill { border-radius: 9999px; }
+.badge--outline { border: 1px solid var(--outline-default); color: var(--content-secondary); }
+.badge--orange-outline { border: 1px solid var(--outline-accent-orange); color: var(--content-accent-orange-default); }
+.badge--neutral { background: var(--surface-strong); color: var(--content-primary); }
+.badge--orange { background: var(--surface-accent-orange-default); color: var(--content-static-white); }
+.badge--green { background: var(--surface-accent-green-strong); color: var(--content-static-white); }
+
+/* Badge/Number */
+.number-badge { display: flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: 9999px; }
+.number-badge--s { width: 24px; height: 24px; }
+.number-badge--l { width: 32px; height: 32px; }
+.number-badge--filled { background: var(--surface-accent-orange-default); color: var(--content-static-white); }
+.number-badge--outline { border: 1px solid var(--outline-accent-orange); color: var(--content-accent-orange-default); }
+.number-badge--neutral { background: var(--surface-secondary); color: var(--content-tertiary); }

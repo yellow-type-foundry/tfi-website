@@ -7,8 +7,8 @@
 .heading-pill__head.faq__title-pill { padding-bottom: 16px; } /* one row: even 16px top and bottom */
 .faq__list { width: 551px; /* matches the pricing "real web work." row */ max-width: 100%; display: flex; flex-direction: column; }
 
-/* The divider SVG sits 1px above its 0-height slot in Figma, so the rows keep their 56px rhythm. */
-.faq__divider { position: relative; width: 100%; height: 1px; margin-top: -1px; }
+/* Divider · Default. The line sits 1px above its 0-height slot in Figma, so the rows keep their 56px rhythm. */
+.faq__divider { position: relative; width: 100%; height: 1px; margin-top: -1px; background: var(--outline-default); }
 /* A hovered question's highlight stands alone: the dividers above and below it fade out */
 .faq__divider { transition: opacity 150ms ease; }
 .faq__divider:has(+ .faq__item .faq__trigger:hover),
@@ -23,11 +23,7 @@
 .faq__trigger:hover { background: var(--surface-secondary); }
 .faq__trigger:focus-visible { outline: 2px solid var(--surface-accent-orange-default); outline-offset: -2px; }
 .faq__question { flex: 1 1 auto; min-width: 0; text-wrap: balance; } /* two-line questions split evenly, no orphaned word */
-.faq__icon {
-  flex-shrink: 0; width: 32px; height: 32px; border-radius: 4px;
-  display: flex; align-items: center; justify-content: center; color: var(--content-primary);
-  transition: transform var(--acc-chevron) var(--acc-ease);
-}
+.faq__icon { color: var(--content-primary); transition: transform var(--acc-chevron) var(--acc-ease); }
 .faq__item.is-open .faq__icon { transform: rotate(45deg); }
 
 /* Expand / collapse: transitions.dev accordion (.t-acc-panel / .t-acc-panel-inner in transitions.css). */
@@ -42,7 +38,7 @@
   .faq__list { width: 100%; min-width: 0; }
   .faq__trigger { padding: 14px 12px; gap: 12px; }
   .faq__question { font-size: 16px; line-height: 22px; text-wrap: pretty; }
-  .faq__icon { width: 24px; height: 24px; }
+  .faq__icon { --ic-size: 24px; }
   .faq__answer { padding: 0 48px 16px 12px; font-size: 14px; line-height: 21px; }
 }
 

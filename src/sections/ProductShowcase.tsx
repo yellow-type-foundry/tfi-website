@@ -1,6 +1,9 @@
 import type { CSSProperties, ReactElement, ReactNode } from "react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { BrowserWindow } from "../components/BrowserWindow";
+import { Badge } from "../components/Badge";
+import { IconContainer } from "../components/IconContainer";
+import { ListItem } from "../components/ListItem";
 import { VectorLoop } from "../components/VectorLoop";
 import { Icon } from "../components/Icon";
 import { useInView } from "../hooks/useLoop";
@@ -39,9 +42,8 @@ const stepIconPaths: Record<Exclude<StepIconName, "fish">, ReactElement> = {
 };
 
 function StepIcon({ name, accent }: { name: StepIconName; accent?: boolean }) {
-  const cls = `ps-step__icon${accent ? " ps-step__icon--accent" : ""}`;
   return (
-    <span className={cls} aria-hidden>
+    <IconContainer size={20} shape="rounded" variant="ghost" tone={accent ? "orange" : "neutral"} className="ps-step__icon">
       {name === "fish" ? (
         <Icon name="fish" size={12} />
       ) : (
@@ -49,7 +51,7 @@ function StepIcon({ name, accent }: { name: StepIconName; accent?: boolean }) {
           {stepIconPaths[name]}
         </svg>
       )}
-    </span>
+    </IconContainer>
   );
 }
 
@@ -99,26 +101,26 @@ const rateLimitTable = [
 
 function StepRow({ icon, accent, label, detail }: Step) {
   return (
-    <li className="ps-step">
+    <ListItem as="li" className="ps-step">
       <div className="ps-step__lead">
         <StepIcon name={icon} accent={accent} />
         <p className="ps-step__label t-body-s">{label}</p>
       </div>
       {detail && <p className="ps-step__detail t-mono-s">{detail}</p>}
-    </li>
+    </ListItem>
   );
 }
 
 function ResultRow({ source, title, text }: { source: string; title: string; text: string }) {
   return (
-    <li className="ps-step ps-result">
+    <ListItem as="li" className="ps-step ps-result">
       <img className="ps-result__thread" src="/assets/product-showcase/result-thread.svg" width={20} height={52} alt="" />
       <div className="ps-result__body">
         <p className="t-body-xs ps-result__source">{source}</p>
         <p className="t-label-s">{title}</p>
         <p className="t-body-xs ps-result__text">{text}</p>
       </div>
-    </li>
+    </ListItem>
   );
 }
 
@@ -394,10 +396,10 @@ const products: Product[] = [
       steps: (
         <ol className="ps-steps__list">
           <StepRow icon="fish" accent label={<><strong>Fetch</strong> · docs.acme.com/api/rate-limits</>} />
-          <li className="ps-step ps-step--block">
-            <span className="ps-badge t-label-xs">Rate Limit</span>
+          <ListItem as="li" className="ps-step ps-step--block">
+            <Badge fill="neutral" className="ps-badge">Rate Limit</Badge>
             <pre className="ps-markdown t-mono-s">{rateLimitTable}</pre>
-          </li>
+          </ListItem>
         </ol>
       ),
       answer: "6,000 requests a minute on enterprise, bursting to 10,000.",

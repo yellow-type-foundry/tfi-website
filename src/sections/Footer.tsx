@@ -36,7 +36,7 @@ export function Footer() {
       <div className="footer__top">
         <div className="footer__brand">
           <a href="#" aria-label="TinyFish home">
-            <img src="/assets/footer/logo.svg" width={174} height={40} alt="TinyFish" />
+            <span className="footer__logo" role="img" aria-label="TinyFish" />
           </a>
           <p className="footer__tagline t-h4">Web APIs built for agents.</p>
         </div>
@@ -61,7 +61,7 @@ export function Footer() {
         </nav>
       </div>
 
-      <img className="footer__divider" src="/assets/footer/divider.svg" width={741} height={1} alt="" />
+      <div className="footer__divider" aria-hidden />
 
       <div className="footer__bottom">
         <ul className="footer__legal t-body-xs">
@@ -77,7 +77,7 @@ export function Footer() {
           {socials.map((s) => (
             <li key={s.file}>
               <a href="#" aria-label={s.label}>
-                <img src={`/assets/footer/${s.file}.svg`} width={20} height={20} alt="" />
+                <span className="footer__social-icon" style={{ maskImage: `url(/assets/footer/${s.file}.svg)` }} />
               </a>
             </li>
           ))}

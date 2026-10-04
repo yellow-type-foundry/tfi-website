@@ -1,5 +1,6 @@
 import { Fragment, useId, useState } from "react";
 import { Icon } from "../components/Icon";
+import { IconContainer } from "../components/IconContainer";
 import "../components/HeadingPill.css";
 import "./Faq.css";
 
@@ -46,7 +47,7 @@ export function Faq() {
           const panelId = `${baseId}-a${i}`;
           return (
             <Fragment key={item.q}>
-              {i > 0 && <img className="faq__divider" src="/assets/faq/divider.svg" width={800} height={1} alt="" />}
+              {i > 0 && <div className="faq__divider" aria-hidden />}
               <div className={`faq__item t-acc${isOpen ? " is-open" : ""}`} data-open={isOpen}>
                 <h3 className="faq__heading">
                   <button
@@ -58,9 +59,9 @@ export function Faq() {
                     onClick={() => setOpen(isOpen ? null : i)}
                   >
                     <span className="faq__question t-label-xl">{item.q}</span>
-                    <span className="faq__icon" aria-hidden>
+                    <IconContainer size={32} shape="rounded" variant="ghost" className="faq__icon">
                       <Icon name="plus" size={18} />
-                    </span>
+                    </IconContainer>
                   </button>
                 </h3>
                 <div id={panelId} role="region" aria-labelledby={btnId} className="faq__panel t-acc-panel" inert={!isOpen}>

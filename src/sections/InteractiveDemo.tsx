@@ -3,6 +3,8 @@ import type { ReactElement } from "react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useInView } from "../hooks/useLoop";
 import { Eyebrow } from "../components/Eyebrow";
+import { NumberBadge } from "../components/Badge";
+import { IconContainer } from "../components/IconContainer";
 import { Icon } from "../components/Icon";
 import { VectorLoop } from "../components/VectorLoop";
 import "./InteractiveDemo.css";
@@ -123,7 +125,7 @@ function Demo() {
             <div className="idemo-steps">
               {STEPS.map((label, i) => (
                 <span key={label} className={`idemo-step${i === 0 ? " is-active" : ""}`}>
-                  <span className="idemo-step__badge t-label-m">{i + 1}</span>
+                  <NumberBadge variant={i === 0 ? "filled" : "neutral"} className="idemo-step__badge">{i + 1}</NumberBadge>
                   <span className="idemo-step__label t-label-m">{label}</span>
                 </span>
               ))}
@@ -150,7 +152,7 @@ function Demo() {
               {/* The agent's cursor, as on the Solutions portal card */}
               <span ref={pointerRef} className={`idemo-pointer${pointer === "rest" ? " is-resting" : ""}${stage === "pressed" ? " is-tapping" : ""}`} aria-hidden>
                 <img className="idemo-pointer__cursor" src="/assets/solutions/cursor.svg" width={14} height={16} alt="" />
-                <span className="idemo-pointer__agent depth-strong"><Icon name="fish" size={15} /></span>
+                <IconContainer size={32} tone="orange" depth="strong" className="idemo-pointer__agent"><Icon name="fish" size={15} /></IconContainer>
               </span>
               <span className={`btn btn--l btn--secondary idemo-card__submit${stage === "ready" || stage === "pressed" ? " is-ready" : ""}${stage === "pressed" ? " is-pressed" : ""}`}>
                 <span className="btn__label">Continue</span>
@@ -159,7 +161,7 @@ function Demo() {
           </div>
           <div className="idemo-status">
             <div className="idemo-status__lead">
-              <span className="idemo-status__icon depth-subtle"><Icon name="globe" size={12} /></span>
+              <IconContainer size={24} depth="subtle"><Icon name="globe" size={12} /></IconContainer>
               <p className="t-label-m">Open the portal</p>
             </div>
             <p className="idemo-status__timing t-body-s">1 of 7 · 0.2s</p>
@@ -201,9 +203,9 @@ export function InteractiveDemo() {
         <ul className="idemo-features">
           {FEATURES.map((f) => (
             <li key={f.title} className="idemo-feature">
-              <span className="idemo-feature__icon depth-default">
+              <IconContainer size={40} tone="orange" depth="default">
                 <LocalIcon name={f.icon} size={20} />
-              </span>
+              </IconContainer>
               <div className="idemo-feature__content">
                 <h3 className="t-h6">{f.title}</h3>
                 <p className="t-body-m">{f.body}</p>

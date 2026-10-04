@@ -3,6 +3,8 @@ import { DigitPop } from "../components/transitions/DigitPop";
 import { SpinningCounter } from "../components/transitions/SpinningCounter";
 import { useInView, useLoop } from "../hooks/useLoop";
 import { BrowserWindow } from "../components/BrowserWindow";
+import { Badge } from "../components/Badge";
+import { IconContainer } from "../components/IconContainer";
 import { Eyebrow } from "../components/Eyebrow";
 import { Icon } from "../components/Icon";
 import "./Solutions.css";
@@ -19,8 +21,8 @@ function FeatureCard({ title, description, descWidth, children }: { title: strin
   );
 }
 
-const Divider = ({ src = "/assets/solutions/divider.svg", w = 344 }: { src?: string; w?: number }) => (
-  <img className="sol-divider" src={src} width={w} height={1} alt="" />
+const Divider = () => (
+  <div className="sol-divider" aria-hidden />
 );
 
 /* The Monitor, Enrich and Research loops are built from transitions.dev recipes (see
@@ -56,7 +58,7 @@ function MonitorPreview({ live }: { live: boolean }) {
         className="sol-window sol-window--monitor"
         url="acme.com/pricing"
         gap={8}
-        trailing={<span className="sol-badge t-label-xs">Monitoring</span>}
+        trailing={<Badge fill="orange-outline">Monitoring</Badge>}
       >
         <div className="sol-panel depth-subtle">
           <div className="sol-plans">
@@ -141,7 +143,7 @@ function EnrichPreview({ live }: { live: boolean }) {
         </div>
         <div className="sol-status">
           <div className="sol-status__lead">
-            <span className="sol-status__icon depth-subtle"><Icon name="globe" size={12} /></span>
+            <IconContainer size={24} depth="subtle" className="sol-status__icon"><Icon name="globe" size={12} /></IconContainer>
             <p className="t-label-s">
               {/* Shimmer text while the agent works (pure CSS); plain text when static. */}
               <span className={playing ? "t-shimmer sol-shimmer" : undefined} data-text={status}>{status}</span>
@@ -217,7 +219,7 @@ function PortalPreview() {
           <Field label="Street address" typed={{ text: "500 Howard St, San Francisco", step: 2 }} />
           <span className="sol-portal__pointer" aria-hidden>
             <img className="sol-portal__cursor" src="/assets/solutions/cursor.svg" width={14} height={16} alt="" />
-            <span className="sol-portal__agent depth-strong"><Icon name="fish" size={15} /></span>
+            <IconContainer size={32} tone="orange" depth="strong" className="sol-portal__agent"><Icon name="fish" size={15} /></IconContainer>
           </span>
         </div>
         <span className="btn btn--secondary btn--xs sol-portal__next"><span className="btn__label">Next</span></span>

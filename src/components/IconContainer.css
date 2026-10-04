@@ -1,0 +1,15 @@
+.icon-container { display: flex; align-items: center; justify-content: center; flex-shrink: 0; width: var(--ic-size); height: var(--ic-size); overflow: clip; }
+/* Hairline stroke scales with the container, as in Figma */
+.icon-container--16 { --ic-size: 16px; --ic-stroke: 0.133px; }
+.icon-container--20 { --ic-size: 20px; --ic-stroke: 0.167px; }
+.icon-container--24 { --ic-size: 24px; --ic-stroke: 0.2px; }
+.icon-container--32 { --ic-size: 32px; --ic-stroke: 0.267px; }
+.icon-container--40 { --ic-size: 40px; --ic-stroke: 0.267px; }
+.icon-container--48 { --ic-size: 48px; --ic-stroke: 0.267px; }
+.icon-container--64 { --ic-size: 64px; --ic-stroke: 0.267px; }
+.icon-container--rounded { border-radius: 4px; }
+.icon-container--circle { border-radius: 50%; }
+.icon-container--filled { border: var(--ic-stroke) solid var(--outline-accent-neutral); }
+.icon-container--filled.icon-container--neutral { background: var(--surface-secondary); color: var(--content-tertiary); }
+.icon-container--filled.icon-container--orange { background: var(--surface-accent-orange-subtle); color: var(--content-accent-orange-default); }
+.icon-container--ghost.icon-container--orange { color: var(--content-accent-orange-default); }

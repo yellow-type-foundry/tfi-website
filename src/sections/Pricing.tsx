@@ -2,6 +2,7 @@ import type { ReactElement, ReactNode } from "react";
 import { useEffect, useRef } from "react";
 import { Button } from "../components/Button";
 import { Icon } from "../components/Icon";
+import { IconContainer } from "../components/IconContainer";
 import "./Pricing.css";
 
 /* Icons for the API list: the TinyFish Fetch icon (19px artwork, centred in the 24px grid) and local
@@ -72,7 +73,7 @@ export function Pricing() {
           {apis.map((api) => (
             <li key={api.name} className="pricing-api">
               <div className="pricing-api__lead">
-                <span className="pricing-api__icon depth-default">{api.icon}</span>
+                <IconContainer size={64} tone="orange" depth="default" className="pricing-api__icon">{api.icon}</IconContainer>
                 <span className="t-h6">{api.name}</span>
               </div>
               <span className="pricing-api__price">{api.price}</span>

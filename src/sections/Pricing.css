@@ -32,11 +32,6 @@
   padding: 24px; border-radius: 24px; background: var(--surface-secondary);
 }
 .pricing-api__lead { width: 100%; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 16px; color: var(--content-primary); }
-.pricing-api__icon {
-  flex-shrink: 0; width: 48px; height: 48px; border-radius: 24px; overflow: clip;
-  display: flex; align-items: center; justify-content: center;
-  border: 0.267px solid var(--outline-accent-neutral); background: var(--surface-accent-orange-subtle); color: var(--content-accent-orange-default);
-}
 .pricing-api__price { width: 100%; min-width: 0; text-align: left; }
 .pricing-api__free { color: var(--content-tertiary); font-family: var(--font-sans); font-weight: 400; } /* body style, like the rates */
 .pricing-api__rate { color: var(--content-primary); }
@@ -59,8 +54,6 @@
   .pricing-api-list { width: 100%; }
   .pricing-api { padding: 16px; }
   .pricing-api__lead { gap: 12px; }
-  .pricing-api__icon { width: 40px; height: 40px; }
-  .pricing-api__icon svg { width: 20px; height: 20px; }
   .pricing-api__lead > .t-h6, .pricing-api__free, .pricing-api__rate { font-size: 16px; line-height: 22px; }
 }
 
@@ -83,11 +76,10 @@
 .pricing-api__icon { margin-bottom: auto; }
 
 /* Larger icons and API names in the square cards */
-.pricing-api__icon { width: 64px; height: 64px; border-radius: 32px; }
 .pricing-api__icon svg { width: 34px; height: 34px; }
 .pricing-api__lead > .t-h6 { font-size: 28px; line-height: 1.2; } /* Heading/H5 size */
 @media (max-width: 640px) {
-  .pricing-api__icon { width: 48px; height: 48px; border-radius: 24px; }
+  .pricing-api__icon { --ic-size: 48px; } /* Icon Container 48 */
   .pricing-api__icon svg { width: 26px; height: 26px; }
   .pricing-api__lead > .t-h6 { font-size: 20px; line-height: 1.2; }
 }

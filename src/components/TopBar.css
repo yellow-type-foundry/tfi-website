@@ -2,13 +2,14 @@
 .topbar { position: relative; width: 100%; display: flex; align-items: center; padding: 12px 16px; }
 .topbar__logo { width: 211px; flex-shrink: 0; padding-left: 8px; }
 .topbar__brand { display: block; width: 92.75px; height: 21.2px; background: var(--content-static-black); mask: url("/assets/hero/brand-logo.svg") center / contain no-repeat; }
-.sticky-nav__bar .topbar__brand { background: var(--surface-accent-orange-default); }
+.sticky-nav__bar .topbar__brand { background: var(--content-accent-orange-default); } /* Logo · Orange */
 .topbar__nav { flex: 1 0 0; display: flex; align-items: center; justify-content: center; gap: 16px; height: 24px; white-space: nowrap; }
 .topbar__actions { display: flex; align-items: center; justify-content: flex-end; gap: 16px; white-space: nowrap; }
 /* All nav text is 16px: links Body/M, Sign Up Label/L (16/24) on the small button's padding. */
 .topbar__signup { font-size: 16px; line-height: 24px; }
 .topbar__separator { transform: rotate(90deg); width: 20px; height: 1px; }
 .topbar a:not(.btn):hover { opacity: 0.65; }
+.topbar a:focus-visible, .topbar__toggle:focus-visible { outline: 2px solid var(--surface-accent-orange-default); outline-offset: 2px; border-radius: 2px; }
 .topbar__toggle, .topbar__menu { display: none; }
 @media (max-width: 1280px) {
   .topbar__logo { width: auto; margin-right: auto; }

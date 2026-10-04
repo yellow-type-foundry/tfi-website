@@ -1,3 +1,2 @@
-.eyebrow, .eyebrow.t-label-m { font-size: 16px; line-height: 24px; }
 .eyebrow { display: inline-flex; align-items: center; justify-content: center; gap: 6px; color: var(--content-accent-orange-default); white-space: nowrap; }
 .eyebrow__dot { width: 6px; height: 6px; border-radius: 10px; background: var(--content-accent-orange-default); }
