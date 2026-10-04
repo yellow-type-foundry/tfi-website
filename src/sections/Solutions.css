@@ -224,7 +224,7 @@
 
 @media (max-width: 640px) {
   .solutions__header { width: 100%; container-type: inline-size; white-space: normal; }
-  .solutions__header > h1 { font-size: min(72px, calc((100cqw - 16px) / 6.5)); line-height: 1.05; } /* H1 scaled so "What TinyFish" (6.3em) nearly fills the width */
+  .solutions__header > h1 { font-size: min(72px, calc((100cqw - 72px) / 8.2)); line-height: 1.05; } /* same H1 size as the other mobile section headings */
 }
 
 .feature-card__preview-stage { position: relative; width: 100%; height: 100%; }
