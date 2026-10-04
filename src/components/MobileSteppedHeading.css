@@ -2,16 +2,13 @@
 @media (max-width: 640px) {
   .mobile-stepped-heading { display: flex; flex-direction: column; align-items: center; gap: 16px; width: 100%; max-width: 100%; }
   .mobile-stepped-heading__pill { display: flex; flex-direction: column; align-items: center; width: 100%; filter: var(--depth-default-filter); } /* Surface/Default */
-  .mobile-stepped-heading__title { width: 100%; display: flex; flex-direction: column; align-items: center; font-size: min(72px, calc((100cqw - 72px) / 8.2)); line-height: 1.05; text-align: center; white-space: nowrap; }
-  .mobile-stepped-heading__first { background: var(--surface-secondary); width: 100%; padding: 16px 28px 4px; border-radius: 24px; }
+  /* Steps hug their line and stay centred (Figma LP · Mobile hero): 36/115% at 375px, scaling down on narrower screens */
+  .mobile-stepped-heading__title { width: 100%; display: flex; flex-direction: column; align-items: center; font-size: min(36px, calc(100cqw / 9.5)); line-height: 1.15; text-align: center; white-space: nowrap; }
+  .mobile-stepped-heading__first { background: var(--surface-secondary); padding: 16px 40px 4px; border-radius: 24px; }
   .mobile-stepped-heading__row { display: flex; align-items: flex-start; justify-content: center; }
-  .mobile-stepped-heading__second { background: var(--surface-secondary); padding: 0 16px 12px; border-radius: 0 0 20px 20px; }
+  .mobile-stepped-heading__second { background: var(--surface-secondary); padding: 0 16px 12px; border-radius: 0 0 16px 16px; }
   .mobile-stepped-heading img { display: block; width: 16px; height: 16px; flex: 0 0 16px; }
   .mobile-stepped-heading__row > img:first-child { transform: scaleX(-1); }
-  .mobile-stepped-heading__body { width: calc(100% - 32px); color: var(--content-primary); font-size: 16px; line-height: 1.4; text-align: center; text-wrap: balance; }
+  .mobile-stepped-heading__body { width: calc(100% - 32px); color: var(--content-primary); font-size: 16px; line-height: 24px; text-align: center; text-wrap: balance; }
 }
 
-@media (max-width: 640px) {
-  .mobile-stepped-heading__row { width: calc(100% - 32px); }
-  .mobile-stepped-heading__second { flex: 1; }
-}
