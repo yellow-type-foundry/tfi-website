@@ -34,86 +34,272 @@ const LocalIcon = ({ name, size }: { name: LocalIconName; size: number }) => (
   </svg>
 );
 
-/* Illustration of an agent run (the Figma "Interactive Demo" frame): step 1 of 3, signing in.
-   Nothing here is interactive; the window is a picture of the product, hidden from assistive tech
-   and described by the section heading instead. */
-const STEPS = ["Log in", "Navigate", "Complete"];
-const EMAIL = "johnapple@acme.com";
-const PASSWORD_LENGTH = 10;
+/* Illustration of an agent run (the Figma "Interactive Demo" frame), played as one timeline:
+   sign in with vault credentials and a 2FA code, go to Billing, filter to unpaid invoices, read them,
+   then hand JSON to the agent. Nothing here is interactive; the window is a picture of the product,
+   hidden from assistive tech and described by the section heading instead. */
+const RUN_STEPS = [
+  { id: "open", label: "Open the portal", end: 600 },
+  { id: "email", label: "Enter email", end: 1200 },
+  { id: "password", label: "Enter password", end: 2150 },
+  { id: "code", label: "Enter 2FA code", end: 3000 },
+  { id: "billing", label: "Go to Billing", end: 5750 },
+  { id: "extract", label: "Read the invoices", end: 7300 },
+  { id: "send", label: "Send JSON to your agent", end: 8900 },
+] as const;
+const PHASES = [
+  { label: "Log in", from: 0, to: 4 },
+  { label: "Navigate", from: 4, to: 5 },
+  { label: "Complete", from: 5, to: RUN_STEPS.length },
+];
+const DONE = RUN_STEPS[RUN_STEPS.length - 1].end; // 8.9s
+const RESULT_AT = RUN_STEPS[RUN_STEPS.length - 2].end; // the JSON card opens when reading ends
+const LOOP = DONE + 3200;
+const CLICKS = [800, 1400, 2000, 2450, 3950, 5000, 5650]; // the cursor taps just after these
+const EMAIL = "ops@yourco.com";
+const CODE = "482913";
+const ALL_INVOICES = [
+  ["INV-2036", "Sep 18", "$2,380.00", "Paid"], ["INV-2041", "Oct 01", "$4,210.00", "Unpaid"],
+  ["INV-2038", "Sep 24", "$615.40", "Paid"], ["INV-2042", "Oct 08", "$1,875.50", "Unpaid"],
+  ["INV-2039", "Sep 27", "$1,120.00", "Paid"], ["INV-2043", "Oct 15", "$920.00", "Unpaid"],
+];
+const UNPAID = ALL_INVOICES.filter((r) => r[3] === "Unpaid");
+/* [plain, highlighted, highlighted on phones] */
+const JSON_LINES: [string, string?, string?][] = [
+  ["{"], ['  "status": ', '"done",'], ['  "invoices": ['],
+  ['    { "id": ', '"INV-2041", "due": "Oct 01", "amount": 4210 },', '"INV-2041", "amount": 4210 },'],
+  ['    { "id": ', '"INV-2042", "due": "Oct 08", "amount": 1875.5 },', '"INV-2042", "amount": 1875 },'],
+  ['    { "id": ', '"INV-2043", "due": "Oct 15", "amount": 920 },', '"INV-2043", "amount": 920 },'],
+  ["    ", "… 9 more"], ["  ],"], ['  "replay": ', '"runs/7f3a"'], ["}"],
+];
+const clamp = (v: number, lo: number, hi: number) => Math.min(Math.max(v, lo), hi);
 
-/**
- * The sign-in plays on a quiet loop while on screen: the email types out, the caret moves on and the
- * password fills, Continue turns active and is pressed, then it holds and clears. Off screen or with
- * reduced motion it shows the designed still (email part-typed, caret blinking).
- */
-function useSignIn(inView: boolean) {
-  const playing = inView && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const [typed, setTyped] = useState(0); // characters of email, then password
-  const [stage, setStage] = useState<"typing" | "ready" | "pressed" | "clearing">("typing");
-  const [cycle, setCycle] = useState(0);
+/** Milliseconds into the run. Plays on a loop while on screen and pauses off screen (resuming where it
+    left off); with reduced motion it shows the finished run. */
+function useRunClock(inView: boolean) {
+  const [t, setT] = useState(0);
+  const tRef = useRef(0);
   useEffect(() => {
-    if (!playing) return;
-    setTyped(0);
-    setStage("typing");
-    const timers: number[] = [];
-    const at = (t: number, fn: () => void) => timers.push(window.setTimeout(fn, t));
-    let t = 500;
-    for (let i = 1; i <= EMAIL.length; i++) at((t += 55), () => setTyped(i));
-    t += 350; // the agent moves to the password field
-    for (let i = 1; i <= PASSWORD_LENGTH; i++) at((t += 60), () => setTyped(EMAIL.length + i));
-    at((t += 300), () => setStage("ready"));
-    at((t += 450), () => setStage("pressed"));
-    at((t += 180), () => setStage("ready"));
-    at((t += 1800), () => setStage("clearing"));
-    at((t += 300), () => setCycle((c) => c + 1));
-    return () => timers.forEach(clearTimeout);
-  }, [playing, cycle]);
-  if (!playing) return { email: "johnapple", password: 0, caret: "email" as const, stage: "typing" as const, pointer: "email" as const };
-  const email = EMAIL.slice(0, Math.min(typed, EMAIL.length));
-  const password = Math.max(0, typed - EMAIL.length);
-  const caret = stage !== "typing" ? null : typed < EMAIL.length ? ("email" as const) : ("password" as const);
-  // The agent's cursor gets to each field just before it types there, then onto Continue
-  const pointer =
-    stage === "clearing" ? ("rest" as const)
-    : typed < EMAIL.length ? ("email" as const)
-    : typed < EMAIL.length + PASSWORD_LENGTH ? ("password" as const)
-    : ("submit" as const);
-  return { email, password, caret, stage, pointer };
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setT(DONE); return; }
+    if (!inView) return;
+    const start = performance.now() - tRef.current;
+    let raf = 0;
+    const tick = (now: number) => {
+      const next = (now - start) % LOOP;
+      tRef.current = next;
+      setT((prev) => (Math.abs(prev - next) < 32 && next >= prev ? prev : next)); // ~30fps is plenty
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [inView]);
+  return t;
 }
 
-type PointerTarget = "email" | "password" | "submit" | "rest";
+/** Where the agent's cursor is at time t: a data-mark inside the window body, "hold" to stay put, or null to hide. */
+function pointerTarget(t: number, rowsDone: number) {
+  if (t < 600) return null;
+  if (t < 1200) return "email";
+  if (t < 1800) return "password";
+  if (t < 2150) return "continue";
+  if (t < 3000) return "code";
+  if (t < 3500) return "hold";
+  if (t < 4600) return "billing";
+  if (t < 5300) return "filter";
+  if (t < 5800) return "option";
+  if (t < 5950) return "hold";
+  if (t < RESULT_AT) return `row${clamp(rowsDone - 1, 0, UNPAID.length - 1)}`;
+  return null;
+}
 
-/** Places the agent cursor (the Solutions portal pointer) over its target inside the sign-in card,
-    measured from the real fields; CSS transitions the move. */
-function usePointer(cardRef: React.RefObject<HTMLDivElement | null>, pointerRef: React.RefObject<HTMLSpanElement | null>, target: PointerTarget) {
+/** Moves the cursor (CSS transitions the move) over its target, measured from the rendered window body. */
+function usePointer(bodyRef: React.RefObject<HTMLDivElement | null>, pointerRef: React.RefObject<HTMLSpanElement | null>, target: string | null) {
   useLayoutEffect(() => {
-    const card = cardRef.current;
-    const pointer = pointerRef.current;
-    if (!card || !pointer) return;
-    const place = () => {
-      const box = card.getBoundingClientRect();
-      const el =
-        target === "email" ? card.querySelectorAll(".idemo-input__field")[0]
-        : target === "password" ? card.querySelectorAll(".idemo-input__field")[1]
-        : card.querySelector(".idemo-card__submit");
-      const r = (el ?? card).getBoundingClientRect();
-      const x = target === "rest" ? box.width - 56 : r.left - box.left + r.width * (target === "submit" ? 0.62 : 0.55);
-      const y = target === "rest" ? box.height - 24 : r.top - box.top + r.height * 0.62;
-      pointer.style.transform = `translate(${x}px, ${y}px)`;
-    };
-    place();
-    const observer = new ResizeObserver(place);
-    observer.observe(card);
-    return () => observer.disconnect();
-  }, [cardRef, pointerRef, target]);
+    const body = bodyRef.current, pointer = pointerRef.current;
+    if (!body || !pointer || target === "hold") return;
+    const el = target ? body.querySelector(`[data-mark="${target}"]`) : null;
+    if (!el) { pointer.style.opacity = "0"; return; }
+    const b = body.getBoundingClientRect(), r = el.getBoundingClientRect();
+    const transform = `translate(${r.left - b.left + Math.min(r.width * 0.5, 150)}px, ${r.top - b.top + r.height * 0.4}px)`;
+    if (pointer.style.opacity !== "1") { // appear in place rather than flying in from the corner
+      pointer.style.transition = "none"; pointer.style.transform = transform; void pointer.offsetWidth;
+      pointer.style.transition = ""; pointer.style.opacity = "1";
+    } else pointer.style.transform = transform;
+  }, [bodyRef, pointerRef, target]);
+}
+
+const STEP_ICONS: Record<(typeof RUN_STEPS)[number]["id"], ReactElement> = {
+  open: <Icon name="globe" size={12} />, email: <LocalIcon name="person" size={12} />, password: <LocalIcon name="lock" size={12} />,
+  code: <LocalIcon name="lock" size={12} />, billing: <Icon name="arrow-right" size={12} />, extract: <Icon name="search" size={12} />,
+  send: <Icon name="arrow-right" size={12} />,
+};
+
+const VaultNote = ({ children, shown = true }: { children: string; shown?: boolean }) => (
+  <span className="idemo-note t-body-xs" style={{ opacity: shown ? 1 : 0 }}><LocalIcon name="lock" size={11} />{children}</span>
+);
+
+function SignInCard({ t }: { t: number }) {
+  const verify = t >= 2150;
+  const emailIn = t >= 800, passwordIn = t >= 1400, codeIn = t >= 2450;
+  return (
+    <div key={verify ? "verify" : "signin"} className="idemo-card idemo-appear depth-default">
+      <p className="idemo-card__eyebrow t-label-s">Acme Supplier Portal</p>
+      <p className="idemo-card__title t-h5">{verify ? "Verify it’s you" : "Sign In"}</p>
+      {verify ? (
+        <>
+          <p className="idemo-card__body t-body-s">Enter the 6-digit code from your authenticator app.</p>
+          <div className="idemo-code" data-mark="code">
+            {CODE.split("").map((d, i) => (
+              <span key={i} className="idemo-code__digit t-h6">{codeIn ? d : ""}</span>
+            ))}
+          </div>
+          <VaultNote>One-time code from 1Password</VaultNote>
+        </>
+      ) : (
+        <>
+          <div className="idemo-input">
+            <span className="t-label-m">Email</span>
+            <span data-mark="email" className="idemo-input__field depth-subtle">
+              <span className="idemo-input__value t-body-m">{emailIn ? EMAIL : <span className="idemo-input__caret" />}</span>
+              {emailIn && <span className="idemo-input__vault t-label-s">1Password</span>}
+            </span>
+          </div>
+          <div className="idemo-input">
+            <span className="t-label-m">Password</span>
+            <span data-mark="password" className="idemo-input__field depth-subtle">
+              <span className="idemo-input__value t-body-m">{passwordIn ? "••••••••••" : t >= 1200 ? <span className="idemo-input__caret" /> : null}</span>
+              {passwordIn && <span className="idemo-input__vault t-label-s">1Password</span>}
+            </span>
+            <VaultNote shown={passwordIn}>Filled by TinyFish · hidden from the model</VaultNote>
+          </div>
+          <span data-mark="continue" className={`btn btn--l btn--secondary idemo-card__submit${passwordIn ? " is-ready" : ""}${t >= 2000 && t < 2150 ? " is-pressed" : ""}`}>
+            <span className="btn__label">Continue</span>
+          </span>
+        </>
+      )}
+    </div>
+  );
+}
+
+function PortalHome() {
+  const bar = (w: number | string, h = 8) => <span className="idemo-skel" style={{ width: w, height: h }} />;
+  return (
+    <div className="idemo-portal__page idemo-appear">
+      <div className="idemo-portal__title-row"><p className="t-h6">Welcome back, Ops</p>{bar(96, 24)}</div>
+      <div className="idemo-stats">
+        {[["Open invoices", "12"], ["Due this week", "$8,245"], ["Paid in Feb", "$52,180"]].map(([k, v]) => (
+          <div key={k} className="idemo-stat"><span className="t-body-xs">{k}</span><span className="t-h6">{v}</span>{bar("70%", 6)}</div>
+        ))}
+      </div>
+      <div className="idemo-table">
+        <div className="idemo-table__head t-label-s">Recent orders</div>
+        {[[64, 88, "Shipped"], [58, 72, "Pending"], [70, 96, "Shipped"], [52, 80, "Shipped"]].map(([a, b, s], i) => (
+          <div key={i} className="idemo-table__row idemo-table__row--skel">{bar(`${a}%`)}{bar(`${b}%`)}<span className={`idemo-tag t-body-xs${s === "Shipped" ? " is-good" : ""}`}>{s}</span></div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function PortalInvoices({ t, rowsDone }: { t: number; rowsDone: number }) {
+  const open = t >= 5000 && t < 5770, pick = t >= 5550, filtered = t >= 5750;
+  const tap = (at: number) => (t >= at && t < at + 160 ? " is-pressed" : "");
+  const rows = filtered ? UNPAID : ALL_INVOICES;
+  return (
+    <div className="idemo-portal__page idemo-appear">
+      <div className="idemo-portal__title-row">
+        <p className="t-h6">Invoices</p>
+        <span key={String(filtered)} className={`idemo-appear t-body-xs${filtered ? " idemo-good" : " idemo-muted"}`}>{filtered ? "12 found" : "48 invoices"}</span>
+      </div>
+      <div className="idemo-filters">
+        <span data-mark="filter" className={`idemo-chip t-body-xs${open || filtered ? " is-on" : ""}${tap(5000)}`}>Status: {filtered ? "Unpaid" : "All"} ▾</span>
+        <span className="idemo-chip t-body-xs">Sort: Due date</span>
+        {open && (
+          <div className="idemo-menu idemo-appear">
+            {["Paid", "Unpaid", "Overdue"].map((o) => (
+              <span key={o} data-mark={o === "Unpaid" ? "option" : undefined} className={`idemo-menu__item t-body-xs${o === "Unpaid" && pick ? " is-on" : ""}${o === "Unpaid" ? tap(5650) : ""}`}>{o}</span>
+            ))}
+          </div>
+        )}
+      </div>
+      <div className="idemo-table">
+        <div className="idemo-table__head idemo-table__grid t-body-xs"><span>Invoice</span><span className="idemo-due">Due</span><span className="idemo-right">Amount</span><span /></div>
+        <div key={String(filtered)} className="idemo-appear">
+          {rows.map((r, i) => {
+            const done = filtered && i < rowsDone;
+            return (
+              <div key={r[0]} data-mark={filtered ? `row${i}` : undefined} className="idemo-table__row idemo-table__grid t-mono-s">
+                <span>{r[0]}</span><span className="idemo-due idemo-muted">{r[1]}</span><span className="idemo-right">{r[2]}</span>
+                <span className="idemo-right">{done ? <span className="idemo-good">✓</span> : <span className={`idemo-tag t-body-xs${r[3] === "Paid" ? " is-good" : ""}`}>{r[3]}</span>}</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Portal({ t, rowsDone }: { t: number; rowsDone: number }) {
+  const section = t >= 3950 ? "Billing" : "Home";
+  return (
+    <div className="idemo-portal idemo-appear">
+      <nav className="idemo-portal__nav">
+        <span className="idemo-portal__brand t-h6">Acme</span>
+        {["Home", "Orders", "Billing", "Settings"].map((n) => (
+          <span key={n} data-mark={n === "Billing" ? "billing" : undefined} className={`idemo-portal__link t-body-s${n === section ? " is-on" : ""}${n === "Billing" && t >= 3950 && t < 4110 ? " is-pressed" : ""}`}>{n}</span>
+        ))}
+      </nav>
+      <div className="idemo-portal__main">{t >= 4100 ? <PortalInvoices t={t} rowsDone={rowsDone} /> : <PortalHome />}</div>
+    </div>
+  );
+}
+
+function ResultCard({ t }: { t: number }) {
+  const lines = clamp(Math.floor((t - RESULT_AT - 250) / 90) + 1, 0, JSON_LINES.length);
+  const done = t >= DONE;
+  return (
+    <div className="idemo-result">
+      <div className="idemo-result__veil idemo-appear" />
+      <div className={`idemo-result__card${done ? " is-done" : ""}`}>
+        <div className="idemo-result__head">
+          <span className="idemo-result__title t-label-m">
+            {done ? <span className="idemo-result__tick"><Icon name="check" size={12} /></span> : <Icon name="fish" size={16} />}
+            {done ? "Agent complete" : "Sending to your agent"}
+          </span>
+          <span className={`idemo-tag t-body-xs${done ? " is-good" : ""}`}>{done ? "Sent to your agent" : "JSON"}</span>
+        </div>
+        <pre className="idemo-result__json t-mono-s">
+          {JSON_LINES.map(([plain, hi, hiPhone], i) => (
+            <span key={i} className={`idemo-result__line${i < lines ? " is-in" : ""}`}>
+              {plain}
+              {hi && <span className="idemo-good"><span className={hiPhone ? "idemo-wide" : undefined}>{hi}</span>{hiPhone && <span className="idemo-narrow">{hiPhone}</span>}</span>}
+            </span>
+          ))}
+        </pre>
+        <div className="idemo-result__foot t-mono-s">
+          {done ? <span className="idemo-appear">Done in {(DONE / 1000).toFixed(1)}s</span> : <span className="idemo-result__sending"><span className="idemo-result__dot" />Sending…</span>}
+          <span className={done ? undefined : "idemo-muted"}>View recording ↗</span>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function Demo() {
   const [ref, inView] = useInView<HTMLDivElement>();
-  const { email, password, caret, stage, pointer } = useSignIn(inView);
-  const cardRef = useRef<HTMLDivElement>(null);
+  const t = useRunClock(inView);
+  const bodyRef = useRef<HTMLDivElement>(null);
   const pointerRef = useRef<HTMLSpanElement>(null);
-  usePointer(cardRef, pointerRef, pointer);
+  const rowsDone = t < 5950 ? 0 : clamp(Math.floor((t - 5950) / 300) + 1, 0, UNPAID.length);
+  usePointer(bodyRef, pointerRef, pointerTarget(t, rowsDone));
+  const stepIndex = RUN_STEPS.findIndex((s) => t < s.end);
+  const current = stepIndex === -1 ? RUN_STEPS.length : stepIndex;
+  const finished = current >= RUN_STEPS.length;
+  const step = RUN_STEPS[Math.min(current, RUN_STEPS.length - 1)];
+  const signedIn = t >= 3000;
+  const url = t < 2150 ? "portal.acme.com/login" : t < 3000 ? "portal.acme.com/verify" : t < 4100 ? "portal.acme.com/home" : t < 5750 ? "portal.acme.com/billing" : "portal.acme.com/billing?status=unpaid";
+  const tapping = CLICKS.some((c) => t >= c && t < c + 450);
   return (
     <div ref={ref} className="idemo-frame">
       <div className="idemo-stage">
@@ -123,48 +309,45 @@ function Demo() {
         <div className="idemo-window" aria-hidden>
           <div className="idemo-window__head">
             <div className="idemo-steps">
-              {STEPS.map((label, i) => (
-                <span key={label} className={`idemo-step${i === 0 ? " is-active" : ""}`}>
-                  <NumberBadge variant={i === 0 ? "filled" : "neutral"} className="idemo-step__badge">{i + 1}</NumberBadge>
-                  <span className="idemo-step__label t-label-m">{label}</span>
-                </span>
-              ))}
+              {PHASES.map((p, i) => {
+                const from = p.from === 0 ? 0 : RUN_STEPS[p.from - 1].end;
+                const progress = clamp((t - from) / (RUN_STEPS[p.to - 1].end - from), 0, 1);
+                const active = current >= p.from && current < p.to, reached = current >= p.from, complete = current >= p.to;
+                return (
+                  <span key={p.label} className={`idemo-step${active ? " is-active" : ""}`}>
+                    <NumberBadge variant={reached ? "filled" : "neutral"} className={`idemo-step__badge${complete ? " is-complete" : ""}`}>
+                      {complete ? <Icon name="check" size={12} /> : i + 1}
+                    </NumberBadge>
+                    <span className={`idemo-step__label t-label-m${reached ? "" : " idemo-muted"}`}>{p.label}</span>
+                    <span className="idemo-step__bar"><span style={{ transform: `scaleX(${progress})` }} /></span>
+                  </span>
+                );
+              })}
             </div>
             <div className="idemo-address">
-              <p className="idemo-address__field t-mono-s">portal.acme.com/login</p>
+              <p className="idemo-address__field t-mono-s">{url}</p>
+              {signedIn && <span className="idemo-address__saved idemo-appear t-body-xs"><span className="idemo-result__dot is-good" />session saved to Profiles</span>}
             </div>
           </div>
-          <div className="idemo-window__body">
-            <div ref={cardRef} className={`idemo-card depth-default${stage === "clearing" ? " is-clearing" : ""}`}>
-              <p className="idemo-card__title t-h5">Sign In</p>
-              <div className="idemo-input">
-                <span className="t-label-m">Email</span>
-                <span className="idemo-input__field depth-subtle">
-                  <span className="idemo-input__value t-body-m">{email}{caret === "email" && <span className="idemo-input__caret" />}</span>
-                </span>
-              </div>
-              <div className="idemo-input">
-                <span className="t-label-m">Password</span>
-                <span className="idemo-input__field depth-subtle">
-                  <span className="idemo-input__value t-body-m">{"•".repeat(password)}{caret === "password" && <span className="idemo-input__caret" />}</span>
-                </span>
-              </div>
-              {/* The agent's cursor, as on the Solutions portal card */}
-              <span ref={pointerRef} className={`idemo-pointer${pointer === "rest" ? " is-resting" : ""}${stage === "pressed" ? " is-tapping" : ""}`} aria-hidden>
-                <img className="idemo-pointer__cursor" src="/assets/solutions/cursor.svg" width={14} height={16} alt="" />
-                <IconContainer size={32} tone="orange" depth="strong" className="idemo-pointer__agent"><Icon name="fish" size={15} /></IconContainer>
-              </span>
-              <span className={`btn btn--l btn--secondary idemo-card__submit${stage === "ready" || stage === "pressed" ? " is-ready" : ""}${stage === "pressed" ? " is-pressed" : ""}`}>
-                <span className="btn__label">Continue</span>
-              </span>
-            </div>
+          <div ref={bodyRef} className="idemo-window__body">
+            {signedIn ? <Portal t={t} rowsDone={rowsDone} /> : <SignInCard t={t} />}
+            {t >= RESULT_AT && <ResultCard t={t} />}
+            {/* The agent's cursor, as on the Solutions portal card; usePointer places it */}
+            <span ref={pointerRef} className={`idemo-pointer${tapping ? " is-tapping" : ""}`} style={{ opacity: 0 }} aria-hidden>
+              <img className="idemo-pointer__cursor" src="/assets/solutions/cursor.svg" width={14} height={16} alt="" />
+              <IconContainer size={32} tone="orange" depth="strong" className="idemo-pointer__agent"><Icon name="fish" size={15} /></IconContainer>
+            </span>
           </div>
           <div className="idemo-status">
             <div className="idemo-status__lead">
-              <IconContainer size={24} depth="subtle"><Icon name="globe" size={12} /></IconContainer>
-              <p className="t-label-m">Open the portal</p>
+              <span className={`idemo-status__icon${finished ? " is-done" : ""}`}>
+                {finished ? <Icon name="check" size={12} /> : <><span className="idemo-status__spin" /><IconContainer size={24} depth="subtle">{STEP_ICONS[step.id]}</IconContainer></>}
+              </span>
+              <p key={finished ? "done" : step.id} className="idemo-appear t-label-m">{finished ? "Complete · 12 unpaid invoices" : step.label}</p>
             </div>
-            <p className="idemo-status__timing t-body-s">1 of 7 · 0.2s</p>
+            <p className={`idemo-status__timing t-body-s${finished ? " idemo-good" : ""}`}>
+              {finished ? `done in ${(DONE / 1000).toFixed(1)}s` : `${current + 1} of ${RUN_STEPS.length} · ${(Math.min(t, DONE) / 1000).toFixed(1)}s`}
+            </p>
           </div>
         </div>
       </div>
